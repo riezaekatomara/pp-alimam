@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/layout/Container";
 
 export const metadata: Metadata = {
   title: "Beranda",
@@ -25,11 +27,15 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* CTA Button */}
-        <div className="animate-fadeInUp delay-300">
-          <button className="bg-gradient-green text-white px-8 py-4 rounded-lg text-lg font-semibold hover:shadow-green transition-all duration-300 hover:scale-105">
-            Daftar Sekarang
-          </button>
+        {/* CTA Buttons - Test All Variants */}
+        <div className="animate-fadeInUp delay-300 flex flex-wrap gap-4 justify-center">
+          <Button size="lg">Daftar Sekarang</Button>
+          <Button variant="secondary" size="lg">
+            Info Lengkap
+          </Button>
+          <Button variant="outline" size="lg">
+            Hubungi Kami
+          </Button>
         </div>
 
         {/* Status Badge */}
