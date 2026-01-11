@@ -30,7 +30,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-gradient-to-br from-green-900 to-emerald-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
+      {/* ✅ GANTI: Tambah padding responsive sama dengan Navbar & Container */}
+      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           {/* Brand Section */}
           <div className="md:col-span-1">
