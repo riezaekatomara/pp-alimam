@@ -8,16 +8,58 @@ import { Menu, X, Phone, ChevronDown, Sparkles, Clock } from "lucide-react";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState(""); // ✅ NEW: Track active section
   const pathname = usePathname();
   const router = useRouter();
 
+  // Detect scroll for navbar background
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
   useEffect(() => setIsMenuOpen(false), [pathname]);
+
+  // ✅ NEW: Scroll Spy - Detect which section is visible
+  useEffect(() => {
+    // Only run on homepage
+    if (pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const handleScrollSpy = () => {
+      const sections = ["about", "kontak"]; // All scroll sections
+      const scrollPosition = window.scrollY + 100; // Offset for navbar
+
+      // At top of page (hero section) - no section active
+      if (window.scrollY < 200) {
+        setActiveSection("");
+        return;
+      }
+
+      // Find which section is currently in viewport
+      for (const sectionId of sections) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          const { offsetTop, offsetHeight } = section;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(sectionId);
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollSpy);
+    handleScrollSpy(); // Initial check
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, [pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -47,7 +89,7 @@ export default function Navbar() {
     // If on home page, smooth scroll
     const section = document.getElementById(sectionId);
     if (section) {
-      const navbarHeight = 80; // Adjust based on your navbar height
+      const navbarHeight = 80;
       const elementPosition = section.getBoundingClientRect().top;
       const offsetPosition =
         elementPosition + window.pageYOffset - navbarHeight;
@@ -57,7 +99,6 @@ export default function Navbar() {
         behavior: "smooth",
       });
 
-      // Close mobile menu if open
       setIsMenuOpen(false);
     }
   };
@@ -94,7 +135,7 @@ export default function Navbar() {
       label: "Kontak",
       icon: "fa-phone",
       type: "scroll" as const,
-      sectionId: "kontak", // ✅ UBAH dari "contact" menjadi "kontak"
+      sectionId: "kontak",
     },
   ];
 
@@ -104,13 +145,20 @@ export default function Navbar() {
     { href: "/il", label: "I'dad Lughowi", icon: "fa-book-quran" },
   ];
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/";
-    if (href.startsWith("#")) {
-      // For scroll links, active when on home page
-      return pathname === "/";
+  // ✅ FIXED: isActive with scroll spy logic
+  const isActive = (href: string, sectionId?: string) => {
+    // Homepage link - active only when at top (no section active)
+    if (href === "/") {
+      return pathname === "/" && activeSection === "";
     }
-    return pathname.startsWith(href);
+
+    // Scroll links (Tentang, Kontak) - active when that section is in view
+    if (href.startsWith("#") && sectionId) {
+      return pathname === "/" && activeSection === sectionId;
+    }
+
+    // Regular page links
+    return pathname.startsWith(href) && href !== "/";
   };
 
   return (
@@ -168,13 +216,13 @@ export default function Navbar() {
                       href={link.href}
                       onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
                       className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
-                        isActive(link.href)
+                        isActive(link.href, link.sectionId)
                           ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
                           : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
                       }`}
                     >
                       <i
-                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href, link.sectionId) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
                       />
                       {link.label}
                     </a>
@@ -239,13 +287,13 @@ export default function Navbar() {
                       href={link.href}
                       onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
                       className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
-                        isActive(link.href)
+                        isActive(link.href, link.sectionId)
                           ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
                           : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
                       }`}
                     >
                       <i
-                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href, link.sectionId) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
                       />
                       {link.label}
                     </a>
@@ -277,8 +325,10 @@ export default function Navbar() {
                 className="inline-flex items-center gap-1.5 xl:gap-2 px-3 xl:px-4 py-2 xl:py-2.5 rounded-xl text-xs xl:text-sm font-semibold text-white bg-gradient-gold shadow-md hover:shadow-xl shadow-gold transition-all duration-300 hover:-translate-y-1"
               >
                 <Sparkles className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
-                <span className="hidden xl:inline">Info PPDB 2026</span>
-                <span className="xl:hidden">PPDB 2026</span>
+                <span className="hidden xl:inline text-[13px]">
+                  PPDB 2026/2027
+                </span>
+                <span className="xl:hidden">PPDB 2026/2027</span>
               </Link>
 
               <Link
@@ -336,7 +386,7 @@ export default function Navbar() {
                       href={link.href}
                       onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
                       className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer ${
-                        isActive(link.href)
+                        isActive(link.href, link.sectionId)
                           ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
                           : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
                       }`}
@@ -344,7 +394,7 @@ export default function Navbar() {
                     >
                       <i
                         className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
-                          isActive(link.href)
+                          isActive(link.href, link.sectionId)
                             ? "text-[var(--color-brown-700)]"
                             : "text-[var(--color-teal-500)]"
                         }`}
