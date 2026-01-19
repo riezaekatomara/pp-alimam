@@ -11,7 +11,6 @@ import Footer from "@/components/layout/Footer";
 export default function HomePage() {
   return (
     <>
-      <Navbar />
       <main>
         <HeroSection />
         <AboutSection />
@@ -21,7 +20,6 @@ export default function HomePage() {
         <CalendarSection />
         <ContactSection />
       </main>
-      <Footer />
     </>
   );
 }

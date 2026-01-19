@@ -2,405 +2,486 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, Phone, ChevronDown, Sparkles, Clock } from "lucide-react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => setIsMenuOpen(false), [pathname]);
+
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
+  // Smooth scroll handler
+  const handleSmoothScroll = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    sectionId: string,
+  ) => {
+    e.preventDefault();
+
+    // If not on home page, navigate to home first
+    if (pathname !== "/") {
+      router.push(`/#${sectionId}`);
+      return;
+    }
+
+    // If on home page, smooth scroll
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const navbarHeight = 80; // Adjust based on your navbar height
+      const elementPosition = section.getBoundingClientRect().top;
+      const offsetPosition =
+        elementPosition + window.pageYOffset - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
+      // Close mobile menu if open
+      setIsMenuOpen(false);
+    }
+  };
 
   const navLinks = [
-    { href: "/", label: "Beranda", icon: "fa-home" },
-    { href: "/tentang", label: "Tentang", icon: "fa-info-circle" },
-    { href: "/kegiatan", label: "Kegiatan", icon: "fa-calendar-check" },
-    { href: "/fasilitas", label: "Fasilitas", icon: "fa-building" },
-    { href: "/galeri", label: "Galeri", icon: "fa-images" },
-    { href: "/berita", label: "Berita", icon: "fa-newspaper" },
-    { href: "/kontak", label: "Kontak", icon: "fa-phone" },
+    { href: "/", label: "Beranda", icon: "fa-home", type: "link" as const },
+    {
+      href: "#about",
+      label: "Tentang",
+      icon: "fa-info-circle",
+      type: "scroll" as const,
+      sectionId: "about",
+    },
+    {
+      href: "/kegiatan",
+      label: "Kegiatan",
+      icon: "fa-calendar-check",
+      type: "link" as const,
+    },
+    {
+      href: "/fasilitas",
+      label: "Fasilitas",
+      icon: "fa-building",
+      type: "link" as const,
+    },
+    {
+      href: "/berita",
+      label: "Berita",
+      icon: "fa-newspaper",
+      type: "link" as const,
+    },
+    {
+      href: "#kontak",
+      label: "Kontak",
+      icon: "fa-phone",
+      type: "scroll" as const,
+      sectionId: "kontak", // ✅ UBAH dari "contact" menjadi "kontak"
+    },
   ];
 
   const jenjangLinks = [
-    {
-      label: "JENJANG PENDIDIKAN",
-      items: [
-        { href: "/mts", label: "MTs Al-Imam", icon: "fa-school" },
-        { href: "/ma", label: "MA Al-Imam", icon: "fa-university" },
-        { href: "/tahfidz", label: "Program Tahfidz", icon: "fa-book-quran" },
-      ],
-    },
+    { href: "/mts", label: "MTs Al-Imam", icon: "fa-school" },
+    { href: "/ma", label: "MA Al-Imam", icon: "fa-university" },
+    { href: "/il", label: "I'dad Lughowi", icon: "fa-book-quran" },
   ];
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
+    if (href.startsWith("#")) {
+      // For scroll links, active when on home page
+      return pathname === "/";
+    }
     return pathname.startsWith(href);
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-white border-b border-gray-200"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 md:h-24">
-          {/* Logo & Brand - UPDATED: Richer brown */}
-          <Link href="/" className="flex items-center gap-3 no-underline group">
-            <div
-              className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br rounded-lg flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110"
-              style={{
-                background:
-                  "linear-gradient(to bottom right, #6B4423, #4A2C19)",
-              }}
+    <>
+      {/* Header */}
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-[var(--color-neutral-50)]/98 backdrop-blur-xl shadow-lg border-b border-[var(--color-cream-200)]"
+            : "bg-white/90 backdrop-blur-md shadow-sm"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16 md:h-18 lg:h-20">
+            {/* Logo & Brand */}
+            <Link
+              href="/"
+              className="flex items-center gap-2 sm:gap-2.5 md:gap-3 group flex-shrink-0"
             >
-              <i className="fas fa-mosque text-white text-xl md:text-2xl"></i>
-            </div>
-            <div>
-              <h1 className="text-base md:text-lg font-bold text-gray-900 leading-tight">
-                Pondok Pesantren
-              </h1>
-              <h2
-                className="text-sm md:text-base font-bold leading-tight"
-                style={{ color: "#6B4423" }}
+              <div
+                className="w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl flex items-center justify-center shadow-md sm:shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:shadow-2xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, var(--color-brown-700), var(--color-brown-900))",
+                }}
               >
-                Al-Imam Al-Islami
-              </h2>
-            </div>
-          </Link>
+                <i className="fas fa-mosque text-white text-base sm:text-lg md:text-xl" />
+              </div>
 
-          {/* Desktop Navigation - UPDATED: Richer browns */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
-            {navLinks.slice(0, 2).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative font-medium text-sm xl:text-base transition-colors duration-300 pb-1 ${
-                  isActive(link.href) ? "font-semibold" : "text-gray-700"
-                }`}
-                style={isActive(link.href) ? { color: "#6B4423" } : {}}
-                onMouseEnter={(e) =>
-                  !isActive(link.href) &&
-                  (e.currentTarget.style.color = "#8B5A3C")
-                }
-                onMouseLeave={(e) =>
-                  !isActive(link.href) &&
-                  (e.currentTarget.style.color = "#374151")
-                }
-              >
-                <i className={`fas ${link.icon} mr-1.5 text-xs`}></i>
-                {link.label}
-                {isActive(link.href) && (
-                  <span
-                    className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                    style={{ backgroundColor: "#6B4423" }}
-                  ></span>
-                )}
-              </Link>
-            ))}
+              {/* Desktop & Tablet Text */}
+              <div className="hidden sm:block">
+                <h1 className="text-xs sm:text-sm md:text-base font-bold leading-tight text-[var(--color-text-900)]">
+                  Pondok Pesantren
+                </h1>
+                <h2 className="text-[10px] sm:text-xs md:text-sm font-bold leading-tight text-gradient-brown">
+                  Al-Imam Al-Islami
+                </h2>
+              </div>
 
-            {/* Dropdown Jenjang - UPDATED */}
-            <div className="relative group">
-              <button className="flex items-center gap-1.5 text-gray-700 font-medium text-sm xl:text-base transition-colors duration-300 pb-1 hover:text-[#8B5A3C]">
-                <i className="fas fa-graduation-cap mr-1 text-xs"></i>
-                Jenjang
-                <ChevronDown className="w-3 h-3" />
-              </button>
-              <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                {jenjangLinks[0].items.map((link, idx) => (
+              {/* Mobile Compact Text */}
+              <div className="block sm:hidden">
+                <h1 className="text-xs font-bold leading-tight text-[var(--color-text-900)]">
+                  PP Al-Imam
+                </h1>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center gap-2">
+              {navLinks.slice(0, 2).map((link) => {
+                if (link.type === "scroll") {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
+                      className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
+                        isActive(link.href)
+                          ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                          : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+                      }`}
+                    >
+                      <i
+                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                      />
+                      {link.label}
+                    </a>
+                  );
+                }
+                return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`flex items-center gap-3 px-4 py-3 text-gray-700 transition-colors ${
-                      idx === 0
-                        ? "rounded-t-xl"
-                        : idx === jenjangLinks[0].items.length - 1
-                        ? "rounded-b-xl"
-                        : "border-b border-gray-100"
+                    className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${
+                      isActive(link.href)
+                        ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                        : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
                     }`}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#FDF6EC";
-                      e.currentTarget.style.color = "#6B4423";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.color = "#374151";
-                    }}
                   >
                     <i
-                      className={`fas ${link.icon} w-4 text-center`}
-                      style={{ color: "#8B5A3C" }}
-                    ></i>
-                    <span className="text-sm font-medium">{link.label}</span>
+                      className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                    />
+                    {link.label}
+                  </Link>
+                );
+              })}
+
+              {/* Jenjang Dropdown */}
+              <div className="relative group">
+                <button
+                  className={`flex items-center gap-1.5 px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-teal ${
+                    jenjangLinks.some((j) => isActive(j.href))
+                      ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                      : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+                  }`}
+                >
+                  <i className="fas fa-graduation-cap mr-2 text-xs text-[var(--color-teal-500)]" />
+                  Jenjang
+                  <ChevronDown className="w-3.5 h-3.5 ml-1 transition-transform duration-300 group-hover:rotate-180" />
+                </button>
+                <div className="absolute left-0 top-full mt-2 w-56 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--color-cream-200)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top scale-95 group-hover:scale-100 overflow-hidden">
+                  {jenjangLinks.map((link, idx) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 hover:shadow-inner hover:shadow-teal ${
+                        isActive(link.href)
+                          ? "bg-gradient-to-r from-[var(--color-cream-200)] to-[var(--color-teal-50)] text-[var(--color-brown-700)]"
+                          : "text-[var(--color-text-600)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-600)]"
+                      } ${idx !== jenjangLinks.length - 1 ? "border-b border-[var(--color-cream-200)]" : ""}`}
+                    >
+                      <i
+                        className={`fas ${link.icon} w-4 text-center text-[var(--color-teal-500)]`}
+                      />
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {navLinks.slice(2).map((link) => {
+                if (link.type === "scroll") {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
+                      className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
+                        isActive(link.href)
+                          ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                          : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+                      }`}
+                    >
+                      <i
+                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                      />
+                      {link.label}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${
+                      isActive(link.href)
+                        ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                        : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+                    }`}
+                  >
+                    <i
+                      className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                    />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Desktop CTA */}
+            <div className="hidden lg:flex items-center gap-2 xl:gap-3">
+              <Link
+                href="/ppdb"
+                className="inline-flex items-center gap-1.5 xl:gap-2 px-3 xl:px-4 py-2 xl:py-2.5 rounded-xl text-xs xl:text-sm font-semibold text-white bg-gradient-gold shadow-md hover:shadow-xl shadow-gold transition-all duration-300 hover:-translate-y-1"
+              >
+                <Sparkles className="w-3 h-3 xl:w-3.5 xl:h-3.5" />
+                <span className="hidden xl:inline">Info PPDB 2026</span>
+                <span className="xl:hidden">PPDB 2026</span>
+              </Link>
+
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-1.5 px-3 xl:px-4 py-2 xl:py-2.5 rounded-xl text-xs xl:text-sm font-semibold border-2 shadow-sm hover:shadow-md transition-all duration-300"
+                style={{
+                  borderColor: "var(--color-brown-700)",
+                  color: "var(--color-brown-700)",
+                }}
+              >
+                <i className="fas fa-lock text-xs" />
+                Login
+              </Link>
+            </div>
+
+            {/* Mobile Toggle Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="lg:hidden p-2 sm:p-2.5 rounded-lg sm:rounded-xl text-[var(--color-text-600)] hover:bg-[var(--color-cream-200)] hover:text-[var(--color-brown-700)] transition-all duration-300 active:scale-95"
+              style={{ minHeight: "44px", minWidth: "44px" }}
+              aria-label="Toggle menu"
+              type="button"
+            >
+              {isMenuOpen ? (
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              ) : (
+                <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden" style={{ top: "56px" }}>
+          {/* Background Overlay */}
+          <div
+            className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+            onClick={() => setIsMenuOpen(false)}
+            role="button"
+            tabIndex={0}
+            aria-label="Close menu"
+          />
+
+          {/* Menu Content */}
+          <div className="relative h-full bg-white overflow-y-auto">
+            <div className="px-3 sm:px-4 py-4 sm:py-6 space-y-1">
+              {/* Main Links */}
+              {navLinks.map((link) => {
+                if (link.type === "scroll") {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
+                      className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer ${
+                        isActive(link.href)
+                          ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
+                          : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
+                      }`}
+                      style={{ minHeight: "44px" }}
+                    >
+                      <i
+                        className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
+                          isActive(link.href)
+                            ? "text-[var(--color-brown-700)]"
+                            : "text-[var(--color-teal-500)]"
+                        }`}
+                      />
+                      {link.label}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${
+                      isActive(link.href)
+                        ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
+                        : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
+                    }`}
+                    style={{ minHeight: "44px" }}
+                  >
+                    <i
+                      className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
+                        isActive(link.href)
+                          ? "text-[var(--color-brown-700)]"
+                          : "text-[var(--color-teal-500)]"
+                      }`}
+                    />
+                    {link.label}
+                  </Link>
+                );
+              })}
+
+              {/* Jenjang Section */}
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[var(--color-cream-200)]">
+                <p className="px-4 sm:px-5 py-2 text-[10px] sm:text-xs font-semibold text-[var(--color-teal-600)] uppercase tracking-wider">
+                  Jenjang Pendidikan
+                </p>
+                {jenjangLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center gap-3 py-3 sm:py-3.5 px-5 sm:px-6 ml-3 sm:ml-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${
+                      isActive(link.href)
+                        ? "bg-[var(--color-teal-50)] text-[var(--color-teal-700)]"
+                        : "text-[var(--color-text-600)] active:bg-[var(--color-teal-50)]"
+                    }`}
+                    style={{ minHeight: "44px" }}
+                  >
+                    <i
+                      className={`fas ${link.icon} w-5 text-center text-sm sm:text-base text-[var(--color-teal-500)]`}
+                    />
+                    {link.label}
                   </Link>
                 ))}
               </div>
-            </div>
 
-            {/* Rest of nav links - UPDATED */}
-            {navLinks.slice(2).map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`relative font-medium text-sm xl:text-base transition-colors duration-300 pb-1 ${
-                  isActive(link.href) ? "font-semibold" : "text-gray-700"
-                }`}
-                style={isActive(link.href) ? { color: "#6B4423" } : {}}
-                onMouseEnter={(e) =>
-                  !isActive(link.href) &&
-                  (e.currentTarget.style.color = "#8B5A3C")
-                }
-                onMouseLeave={(e) =>
-                  !isActive(link.href) &&
-                  (e.currentTarget.style.color = "#374151")
-                }
-              >
-                <i className={`fas ${link.icon} mr-1.5 text-xs`}></i>
-                {link.label}
-                {isActive(link.href) && (
-                  <span
-                    className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                    style={{ backgroundColor: "#6B4423" }}
-                  ></span>
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop CTA Buttons - UPDATED: Rich gold gradient */}
-          <div className="hidden lg:flex items-center gap-3">
-            {/* PPDB Button - RICH GOLD */}
-            <Button
-              variant="accent"
-              size="sm"
-              className="shadow-lg hover:shadow-xl animate-pulse text-white font-semibold"
-              style={{
-                background: "linear-gradient(to right, #DAA520, #B8860B)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background =
-                  "linear-gradient(to right, #B8860B, #9A7309)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background =
-                  "linear-gradient(to right, #DAA520, #B8860B)";
-              }}
-              asChild
-            >
-              <Link href="/daftar">
-                <i className="fas fa-file-signature mr-2"></i>
-                PPDB 2026
-              </Link>
-            </Button>
-
-            {/* Login Button - BROWN OUTLINE */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="font-semibold"
-              style={{
-                borderColor: "#6B4423",
-                color: "#6B4423",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#FDF6EC";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "transparent";
-              }}
-              asChild
-            >
-              <Link href="/login">
-                <i className="fas fa-lock mr-2"></i>
-                Login
-              </Link>
-            </Button>
-
-            {/* Quick Contact - UPDATED */}
-            <a
-              href="tel:+6285722253236"
-              className="hidden xl:flex items-center gap-2 text-gray-700 transition-colors text-sm group"
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#8B5A3C";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#374151";
-              }}
-            >
-              <div
-                className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-                style={{ backgroundColor: "#F5E6D3" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#EDD5B8";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#F5E6D3";
-                }}
-              >
-                <Phone className="w-4 h-4" style={{ color: "#6B4423" }} />
-              </div>
-              <div>
-                <p className="font-semibold text-xs">+62 857-2225-3236</p>
-                <p className="text-xs text-gray-500">Hubungi Kami</p>
-              </div>
-            </a>
-          </div>
-
-          {/* Mobile Menu Button - UPDATED */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-gray-700 transition-colors"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = "#8B5A3C";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = "#374151";
-            }}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu - UPDATED */}
-        <div
-          className={`lg:hidden bg-white border-t border-gray-200 transition-all duration-300 overflow-hidden ${
-            isMenuOpen ? "max-h-screen py-4" : "max-h-0"
-          }`}
-        >
-          <div className="space-y-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-3 py-3 px-4 rounded-lg transition-colors ${
-                  isActive(link.href)
-                    ? "font-semibold"
-                    : "text-gray-700 hover:bg-gray-50"
-                }`}
-                style={
-                  isActive(link.href)
-                    ? {
-                        backgroundColor: "#FDF6EC",
-                        color: "#6B4423",
-                      }
-                    : {}
-                }
-              >
-                <i className={`fas ${link.icon} text-gray-500 w-4`}></i>
-                {link.label}
-              </Link>
-            ))}
-
-            {/* Mobile Jenjang - UPDATED */}
-            <div
-              className="pl-4 ml-4 mt-2"
-              style={{ borderLeft: "2px solid #F5E6D3" }}
-            >
-              <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wider">
-                Jenjang Pendidikan
-              </p>
-              {jenjangLinks[0].items.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center gap-3 py-2 px-3 rounded-lg text-gray-700 text-sm transition-colors"
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#FDF6EC";
-                    e.currentTarget.style.color = "#6B4423";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#374151";
-                  }}
+              {/* Mobile Contact */}
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[var(--color-cream-200)]">
+                <a
+                  href="tel:+622667345601"
+                  className="flex items-center gap-3 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[var(--color-cream-200)] to-[var(--color-teal-50)] active:scale-[0.98] transition-all duration-200"
+                  style={{ minHeight: "44px" }}
                 >
-                  <i
-                    className={`fas ${link.icon} text-xs w-4`}
-                    style={{ color: "#8B5A3C" }}
-                  ></i>
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-
-            {/* Mobile Contact - UPDATED */}
-            <div className="pt-3 border-t border-gray-200 mt-3">
-              <div
-                className="flex items-center gap-3 p-3 rounded-lg"
-                style={{ backgroundColor: "#FDF6EC" }}
-              >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "#F5E6D3" }}
-                >
-                  <Phone className="w-5 h-5" style={{ color: "#6B4423" }} />
-                </div>
-                <div>
-                  <a
-                    href="tel:+6285722253236"
-                    className="font-semibold text-sm"
-                    style={{ color: "#6B4423" }}
+                  <div
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md relative"
+                    style={{ backgroundColor: "#F0FDF4" }}
                   >
-                    +62 857-2225-3236
-                  </a>
-                  <p className="text-xs text-gray-600">WhatsApp & Telepon</p>
+                    <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-[var(--color-teal-500)]" />
+                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm sm:text-base font-bold text-[var(--color-text-900)] leading-tight">
+                      (0266) 734-5601
+                    </p>
+                    <p className="text-[10px] sm:text-xs text-[var(--color-text-500)] flex items-center gap-1 mt-0.5">
+                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse flex-shrink-0" />
+                      <span className="truncate">
+                        Konsultasi Gratis - Online Sekarang
+                      </span>
+                    </p>
+                  </div>
+                </a>
+              </div>
+
+              {/* Urgency Banner */}
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[var(--color-cream-200)]">
+                <div className="flex items-start gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-[var(--color-gold-50)] to-[var(--color-gold-100)] border border-[var(--color-gold-200)]">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-600)] flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-bold text-[var(--color-text-900)] mb-1 leading-tight">
+                      Pendaftaran Ditutup 31 Maret 2026
+                    </p>
+                    <p className="text-[10px] sm:text-xs text-[var(--color-text-600)] leading-snug">
+                      Hanya tersisa{" "}
+                      <span className="font-bold text-[var(--color-gold-700)]">
+                        50 kuota
+                      </span>{" "}
+                      untuk tahun ajaran ini
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Mobile Auth Buttons - UPDATED */}
-            <div className="pt-3 border-t border-gray-200 mt-3 space-y-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full font-semibold"
-                style={{
-                  borderColor: "#6B4423",
-                  color: "#6B4423",
-                }}
-                asChild
-              >
-                <Link href="/login">
-                  <i className="fas fa-lock mr-2"></i>
-                  Login Santri
+              {/* Mobile Auth Buttons */}
+              <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-[var(--color-cream-200)] space-y-2 sm:space-y-3">
+                <Link
+                  href="/ppdb"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-sm sm:text-base font-bold text-white bg-gradient-gold shadow-lg active:scale-[0.98] transition-all duration-200"
+                  style={{ minHeight: "44px" }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>Pelajari PPDB 2026</span>
                 </Link>
-              </Button>
-              <Button
-                variant="accent"
-                size="sm"
-                className="w-full text-white font-semibold"
-                style={{
-                  background: "linear-gradient(to right, #DAA520, #B8860B)",
-                }}
-                asChild
-              >
-                <Link href="/daftar">
-                  <i className="fas fa-file-signature mr-2"></i>
-                  PPDB 2026/2027
+
+                <Link
+                  href="/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-sm sm:text-base font-semibold border-2 shadow-sm active:scale-[0.98] transition-all duration-200"
+                  style={{
+                    minHeight: "44px",
+                    borderColor: "var(--color-brown-700)",
+                    color: "var(--color-brown-700)",
+                  }}
+                >
+                  <i className="fas fa-lock text-sm" />
+                  <span>Login Santri</span>
                 </Link>
-              </Button>
+              </div>
+
+              {/* Safe Area Spacer */}
+              <div style={{ height: "32px" }} />
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      )}
+    </>
   );
 }

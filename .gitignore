@@ -30,12 +30,125 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ============================================
+# 🔐 ENVIRONMENT VARIABLES - VERY IMPORTANT!
+# ============================================
+# NEVER commit these files to Git!
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# vercel
+# Allow example env file for documentation
+!.env.example
+
+# ============================================
+# 🚀 VERCEL
+# ============================================
 .vercel
 
-# typescript
+# ============================================
+# 📘 TYPESCRIPT
+# ============================================
 *.tsbuildinfo
 next-env.d.ts
+
+# ============================================
+# 💾 DATABASE & SUPABASE
+# ============================================
+# Supabase local development
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# Database dumps (if any)
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# 📁 IDE / EDITOR
+# ============================================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains (WebStorm, IntelliJ, etc)
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ============================================
+# 🖼️ UPLOADS & STORAGE (untuk development)
+# ============================================
+# Jika ada folder uploads lokal
+/public/uploads/
+/uploads/
+/storage/
+
+# ============================================
+# 📦 PACKAGE MANAGER LOCK FILES
+# ============================================
+# Uncomment sesuai package manager yang dipakai
+# Kalau pakai npm, keep package-lock.json
+# Kalau pakai yarn, keep yarn.lock
+# Kalau pakai pnpm, keep pnpm-lock.yaml
+
+# package-lock.json  # Uncomment jika tidak pakai npm
+# yarn.lock          # Uncomment jika tidak pakai yarn
+# pnpm-lock.yaml     # Uncomment jika tidak pakai pnpm
+
+# ============================================
+# 🧪 TESTING & COVERAGE
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================
+# 📝 LOGS & TEMP FILES
+# ============================================
+logs/
+*.log
+.cache/
+.tmp/
+temp/
+
+# ============================================
+# 🔧 OS SPECIFIC
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ============================================
+# 📧 EMAIL TEMPLATES (jika ada testing)
+# ============================================
+# Uncomment jika tidak ingin commit email testing
+# /emails/test-*

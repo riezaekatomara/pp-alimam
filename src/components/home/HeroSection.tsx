@@ -1,303 +1,382 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import {
+  Phone,
+  Calendar,
+  Award,
+  Users,
+  GraduationCap,
+  Target,
+  BookOpen,
+  School,
+  Trophy,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
-import { Phone, Calendar, Award, Users, GraduationCap } from "lucide-react";
+
+const STATS_DATA = [
+  {
+    icon: Calendar,
+    value: "29+",
+    label: "Tahun Dipercaya",
+    subtitle: "Ribuan Alumni Sukses",
+    color: "#6B4423",
+    bgColor: "#F5E6D3",
+  },
+  {
+    icon: Users,
+    value: "500+",
+    label: "Santri Berprestasi",
+    subtitle: "Hafidz & Akademis",
+    color: "#0F766E",
+    bgColor: "#CCFBF1",
+  },
+  {
+    icon: GraduationCap,
+    value: "50+",
+    label: "Guru Berpengalaman",
+    subtitle: "Lulusan Timur Tengah",
+    color: "#DAA520",
+    bgColor: "#FFF9E6",
+  },
+  {
+    icon: Award,
+    value: "A",
+    label: "Akreditasi A",
+    subtitle: "Standar Nasional",
+    color: "#6B4423",
+    bgColor: "#F5E6D3",
+  },
+] as const;
+
+const CONTACT_INFO = {
+  phone: {
+    display: "(0266) 734-5601",
+    href: "tel:+622667345601",
+  },
+} as const;
+
+function AccreditationBadge() {
+  return (
+    <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-semibold shadow-md bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-teal-600)] text-white">
+      <School className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+      <span className="whitespace-nowrap">
+        Terakreditasi A - Terpercaya Sejak 1995
+      </span>
+    </div>
+  );
+}
+
+function HeroTitle() {
+  return (
+    <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-[40px] lg:text-[44px] lg:text-start xl:text-5xl font-bold leading-tight lg:leading-15 text-left sm:text-justify">
+      <span className="block text-[var(--color-brown-800)] mb-1">
+        Mencetak Generasi
+      </span>
+      <span className="block mb-1">
+        <span className="text-gradient-brown">Muslim yang Rabbani,</span>
+      </span>
+      <span className="block">
+        <span className="text-gradient-teal text-[22px] lg:text-[44px]">
+          Berilmu, dan{" "}
+        </span>
+        <span className="text-gradient-gold text-[22px] lg:text-[44px]">
+          Bermanfaat
+        </span>
+      </span>
+    </h1>
+  );
+}
+
+function HeroTagline() {
+  return (
+    <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-[var(--color-text-700)] leading-relaxed font-medium max-w-2xl text-justify">
+      <span className="text-[var(--color-brown-800)]">
+        Khawatir Akhlak Anak di Zaman Sekarang?{" "}
+      </span>
+      <span className="text-[var(--color-teal-700)]">Percayakan</span>
+      <span className="text-[var(--color-brown-800)]">
+        {" "}
+        pada Pesantren yang{" "}
+      </span>
+      <span className="text-[var(--color-gold-700)] font-bold">
+        Sudah 29 Tahun
+      </span>
+      <span className="text-[var(--color-brown-800)]"> Membentuk </span>
+      <span className="text-[var(--color-brown-700)] font-bold">
+        Ribuan Generasi Qur'ani!
+      </span>
+    </p>
+  );
+}
+
+function HeroDescription() {
+  return (
+    <div className="space-y-2 sm:space-y-2.5 max-w-xl text-justify">
+      <p className="text-[var(--color-text-700)] text-sm sm:text-base lg:text-lg leading-relaxed">
+        Al-Imam Al-Islami{" "}
+        <span className="text-[var(--color-brown-700)] font-bold">
+          bukan sekadar pesantren biasa
+        </span>
+        . Kami memahami kekhawatiran Bapak/Ibu di era digital ini.
+      </p>
+
+      {/* 7 BENEFITS */}
+      <div className="space-y-1.5 sm:space-y-2">
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <Target className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-teal-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Hafalan Al-Qur'an 30 Juz dengan metode terbukti
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-brown-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Pendidikan formal setara SMP/SMA terakreditasi
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <School className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Pembinaan akhlak 24 jam oleh ustadz berpengalaman
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-teal-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Alumni diterima di universitas dalam & luar negeri
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-brown-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Lingkungan Islami 100% dengan pengawasan ketat
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <Award className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Kurikulum terintegrasi: Agama + Akademik + Karakter
+          </span>
+        </div>
+        <div className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm lg:text-base text-[var(--color-text-600)]">
+          <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-teal-600)] flex-shrink-0 mt-0.5" />
+          <span className="leading-snug">
+            Laporan perkembangan santri rutin setiap bulan ke orang tua
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface StatCardProps {
+  icon: typeof Calendar;
+  value: string;
+  label: string;
+  subtitle: string;
+  color: string;
+  bgColor: string;
+}
+
+function StatCard({
+  icon: Icon,
+  value,
+  label,
+  subtitle,
+  color,
+  bgColor,
+}: StatCardProps) {
+  return (
+    <div className="group bg-white rounded-lg p-2.5 sm:p-3 shadow-md border border-[var(--color-cream-200)] hover:shadow-lg hover:border-[var(--color-teal-200)] transition-all duration-300 hover:-translate-y-1 active:scale-95">
+      <div className="flex flex-col items-center text-center space-y-0.5 sm:space-y-1">
+        <div
+          className="rounded-lg p-1 sm:p-1.5 transition-all duration-300 group-hover:shadow-md"
+          style={{ backgroundColor: bgColor }}
+        >
+          <Icon
+            className="w-3.5 h-3.5 sm:w-4 sm:h-4"
+            style={{ color }}
+            aria-hidden="true"
+          />
+        </div>
+        <p className="text-lg sm:text-xl font-bold text-[var(--color-text-900)] leading-tight">
+          {value}
+        </p>
+        <p className="text-[9px] sm:text-[10px] font-semibold text-[var(--color-text-700)] leading-tight">
+          {label}
+        </p>
+        <p className="text-[8px] sm:text-[9px] text-[var(--color-text-500)] leading-tight">
+          {subtitle}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function StatsGrid() {
+  return (
+    <div className="lg:relative lg:bottom-11 space-y-2.5 sm:space-y-3 pt-3 sm:pt-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
+        {STATS_DATA.map((stat, idx) => (
+          <StatCard key={idx} {...stat} />
+        ))}
+      </div>
+
+      <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-[var(--color-text-500)] bg-[var(--color-cream-100)] rounded-lg p-2 sm:p-2.5">
+        <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--color-teal-600)] flex-shrink-0" />
+        <span className="font-medium text-center leading-snug">
+          Dipercaya ribuan orang tua se-Indonesia
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function FloatingContactCard() {
+  return (
+    <div className="lg:relative lg:bottom-9 bg-white/95 backdrop-blur-md rounded-xl shadow-2xl p-3.5 sm:p-4 hover:shadow-[0_20px_50px_-12px_rgba(15,118,110,0.4)] transition-all duration-300 border-2 border-[var(--color-cream-200)] hover:border-[var(--color-teal-400)] active:scale-95">
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 shadow-md bg-gradient-to-br from-[var(--color-brown-700)] to-[var(--color-gold-600)]">
+          <Phone
+            className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+            aria-hidden="true"
+          />
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-[10px] sm:text-xs text-[var(--color-text-500)] font-medium mb-0.5 sm:mb-1">
+            Konsultasi Langsung
+          </p>
+
+          <a
+            href={CONTACT_INFO.phone.href}
+            className="text-sm sm:text-base font-bold text-[var(--color-text-900)] hover:text-[var(--color-brown-700)] transition-colors duration-300 block mb-1 sm:mb-1.5"
+          >
+            {CONTACT_INFO.phone.display}
+          </a>
+
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0" />
+            <span className="text-[9px] sm:text-[10px] text-green-600 font-medium whitespace-nowrap">
+              Online Sekarang
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeroImage() {
+  return (
+    <div className="relative rounded-2xl overflow-hidden shadow-2xl hover:shadow-[0_35px_60px_-15px_rgba(15,118,110,0.3)] transition-all duration-500 group">
+      <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3]">
+        <Image
+          src="/images/hero.jpg"
+          alt="Santri Pondok Pesantren Al-Imam Al-Islami sedang belajar Al-Qur'an"
+          fill
+          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          priority
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 50vw"
+        />
+
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-brown-900)]/10"
+          aria-hidden="true"
+        />
+      </div>
+    </div>
+  );
+}
+
+function DecorativeElements() {
+  return (
+    <>
+      <div
+        className="absolute top-20 right-0 w-48 h-48 sm:w-64 sm:h-64 bg-[var(--color-teal-200)] rounded-full blur-2xl sm:blur-3xl opacity-20 animate-float"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-10 left-0 w-48 h-48 sm:w-64 sm:h-64 bg-[var(--color-gold-200)] rounded-full blur-2xl sm:blur-3xl opacity-20 animate-float delay-500"
+        aria-hidden="true"
+      />
+    </>
+  );
+}
+
+// ✅ NEW: Combined CTA Section with proper layout
+function CTASection() {
+  return (
+    <div className="space-y-4">
+      {/* ✅ Desktop: Side by side | Mobile: Stacked */}
+      <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-4">
+        {/* Left: CTA Button + Date Info */}
+        <div className="lg:flex-1 space-y-3">
+          <Button
+            size="lg"
+            className="lg:relative lg:bottom-2 group shadow-lg hover:shadow-xl text-white font-semibold transition-all duration-300 hover:-translate-y-1 active:scale-95 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] w-full"
+            asChild
+          >
+            <Link
+              href="/ppdb"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 min-h-[44px]"
+            >
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-sm sm:text-base">
+                Pelajari PPDB 2026/2027
+              </span>
+            </Link>
+          </Button>
+
+          {/* Date info below button */}
+          <p className="lg:relative lg:left-3 lg:bottom-3 text-[10px] sm:text-xs text-[var(--color-text-500)] flex items-center gap-1.5 justify-center lg:justify-start">
+            <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[var(--color-gold-600)] flex-shrink-0" />
+            <span className="font-medium text-[var(--color-gold-700)]">
+              Pendaftaran dibuka hingga 31 Maret 2026
+            </span>
+          </p>
+        </div>
+
+        {/* Right: Contact Card (Desktop only, hidden on mobile) */}
+        <div className="hidden lg:block lg:w-[280px] flex-shrink-0">
+          <FloatingContactCard />
+        </div>
+      </div>
+
+      {/* ✅ Mobile: Contact Card shown separately below */}
+      <div className="lg:hidden">
+        <FloatingContactCard />
+      </div>
+    </div>
+  );
+}
 
 export default function HeroSection() {
-  const stats = [
-    {
-      icon: Calendar,
-      value: "29+",
-      label: "Tahun Berdiri",
-      subtitle: "Sejak 1995",
-      color: "#6B4423",
-      bgColor: "#F5E6D3",
-    },
-    {
-      icon: Users,
-      value: "500+",
-      label: "Santri Aktif",
-      subtitle: "Putra & Putri",
-      color: "#8B5A3C",
-      bgColor: "#FDF6EC",
-    },
-    {
-      icon: GraduationCap,
-      value: "50+",
-      label: "Tenaga Pengajar",
-      subtitle: "Guru & Ustadz",
-      color: "#DAA520",
-      bgColor: "#FFF9E6",
-    },
-    {
-      icon: Award,
-      value: "A",
-      label: "Akreditasi",
-      subtitle: "BAN S/M",
-      color: "#6B4423",
-      bgColor: "#F5E6D3",
-    },
-  ];
-
   return (
     <section
-      className="relative overflow-hidden h-screen flex items-center"
-      style={{
-        background:
-          "linear-gradient(to bottom right, #FDF6EC 0%, #FFFBF0 50%, #ffffff 100%)",
-      }}
+      className="relative overflow-hidden min-h-screen flex items-center bg-gradient-to-br from-[var(--color-cream-50)] via-white to-[var(--color-brown-50)] pt-6 pb-8 xs:pt-8 xs:pb-10 sm:pt-8 sm:pb-12 md:pt-8 md:pb-16 lg:pt-8 lg:pb-10"
+      aria-label="Hero Section - Pondok Pesantren Al-Imam Al-Islami"
     >
-      {/* Decorative Background Elements */}
-      <div
-        className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 rounded-full blur-3xl -z-0 animate-float"
-        style={{
-          background:
-            "linear-gradient(to bottom right, rgba(213, 180, 140, 0.15), rgba(245, 230, 211, 0.15))",
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-64 md:w-96 h-64 md:h-96 rounded-full blur-3xl -z-0 animate-float delay-500"
-        style={{
-          background:
-            "linear-gradient(to top right, rgba(218, 165, 32, 0.08), rgba(213, 180, 140, 0.08))",
-        }}
-      />
+      <DecorativeElements />
 
-      <Container
-        size="lg"
-        className="relative z-10 pt-32 md:pt-36 lg:pt-32 pb-6"
-      >
-        <div className="flex flex-col lg:flex-row items-center lg:items-center gap-4 lg:gap-8">
-          {/* Content Left */}
-          <div className="lg:w-1/2 animate-fadeInUp">
-            {/* Badge - UPDATED: Balanced size */}
-            <div
-              className="inline-flex items-center gap-2 text-white px-4 py-1.5 rounded-full text-xs md:text-sm font-semibold mb-2 shadow-lg hover:shadow-xl transition-shadow"
-              style={{
-                background: "linear-gradient(to right, #6B4423, #4A2C19)",
-              }}
-            >
-              <i className="fas fa-mosque text-white text-xs md:text-sm" />
-              <span>Pondok Pesantren Terakreditasi A</span>
-            </div>
-
-            {/* Title - UPDATED: Bigger but balanced */}
-            <h1 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight mb-2">
-              <span style={{ color: "#6B4423" }}>
-                Mencetak Generasi Muslim{" "}
-              </span>
-              <span style={{ color: "#6B4423" }}>yang </span>
-              <span
-                className="font-bold"
-                style={{
-                  background: "linear-gradient(135deg, #6B4423, #8B5A3C)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Rabbani
-              </span>
-              <span style={{ color: "#6B4423" }}>, </span>
-              <span
-                className="font-bold"
-                style={{
-                  background: "linear-gradient(135deg, #6B4423, #8B5A3C)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Berilmu
-              </span>
-              <span style={{ color: "#6B4423" }}>, </span>
-              <span style={{ color: "#6B4423" }}>dan </span>
-              <span
-                className="font-bold"
-                style={{
-                  background: "linear-gradient(135deg, #DAA520, #B8860B)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Bermanfaat
-              </span>
-            </h1>
-
-            {/* Description - UPDATED: Better readability */}
-            <p className="text-gray-700 text-xs md:text-sm mb-3 leading-relaxed max-w-2xl text-justify">
-              Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman
-              salafus shalih. Mengintegrasikan ilmu agama dengan ilmu umum untuk
-              membentuk pribadi muslim yang paripurna.
-            </p>
-
-            {/* CTA Buttons - UPDATED: Better spacing */}
-            <div className="flex flex-col sm:flex-row gap-2 mb-3 animate-fadeInUp delay-200">
-              <Button
-                size="md"
-                className="shadow-xl hover:shadow-2xl text-xs md:text-sm text-white font-semibold"
-                style={{
-                  background: "linear-gradient(to right, #6B4423, #4A2C19)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(to right, #4A2C19, #2D1A0F)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background =
-                    "linear-gradient(to right, #6B4423, #4A2C19)";
-                }}
-                asChild
-              >
-                <Link href="/daftar">
-                  <i className="fas fa-file-signature mr-2" />
-                  Daftar Sekarang
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="md"
-                className="shadow-lg hover:shadow-xl text-xs md:text-sm font-semibold"
-                style={{
-                  borderColor: "#6B4423",
-                  color: "#6B4423",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#FDF6EC";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                }}
-                asChild
-              >
-                <Link href="/login">
-                  <i className="fas fa-lock mr-2" />
-                  Login Santri
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                size="md"
-                className="shadow-lg hover:shadow-xl text-xs md:text-sm font-semibold"
-                style={{
-                  borderColor: "#DAA520",
-                  color: "#B8860B",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#FFF9E6";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "transparent";
-                }}
-                asChild
-              >
-                <Link href="#kontak">
-                  <i className="fas fa-calendar-alt mr-2" />
-                  Jadwal Kunjungan
-                </Link>
-              </Button>
-            </div>
-
-            {/* Stats Cards - UPDATED: Better size */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2.5 max-w-2xl animate-fadeInUp delay-300">
-              {stats.map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white rounded-xl p-2 md:p-3 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <div
-                      className="rounded-full p-1.5 md:p-2 mb-1 group-hover:scale-110 transition-transform"
-                      style={{ backgroundColor: stat.bgColor }}
-                    >
-                      <stat.icon
-                        className="w-4 h-4 md:w-5 md:h-5"
-                        style={{ color: stat.color }}
-                      />
-                    </div>
-                    <p className="text-xl md:text-2xl font-bold text-gray-900">
-                      {stat.value}
-                    </p>
-                    <p className="text-xs md:text-sm font-medium text-gray-700">
-                      {stat.label}
-                    </p>
-                    <p className="text-[10px] md:text-xs text-gray-500">
-                      {stat.subtitle}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <Container className="relative z-10">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-start">
+          {/* LEFT COLUMN - Text Content */}
+          <div className="space-y-3 sm:space-y-4 lg:space-y-5 animate-fadeInUp">
+            <AccreditationBadge />
+            <HeroTitle />
+            <HeroTagline />
+            <HeroDescription />
           </div>
 
-          {/* Image Right - UPDATED: Better proportion */}
-          <div className="lg:w-1/2 relative animate-fadeInUp delay-200">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-500">
-              <img
-                src="/images/hero.png"
-                alt="Santri Pondok Pesantren Al-Imam Al-Islami"
-                className="w-full h-[260px] md:h-[340px] lg:h-[400px] object-cover"
-                loading="eager"
-              />
-              {/* Gradient Overlay */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(to top, rgba(74, 44, 25, 0.35), transparent)",
-                }}
-              />
-            </div>
-
-            {/* Floating Contact Badge - UPDATED: Balanced size */}
-            <div
-              className="absolute -bottom-4 -right-3 md:-bottom-6 md:-right-4 bg-white rounded-xl shadow-2xl px-4 py-3 md:px-5 md:py-4 hover:scale-105 transition-transform duration-300 animate-pulse"
-              style={{ borderWidth: "1px", borderColor: "#F5E6D3" }}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background:
-                      "linear-gradient(to bottom right, #6B4423, #DAA520)",
-                  }}
-                >
-                  <Phone className="w-5 h-5 md:w-6 md:h-6 text-white" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs text-gray-500 font-medium">
-                    Hubungi Kami
-                  </p>
-                  <a
-                    href="tel:02667345601"
-                    className="text-sm md:text-base font-bold text-gray-900 transition-colors"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#6B4423";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#111827";
-                    }}
-                  >
-                    (0266) 734-5601
-                  </a>
-                  <a
-                    href="mailto:info@ponpesalimam.ac.id"
-                    className="text-xs text-gray-500 truncate max-w-[160px] md:max-w-[180px] block transition-colors"
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = "#6B4423";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = "#6b7280";
-                    }}
-                  >
-                    info@ponpesalimam.ac.id
-                  </a>
-                </div>
-              </div>
-            </div>
+          {/* RIGHT COLUMN - Image + CTA + Stats */}
+          <div className="space-y-4 sm:space-y-5 lg:space-y-6 animate-fadeInRight">
+            <HeroImage />
+            <CTASection />
+            <StatsGrid />
           </div>
         </div>
       </Container>

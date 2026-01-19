@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import {
-  Images,
   BookOpen,
   BookMarked,
   Target,
@@ -10,64 +9,62 @@ import {
   Sun,
   Book,
   Moon,
-  Home,
   BookText,
-  Newspaper,
-  MapPin,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
 import { Section } from "@/components/layout/Section";
 
 export default function GallerySection() {
-  const galleryItems = [
+  const previewItems = [
     {
       image: "/images/kitab.JPG",
       title: "Pembelajaran Kitab",
       description:
-        "Kegiatan pembelajaran kitab kuning dengan metode bandongan dan sorogan",
+        "Santri menguasai kitab kuning dengan metode bandongan & sorogan langsung dari ustadz expert.",
       icon: BookOpen,
-      iconColor: "text-green-600",
-      gradient: "from-green-900/90 via-emerald-900/70 to-emerald-900/50",
-      delay: "100",
-      category: "Pembelajaran",
-      bgColor: "bg-green-600",
+      gradient:
+        "from-[var(--color-brown-700)]/90 via-[var(--color-brown-600)]/70 to-[var(--color-gold-500)]/50",
+      category: "Kegiatan",
+      categoryLink: "/kegiatan",
+      bgColor: "bg-[var(--color-brown-600)]",
     },
     {
       image: "/images/tahfiz.JPG",
       title: "Program Tahfidz",
       description:
-        "Sesi setoran hafalan Al-Qur'an dengan bimbingan ustadz tahfidz",
+        "Target 30 juz dalam 4 tahun dengan sistem setoran harian dan muroja'ah intensif.",
       icon: BookMarked,
-      iconColor: "text-emerald-600",
-      gradient: "from-emerald-900/90 via-teal-900/70 to-teal-900/50",
-      delay: "200",
-      category: "Tahfidz",
-      bgColor: "bg-emerald-600",
+      gradient:
+        "from-[var(--color-gold-500)]/90 via-[var(--color-gold-600)]/70 to-[var(--color-teal-500)]/50",
+      category: "Kegiatan",
+      categoryLink: "/kegiatan",
+      bgColor: "bg-[var(--color-gold-500)]",
     },
     {
       image: "/images/ekstra.jpg",
       title: "Ekstrakurikuler",
       description:
-        "Kegiatan pramuka, pencak silat, dan seni Islami untuk pengembangan bakat",
+        "Pramuka, pencak silat, hingga seni Islami untuk mengembangkan bakat dan kepercayaan diri.",
       icon: Target,
-      iconColor: "text-amber-600",
-      gradient: "from-amber-900/90 via-orange-900/70 to-orange-900/50",
-      delay: "300",
-      category: "Ekstrakurikuler",
-      bgColor: "bg-amber-600",
+      gradient:
+        "from-[var(--color-teal-500)]/90 via-[var(--color-teal-600)]/70 to-[var(--color-brown-700)]/50",
+      category: "Kegiatan",
+      categoryLink: "/kegiatan",
+      bgColor: "bg-[var(--color-teal-500)]",
     },
     {
       image: "/images/fasilitas.jpeg",
       title: "Fasilitas Pesantren",
       description:
-        "Masjid, asrama, perpustakaan, dan laboratorium yang nyaman untuk santri",
+        "Masjid megah, asrama ber-AC, perpustakaan 5000+ buku, dan lab komputer untuk kenyamanan santri.",
       icon: School,
-      iconColor: "text-blue-600",
-      gradient: "from-blue-900/90 via-cyan-900/70 to-cyan-900/50",
-      delay: "400",
+      gradient:
+        "from-[var(--color-brown-700)]/90 via-[var(--color-gold-500)]/70 to-[var(--color-cream-200)]/50",
       category: "Fasilitas",
-      bgColor: "bg-blue-600",
+      categoryLink: "/fasilitas",
+      bgColor: "bg-[var(--color-brown-600)]",
     },
   ];
 
@@ -76,260 +73,198 @@ export default function GallerySection() {
       icon: Sun,
       time: "Pagi:",
       activity: "Tahfidz Qur'an & Muroja'ah",
-      bgColor: "bg-green-100",
-      iconColor: "text-green-600",
+      bgColor: "bg-[var(--color-gold-50)]",
+      iconColor: "text-[var(--color-gold-500)]",
     },
     {
       icon: Book,
       time: "Siang:",
       activity: "Pembelajaran Formal & Diniyyah",
-      bgColor: "bg-emerald-100",
-      iconColor: "text-emerald-600",
+      bgColor: "bg-[var(--color-brown-50)]",
+      iconColor: "text-[var(--color-brown-600)]",
     },
     {
       icon: Target,
       time: "Sore:",
       activity: "Ekstrakurikuler & Pengembangan Bakat",
-      bgColor: "bg-amber-100",
-      iconColor: "text-amber-600",
+      bgColor: "bg-[var(--color-teal-50)]",
+      iconColor: "text-[var(--color-teal-500)]",
     },
     {
       icon: Moon,
       time: "Malam:",
       activity: "Kajian Islam & Muhadharah",
-      bgColor: "bg-blue-100",
-      iconColor: "text-blue-600",
+      bgColor: "bg-[var(--color-cream-100)]",
+      iconColor: "text-[var(--color-brown-600)]",
     },
   ];
 
   return (
     <Section
-      id="gallery-section"
-      className="bg-white relative overflow-hidden py-16 md:py-20"
+      id="gallery-preview"
+      className="bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-gold-50)] relative overflow-hidden py-12 sm:py-16 md:py-20 animate-fadeInUp"
     >
-      {/* Decorative Background */}
-      <div className="absolute top-10 right-0 w-64 h-64 bg-gradient-to-bl from-green-100/30 to-emerald-100/30 rounded-full blur-2xl" />
-      <div className="absolute bottom-10 left-0 w-64 h-64 bg-gradient-to-tr from-amber-100/20 to-green-100/20 rounded-full blur-2xl" />
+      {/* ✅ FIXED: Decorative blobs - Hidden on mobile, visible on desktop */}
+      <div className="hidden md:block absolute top-20 right-10 w-56 h-56 bg-gradient-to-bl from-[var(--color-brown-100)]/40 to-[var(--color-gold-100)]/40 rounded-full blur-3xl animate-float" />
+      <div className="hidden md:block absolute bottom-20 left-10 w-48 h-48 bg-gradient-to-tr from-[var(--color-teal-100)]/30 to-[var(--color-gold-50)]/30 rounded-full blur-3xl animate-float delay-700" />
 
       <Container size="lg" className="relative z-10">
-        {/* Badge */}
-        <div className="text-center mb-4 animate-fadeIn">
-          <span className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white px-5 py-1.5 rounded-full text-xs font-semibold tracking-wider shadow-md border border-green-100">
-            <Images className="inline w-3 h-3 mr-1 -mt-0.5" />
-            GALERI AL-IMAM
+        {/* ✅ IMPROVED: Section Badge - Responsive padding and text */}
+        <div className="text-center mb-4 sm:mb-6 animate-fadeInDown px-4 sm:px-0">
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-teal-500)] text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg">
+            <BookText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <span className="whitespace-nowrap">
+              Lihat Sendiri Kehidupan Santri Kami
+            </span>
           </span>
         </div>
 
-        {/* Heading */}
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-3 animate-fadeInUp">
-          <span className="text-gray-900">Kegiatan & Fasilitas</span>
-          <span className="block text-green-600">
-            Pondok Pesantren Al-Imam Al-Islami
-          </span>
-        </h2>
+        {/* ✅ IMPROVED: Section Header - Responsive text sizes */}
+        <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fadeInUp delay-200 px-4 sm:px-0">
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 leading-tight">
+            <span className="text-[var(--color-brown-800)]">
+              Rutinitas Harian Santri{" "}
+            </span>
+            <span className="text-gradient-gold">Penuh Manfaat</span>
+          </h2>
+          <p className="text-sm sm:text-base md:text-lg text-[var(--color-text-700)] max-w-3xl mx-auto leading-relaxed">
+            <span className="font-bold text-[var(--color-gold-700)]">
+              Dari subuh hingga malam,
+            </span>{" "}
+            setiap jam diisi dengan kegiatan yang membentuk akhlak mulia dan
+            kecintaan pada ilmu
+          </p>
+        </div>
 
-        <p className="text-gray-600 text-center max-w-2xl mx-auto mb-10 text-sm md:text-base leading-relaxed animate-fadeInUp">
-          Dokumentasi kegiatan pembelajaran, fasilitas pendidikan, dan kehidupan
-          santri di lingkungan pesantren
-        </p>
-
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10">
-          {galleryItems.map((item, idx) => (
-            <div
+        {/* ✅ IMPROVED: Preview Cards - Better mobile layout (1 col on xs, 2 on sm) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8 px-4 sm:px-0">
+          {previewItems.map((item, idx) => (
+            <Link
               key={idx}
-              className={`group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border border-gray-100 animate-fadeInUp`}
-              style={{ animationDelay: `${item.delay}ms` }}
+              href={item.categoryLink}
+              className="group relative rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_25px_50px_-15px_rgba(107,68,35,0.3)] transition-all duration-700 hover:-translate-y-2 active:scale-98 cursor-pointer border-2 border-white/60"
             >
-              {/* Category Badge */}
-              <div className="absolute top-3 left-3 z-20">
-                <span className="px-3 py-1.5 bg-white/95 backdrop-blur-md text-xs font-semibold text-gray-800 rounded-full border border-white/50 shadow-lg">
-                  <item.icon
-                    className={`inline w-3 h-3 mr-1.5 -mt-0.5 ${item.iconColor}`}
-                  />
-                  {item.category}
+              {/* ✅ IMPROVED: Category Badge - Responsive sizing */}
+              <div className="absolute top-2 sm:top-3 left-2 sm:left-3 z-20">
+                <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md text-[10px] sm:text-xs font-bold text-[var(--color-brown-700)] rounded-lg sm:rounded-xl shadow-lg">
+                  <item.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <span>{item.category}</span>
                 </span>
               </div>
 
-              {/* Image Container */}
-              <div className="relative w-full pb-[75%] overflow-hidden">
+              {/* ✅ IMPROVED: Image - Better aspect ratio for mobile */}
+              <div className="relative w-full pb-[85%] sm:pb-[75%] overflow-hidden">
                 <div className="absolute inset-0">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://placehold.co/400x300/${
-                        item.category === "Ekstrakurikuler"
-                          ? "047857"
-                          : "065f46"
-                      }/ffffff?text=${encodeURIComponent(item.title)}`;
-                    }}
                   />
-                  {/* Dark Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent" />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 </div>
               </div>
 
-              {/* Hover Overlay Content */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-t ${item.gradient} to-transparent p-4 md:p-5 flex flex-col justify-end transition-all duration-300 opacity-0 group-hover:opacity-100`}
-              >
-                <div className="transform transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                  {/* Icon */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 bg-white/30 backdrop-blur-md rounded-xl flex items-center justify-center shadow-lg border border-white/20">
-                      <item.icon className="text-white w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-white text-lg font-bold drop-shadow-lg leading-tight">
-                        {item.title}
-                      </h3>
-                      <div className="w-16 h-1.5 bg-white/60 rounded-full mt-2" />
-                    </div>
+              {/* ✅ IMPROVED: Bottom Info - Responsive padding and text */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[var(--color-brown-900)]/90 via-[var(--color-brown-800)]/50 to-transparent p-3 sm:p-4 transition-all duration-700">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div
+                    className={`w-8 h-8 sm:w-10 sm:h-10 ${item.bgColor} rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg transition-transform duration-700 group-hover:scale-110 flex-shrink-0`}
+                  >
+                    <item.icon className="text-white w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
-
-                  {/* Description */}
-                  <p className="text-white/95 text-sm drop-shadow-lg leading-relaxed mt-2">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Default overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent p-4 md:p-5">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-md">
-                    <item.icon className="text-white w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-white text-base font-bold drop-shadow-lg leading-tight">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-white text-xs sm:text-sm font-bold drop-shadow-lg leading-tight mb-0.5">
                       {item.title}
                     </h3>
-                    <div className="w-10 h-1 bg-white/60 rounded-full mt-1.5" />
+                    {/* ✅ IMPROVED: Description - Better mobile visibility */}
+                    <p className="text-white/0 text-[10px] sm:text-xs leading-relaxed transition-all duration-700 group-hover:text-white/90 max-h-0 group-hover:max-h-24 overflow-hidden">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               </div>
-            </div>
+
+              {/* Shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/0 to-transparent group-hover:via-white/5 transition-all duration-700 -translate-x-full group-hover:translate-x-full" />
+            </Link>
           ))}
         </div>
 
-        {/* Activity Highlights */}
-        <div
-          className="mb-10 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 rounded-2xl p-6 md:p-8 animate-fadeInUp"
-          style={{ animationDelay: "500ms" }}
-        >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex-1">
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                <BookText className="inline w-6 h-6 text-green-600 mr-2 -mt-1" />
-                <span className="text-green-600">Kalender Kegiatan</span> Santri
-              </h3>
-              <p className="text-gray-700 mb-4 text-sm md:text-base">
-                Kegiatan harian, pekanan, dan tahunan yang terstruktur untuk
-                pembentukan karakter dan pengembangan potensi santri secara
-                optimal.
-              </p>
-              <ul className="space-y-3 text-gray-700 text-sm md:text-base">
-                {dailyActivities.map((activity, idx) => (
-                  <li key={idx} className="flex items-center gap-3">
-                    <div
-                      className={`w-8 h-8 ${activity.bgColor} rounded-lg flex items-center justify-center`}
-                    >
-                      <activity.icon
-                        className={`${activity.iconColor} w-4 h-4`}
-                      />
-                    </div>
-                    <div>
-                      <span className="font-semibold text-gray-800">
-                        {activity.time}
-                      </span>
-                      <span className="text-gray-600 ml-1">
-                        {activity.activity}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex-1 grid grid-cols-2 gap-4">
-              <div className="bg-white p-5 rounded-xl border border-green-100 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="text-4xl text-green-600 mb-3">
-                  <Home className="w-10 h-10 mx-auto" />
-                </div>
-                <p className="font-bold text-gray-800 text-lg mb-1">
-                  Sholat Berjama'ah
-                </p>
-                <p className="text-gray-600">5 Waktu di Masjid</p>
-                <div className="mt-3 pt-3 border-t border-green-100">
-                  <p className="text-xs text-gray-500">Fardhu & Sunnah</p>
-                </div>
-              </div>
-              <div className="bg-white p-5 rounded-xl border border-emerald-100 text-center shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="text-4xl text-emerald-600 mb-3">
-                  <BookText className="w-10 h-10 mx-auto" />
-                </div>
-                <p className="font-bold text-gray-800 text-lg mb-1">
-                  Kajian Mingguan
-                </p>
-                <p className="text-gray-600">Setiap Hari Jum'at</p>
-                <div className="mt-3 pt-3 border-t border-emerald-100">
-                  <p className="text-xs text-gray-500">Kitab & Tafsir</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* ✅ IMPROVED: CTA Buttons - Stack on mobile, better touch targets */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8 sm:mb-10 md:mb-12 px-4 sm:px-0">
+          <Button
+            size="lg"
+            className="w-full sm:w-auto shadow-lg hover:shadow-xl font-bold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-900)] text-white hover:from-[var(--color-brown-900)] hover:to-[var(--color-teal-600)] transition-all duration-300 active:scale-95 group min-h-[48px] sm:min-h-[44px] rounded-xl sm:rounded-2xl"
+            asChild
+          >
+            <Link
+              href="/kegiatan"
+              className="flex items-center justify-center gap-2"
+            >
+              <BookText className="w-4 h-4" />
+              <span>Lihat Semua Kegiatan</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto shadow-md hover:shadow-lg font-bold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 border-2 border-[var(--color-teal-500)] text-[var(--color-teal-600)] hover:bg-[var(--color-teal-50)] transition-all duration-300 active:scale-95 group min-h-[48px] sm:min-h-[44px] rounded-xl sm:rounded-2xl"
+            asChild
+          >
+            <Link
+              href="/fasilitas"
+              className="flex items-center justify-center gap-2"
+            >
+              <School className="w-4 h-4" />
+              <span>Lihat Semua Fasilitas</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
+          </Button>
         </div>
 
-        {/* CTA Buttons */}
-        <div
-          className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center animate-fadeInUp"
-          style={{ animationDelay: "600ms" }}
-        >
-          <Button
-            size="lg"
-            className="w-full sm:w-auto group shadow-lg hover:shadow-xl"
-            asChild
-          >
-            <Link href="/galeri">
-              <Images className="w-4 h-4" />
-              <span>Lihat Galeri Lengkap</span>
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                →
-              </span>
-            </Link>
-          </Button>
+        {/* ✅ IMPROVED: Activity Timeline - Fully responsive */}
+        <div className="bg-gradient-to-br from-[var(--color-cream-100)] to-[var(--color-gold-50)] border-2 border-[var(--color-brown-100)]/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl mx-4 sm:mx-0">
+          <div className="text-center mb-4 sm:mb-6">
+            <h3 className="text-xl xs:text-2xl sm:text-2xl lg:text-3xl font-black mb-2 flex flex-col xs:flex-row items-center justify-center gap-2 sm:gap-3">
+              <BookText className="w-5 h-5 sm:w-6 sm:h-6 text-[var(--color-gold-600)]" />
+              <span className="text-[var(--color-brown-900)]">24 Jam </span>
+              <span className="text-gradient-gold">Penuh Manfaat</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-[var(--color-text-700)] font-semibold leading-relaxed px-4 sm:px-0">
+              Jadwal terstruktur dari subuh hingga malam untuk{" "}
+              <span className="text-[var(--color-gold-700)]">
+                membentuk santri disiplin
+              </span>{" "}
+              dan berakhlak mulia
+            </p>
+          </div>
 
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto group border-green-600 text-green-600 hover:bg-green-50"
-            asChild
-          >
-            <Link href="/berita">
-              <Newspaper className="w-4 h-4" />
-              <span>Berita & Artikel</span>
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                →
-              </span>
-            </Link>
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full sm:w-auto group border-amber-500 text-amber-600 hover:bg-amber-50"
-            asChild
-          >
-            <Link href="/kontak">
-              <MapPin className="w-4 h-4" />
-              <span>Kunjungi Pesantren</span>
-              <span className="group-hover:translate-x-1 transition-transform duration-300">
-                →
-              </span>
-            </Link>
-          </Button>
+          {/* ✅ IMPROVED: Activity Cards - Better mobile grid (2 cols on mobile) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+            {dailyActivities.map((activity, idx) => (
+              <div
+                key={idx}
+                className="group flex flex-col items-center text-center p-3 sm:p-4 rounded-lg sm:rounded-xl bg-white/80 hover:bg-white hover:shadow-lg transition-all duration-300 active:scale-98"
+              >
+                <div
+                  className={`w-10 h-10 sm:w-12 sm:h-12 ${activity.bgColor} rounded-lg sm:rounded-xl flex items-center justify-center shadow-md mb-2 sm:mb-3 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <activity.icon
+                    className={`${activity.iconColor} w-5 h-5 sm:w-6 sm:h-6`}
+                  />
+                </div>
+                <span className="text-xs sm:text-sm font-black text-[var(--color-brown-700)] block mb-1">
+                  {activity.time}
+                </span>
+                <span className="text-[10px] sm:text-xs text-[var(--color-text-700)] font-semibold leading-snug">
+                  {activity.activity}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </Container>
     </Section>

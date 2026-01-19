@@ -1,20 +1,23 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES
-   Islamic Brown-Gold Theme (Based on Official Brochure)
+   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES v2.2
+   Enhanced Islamic Brown-Gold-Teal-Cream Theme (2026 Premium)
+   Tailwind CSS v4 Optimized - FULLY RESPONSIVE
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
+/* Tailwind CSS v4 Core */
 @import "tailwindcss";
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   1. CUSTOM THEME CONFIGURATION (@theme)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @theme {
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     TYPOGRAPHY - AL-IMAM ISLAMIC THEME
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui,
-    sans-serif;
+  /* Typography - Islamic Scholarly Fonts */
+  --font-sans:
+    "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Poppins", sans-serif;
   --font-arabic: "Amiri", "Traditional Arabic", "Noto Naskh Arabic", serif;
 
-  /* Font Sizes */
+  /* Font Sizes & Line Heights */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -25,108 +28,77 @@
   --font-size-4xl: 2.25rem;
   --font-size-5xl: 3rem;
   --font-size-6xl: 3.75rem;
-
-  /* Line Heights */
+  --font-size-7xl: 4.5rem;
   --leading-tight: 1.25;
   --leading-snug: 1.375;
   --leading-normal: 1.5;
   --leading-relaxed: 1.625;
   --leading-loose: 2;
 
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     AL-IMAM BRAND COLORS (Islamic Brown-Gold Theme)
-     Based on Official PPDB Brochure
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  /* ✅ TAMBAHAN: Breakpoint XS untuk HP kecil */
+  --breakpoint-xs: 480px;
 
-  /* PRIMARY - Islamic Brown (Main Brand Color) */
+  /* COLORS - Enhanced Islamic Palette 2026 */
+  /* Brown (Primary - Heritage & Tradition) */
   --color-brown-50: #fdf8f6;
-  --color-brown-100: #f2e8e5;
+  --color-brown-100: #f5e6d3;
   --color-brown-200: #eaddd7;
-  --color-brown-300: #e0cec7;
-  --color-brown-400: #d2bab0;
-  --color-brown-500: #bfa094;
-  --color-brown-600: #a18072;
-  --color-brown-700: #85665a;
-  --color-brown-800: #654d42;
-  --color-brown-900: #533e33;
-  --color-brown-950: #3a2a21;
+  --color-brown-300: #d5b89c;
+  --color-brown-400: #c0a488;
+  --color-brown-500: #a18072;
+  --color-brown-600: #8b5a3c;
+  --color-brown-700: #6b4423;
+  --color-brown-800: #533e33;
+  --color-brown-900: #4a2c19;
+  --color-brown-950: #2d1a0f;
 
-  /* SECONDARY - Gold/Amber (Accent Color) */
-  --color-gold-50: #fffbeb;
+  /* Gold (Secondary - Divine Luxury & Honor) */
+  --color-gold-50: #fff9e6;
   --color-gold-100: #fef3c7;
   --color-gold-200: #fde68a;
   --color-gold-300: #fcd34d;
   --color-gold-400: #fbbf24;
-  --color-gold-500: #f59e0b;
-  --color-gold-600: #d97706;
-  --color-gold-700: #b45309;
-  --color-gold-800: #92400e;
-  --color-gold-900: #78350f;
-  --color-gold-950: #451a03;
+  --color-gold-500: #daa520;
+  --color-gold-600: #b8860b;
+  --color-gold-700: #9a7309;
+  --color-gold-800: #78350f;
+  --color-gold-900: #451a03;
 
-  /* TERTIARY - Cream/Beige (Light Background) */
-  --color-cream-50: #fefdfb;
+  /* Cream/Beige (Background - Warmth & Purity) */
+  --color-cream-50: #fffbf0;
   --color-cream-100: #fdf9f3;
-  --color-cream-200: #faf5eb;
-  --color-cream-300: #f5ede1;
-  --color-cream-400: #ede3d3;
+  --color-cream-200: #fdf6ec;
+  --color-cream-300: #faf5eb;
+  --color-cream-400: #f5ede1;
   --color-cream-500: #e3d5c1;
   --color-cream-600: #d4c2a8;
   --color-cream-700: #c0a888;
   --color-cream-800: #a88c6c;
   --color-cream-900: #8b7355;
 
-  /* ALIAS untuk konsistensi - UPDATE KE BROWN-GOLD */
-  --color-primary-50: var(--color-brown-50);
-  --color-primary-100: var(--color-brown-100);
-  --color-primary-200: var(--color-brown-200);
-  --color-primary-300: var(--color-brown-300);
-  --color-primary-400: var(--color-brown-400);
-  --color-primary-500: var(--color-brown-500);
-  --color-primary-600: var(--color-brown-600);
-  --color-primary-700: var(--color-brown-700);
-  --color-primary-800: var(--color-brown-800);
-  --color-primary-900: var(--color-brown-900);
-  --color-primary-950: var(--color-brown-950);
+  /* Teal/Green (Spiritual - Paradise Colors) */
+  --color-teal-50: #f0fdfa;
+  --color-teal-100: #ccfbf1;
+  --color-teal-200: #99f6e4;
+  --color-teal-300: #5eead4;
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  --color-teal-700: #0f766e;
+  --color-teal-800: #115e59;
+  --color-teal-900: #134e4a;
+  --color-teal-950: #0a2f2d;
 
-  --color-secondary-50: var(--color-gold-50);
-  --color-secondary-100: var(--color-gold-100);
-  --color-secondary-200: var(--color-gold-200);
-  --color-secondary-300: var(--color-gold-300);
-  --color-secondary-400: var(--color-gold-400);
-  --color-secondary-500: var(--color-gold-500);
-  --color-secondary-600: var(--color-gold-600);
-  --color-secondary-700: var(--color-gold-700);
-  --color-secondary-800: var(--color-gold-800);
-  --color-secondary-900: var(--color-gold-900);
-  --color-secondary-950: var(--color-gold-950);
+  /* Green Accents */
+  --color-green-100: #d1fae5;
+  --color-green-500: #10b981;
+  --color-green-600: #059669;
 
-  --color-accent-50: var(--color-gold-50);
-  --color-accent-100: var(--color-gold-100);
-  --color-accent-200: var(--color-gold-200);
-  --color-accent-300: var(--color-gold-300);
-  --color-accent-400: var(--color-gold-400);
-  --color-accent-500: var(--color-gold-500);
-  --color-accent-600: var(--color-gold-600);
-  --color-accent-700: var(--color-gold-700);
-  --color-accent-800: var(--color-gold-800);
-  --color-accent-900: var(--color-gold-900);
-  --color-accent-950: var(--color-gold-950);
-
-  /* Status Colors */
-  --color-success-500: #10b981;
-  --color-warning-500: var(--color-gold-500);
-  --color-danger-500: #ef4444;
-  --color-info-500: #3b82f6;
-
-  /* Neutral Backgrounds */
-  --color-surface-50: #fafaf9;
-  --color-surface-100: #f5f5f4;
-  --color-surface-200: #e7e5e4;
-  --color-surface-300: #d6d3d1;
-  --color-surface-500: #78716c;
-
-  /* Text Colors */
+  /* Text Colors - Enhanced Readability */
+  --color-text-50: #fdfcfc;
+  --color-text-100: #f8fafc;
+  --color-text-200: #e2e8f0;
+  --color-text-300: #cbd5e1;
   --color-text-400: #a8a29e;
   --color-text-500: #78716c;
   --color-text-600: #57534e;
@@ -135,60 +107,174 @@
   --color-text-900: #1c1917;
   --color-text-950: #0c0a09;
 
-  /* Spacing */
-  --spacing-2: 0.5rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-12: 3rem;
-  --spacing-16: 4rem;
-  --spacing-20: 5rem;
-  --spacing-24: 6rem;
+  /* Neutrals */
+  --color-neutral-50: #fcfcfc;
+  --color-neutral-100: #f8fafc;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #030712;
 
-  /* Shadows - UPDATE dengan Brown-Gold theme */
+  /* Aliases for Components */
+  --color-primary-50: var(--color-brown-50);
+  --color-primary-500: var(--color-brown-500);
+  --color-primary-600: var(--color-brown-600);
+  --color-primary-700: var(--color-brown-700);
+  --color-primary-900: var(--color-brown-900);
+  --color-secondary-500: var(--color-gold-500);
+  --color-secondary-600: var(--color-gold-600);
+  --color-accent-500: var(--color-teal-500);
+
+  /* Shadows - Islamic Theme Enhanced */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-brown: 0 4px 20px -2px rgba(101, 77, 66, 0.2);
-  --shadow-gold: 0 4px 20px -2px rgba(217, 119, 6, 0.3);
-  --shadow-cream: 0 4px 20px -2px rgba(227, 213, 193, 0.2);
+  --shadow-brown: 0 4px 20px -2px rgba(139, 90, 60, 0.2);
+  --shadow-gold: 0 4px 20px -2px rgba(218, 165, 32, 0.3);
+  --shadow-teal: 0 4px 20px -2px rgba(20, 184, 166, 0.25);
 
   /* Border Radius */
-  --radius-none: 0;
   --radius-sm: 0.25rem;
-  --radius-base: 0.5rem;
   --radius-md: 0.625rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
-  --radius-3xl: 3rem;
-  --radius-full: 9999px;
+  --radius-3xl: 2.5rem;
 
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  /* Spacing */
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+}
 
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   2. BASE LAYER - Global Styles + MOBILE OPTIMIZATIONS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@layer base {
+  /* HTML & Body Reset */
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
+  }
+
+  /* ✅ IMPROVED: Better touch interaction */
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-brown-50)] 
+           text-[var(--color-text-800)] font-sans antialiased;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ✅ NEW: Smooth scrolling with momentum on iOS */
+  .overflow-y-auto,
+  .overflow-x-auto,
+  .overflow-auto {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* ✅ NEW: Prevent zoom on input focus (iOS) - PENTING! */
+  @media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      font-size: 16px !important; /* Prevents auto-zoom on iOS */
     }
   }
 
+  /* ✅ NEW: Better button touch target (Apple HIG) */
+  button,
+  a[role="button"],
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Typography - RESPONSIVE BREAKPOINTS */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold leading-tight text-[var(--color-text-900)];
+    margin-top: 0;
+  }
+
+  /* ✅ IMPROVED: Mobile-first responsive typography */
+  h1 {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+  }
+  h2 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+  }
+  h3 {
+    @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
+  }
+  h4 {
+    @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
+  }
+  h5 {
+    @apply text-base sm:text-lg md:text-xl lg:text-2xl;
+  }
+  h6 {
+    @apply text-sm sm:text-base md:text-lg lg:text-xl;
+  }
+
+  p {
+    @apply text-sm sm:text-base text-[var(--color-text-700)] leading-relaxed mb-4;
+  }
+
+  /* Arabic Text */
+  .arabic-text {
+    @apply font-arabic text-[var(--color-text-900)] leading-tight;
+    direction: rtl;
+    font-size: 1.15em;
+  }
+
+  /* Focus States */
+  *:focus-visible {
+    outline: 3px solid var(--color-gold-500);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   3. ANIMATIONS - Premium Islamic Effects
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@layer utilities {
+  /* Fade Animations */
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(2rem);
     }
     to {
       opacity: 1;
@@ -199,7 +285,7 @@
   @keyframes fadeInDown {
     from {
       opacity: 0;
-      transform: translateY(-30px);
+      transform: translateY(-2rem);
     }
     to {
       opacity: 1;
@@ -210,7 +296,7 @@
   @keyframes fadeInLeft {
     from {
       opacity: 0;
-      transform: translateX(-30px);
+      transform: translateX(-2rem);
     }
     to {
       opacity: 1;
@@ -221,42 +307,11 @@
   @keyframes fadeInRight {
     from {
       opacity: 0;
-      transform: translateX(30px);
+      transform: translateX(2rem);
     }
     to {
       opacity: 1;
       transform: translateX(0);
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes bounce {
-    0%,
-    100% {
-      transform: translateY(-25%);
-      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
-    50% {
-      transform: translateY(0);
-      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
     }
   }
 
@@ -266,237 +321,255 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(-1rem);
     }
   }
-}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   BASE STYLES
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-html,
-body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100%;
-  overflow-x: hidden;
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: var(--color-text-800);
-  /* UPDATE: Brown-Cream gradient background */
-  background: linear-gradient(135deg, #fdf8f6 0%, #fefdfb 100%);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  line-height: var(--leading-tight);
-  color: var(--color-text-900);
-}
-
-.arabic-text {
-  font-family: var(--font-arabic);
-  direction: rtl;
-  font-size: 1.2em;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   UTILITY CLASSES - UPDATE KE BROWN-GOLD
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@utility animate-fadeInUp {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-@utility animate-fadeInDown {
-  animation: fadeInDown 0.8s ease-out forwards;
-}
-
-@utility animate-fadeInLeft {
-  animation: fadeInLeft 0.8s ease-out forwards;
-}
-
-@utility animate-fadeInRight {
-  animation: fadeInRight 0.8s ease-out forwards;
-}
-
-@utility animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-@utility animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@utility animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-@utility animate-bounce {
-  animation: bounce 1s infinite;
-}
-
-@utility animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-@utility delay-100 {
-  animation-delay: 100ms;
-}
-
-@utility delay-200 {
-  animation-delay: 200ms;
-}
-
-@utility delay-300 {
-  animation-delay: 300ms;
-}
-
-@utility delay-500 {
-  animation-delay: 500ms;
-}
-
-/* UPDATE: Brown gradient text */
-@utility text-gradient-brown {
-  background: linear-gradient(
-    135deg,
-    var(--color-brown-700),
-    var(--color-brown-500)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* UPDATE: Gold gradient text */
-@utility text-gradient-gold {
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-500),
-    var(--color-gold-700)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* UPDATE: Islamic brown-gold gradient background */
-@utility bg-gradient-islamic {
-  background: linear-gradient(
-    135deg,
-    var(--color-brown-50) 0%,
-    var(--color-cream-100) 50%,
-    var(--color-gold-50) 100%
-  );
-}
-
-/* UPDATE: Brown gradient */
-@utility bg-gradient-brown {
-  background: linear-gradient(
-    135deg,
-    var(--color-brown-700),
-    var(--color-brown-500)
-  );
-}
-
-/* UPDATE: Gold gradient */
-@utility bg-gradient-gold {
-  background: linear-gradient(
-    135deg,
-    var(--color-gold-500),
-    var(--color-gold-700)
-  );
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SCROLLBAR STYLING - UPDATE KE BROWN-GOLD
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-cream-100);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    to bottom,
-    var(--color-brown-600),
-    var(--color-gold-600)
-  );
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to bottom,
-    var(--color-brown-700),
-    var(--color-gold-700)
-  );
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ACCESSIBILITY
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(218, 165, 32, 0.6);
+    }
   }
 
-  .animate-fadeInUp,
-  .animate-fadeIn,
-  .animate-pulse,
+  /* Animation Utilities */
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .animate-fadeInDown {
+    animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .animate-fadeInLeft {
+    animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  .animate-fadeInRight {
+    animation: fadeInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
   .animate-float {
-    animation: none !important;
+    animation: float 6s ease-in-out infinite;
   }
-}
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
 
-*:focus-visible {
-  outline: 3px solid var(--color-gold-500);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  /* Delay Utilities */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  /* ✅ NEW: Mobile-specific utilities */
+  .pb-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .pt-safe {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+
+  /* Touch-friendly minimum sizes */
+  .min-touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent text selection on buttons */
+  .no-select {
+    user-select: none;
+    -webkit-user-select: none;
+  }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESPONSIVE TYPOGRAPHY
+   4. GRADIENT UTILITIES - Islamic Theme
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (max-width: 768px) {
-  h1 {
-    font-size: var(--font-size-3xl);
+@layer utilities {
+  .text-gradient-brown {
+    background: linear-gradient(
+      135deg,
+      var(--color-brown-700),
+      var(--color-brown-500)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  h2 {
-    font-size: var(--font-size-2xl);
+
+  .text-gradient-gold {
+    background: linear-gradient(
+      135deg,
+      var(--color-gold-500),
+      var(--color-gold-600)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  h3 {
-    font-size: var(--font-size-xl);
+
+  .text-gradient-teal {
+    background: linear-gradient(
+      135deg,
+      var(--color-teal-500),
+      var(--color-teal-400)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-gold {
+    background: linear-gradient(
+      135deg,
+      var(--color-gold-500),
+      var(--color-gold-600)
+    );
+  }
+
+  .bg-gradient-brown {
+    background: linear-gradient(
+      135deg,
+      var(--color-brown-700),
+      var(--color-brown-500)
+    );
+  }
+
+  .bg-gradient-teal {
+    background: linear-gradient(
+      135deg,
+      var(--color-teal-500),
+      var(--color-teal-600)
+    );
+  }
+
+  .shadow-gold {
+    box-shadow:
+      0 20px 25px -5px rgba(218, 165, 32, 0.3),
+      0 10px 10px -5px rgba(218, 165, 32, 0.1);
+  }
+
+  .shadow-brown {
+    box-shadow:
+      0 20px 25px -5px rgba(139, 90, 60, 0.25),
+      0 10px 10px -5px rgba(139, 90, 60, 0.15);
   }
 }
 
-@media (max-width: 480px) {
-  h1 {
-    font-size: var(--font-size-2xl);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   5. SCROLLBAR & RESPONSIVE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@layer base {
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 12px;
   }
-  h2 {
-    font-size: var(--font-size-xl);
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[var(--color-cream-200)];
+    border-radius: 6px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-[var(--color-brown-700)] to-[var(--color-gold-600)];
+    border-radius: 6px;
+    border: 2px solid var(--color-cream-200);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gradient-to-b from-[var(--color-brown-900)] to-[var(--color-gold-700)];
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ✅ REMOVED: Old fixed responsive typography (replaced with mobile-first approach above) */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   6. CONTAINER & SECTION UTILITIES - RESPONSIVE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@layer components {
+  .container-main {
+    @apply max-w-7xl mx-auto w-full px-3 sm:px-4 md:px-6 lg:px-8;
+  }
+
+  .section-hero {
+    @apply min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] flex items-center py-12 sm:py-16 md:py-20 lg:py-32;
+  }
+
+  .section-main {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg bg-gradient-to-r 
+           from-[var(--color-brown-700)] to-[var(--color-teal-700)] text-white 
+           shadow-xl sm:shadow-2xl hover:shadow-gold hover:-translate-y-1 transition-all duration-300 
+           hover:from-[var(--color-brown-800)] hover:to-[var(--color-teal-800)] active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg 
+           border-2 border-[var(--color-gold-500)] text-[var(--color-gold-700)] 
+           bg-[var(--color-gold-50)] hover:bg-[var(--color-gold-100)] 
+           hover:shadow-gold hover:-translate-y-1 transition-all duration-300 active:scale-95;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   7. CUSTOM XS BREAKPOINT UTILITIES
+   Support untuk HP kecil (iPhone SE, dsb)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (min-width: 480px) {
+  .xs\:block {
+    display: block;
+  }
+  .xs\:hidden {
+    display: none;
+  }
+  .xs\:text-sm {
+    font-size: 0.875rem;
+  }
+  .xs\:text-base {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 479px) {
+  .xs\:block {
+    display: none;
+  }
+  .xs\:hidden {
+    display: block;
+  }
+  .xs\:text-sm {
+    font-size: 0.75rem;
+  }
+  .xs\:text-base {
+    font-size: 0.875rem;
   }
 }

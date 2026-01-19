@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Poppins, Amiri } from "next/font/google";
 import "./globals.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
+// ✅ IMPORT NAVBAR & FOOTER YANG SUDAH ADA
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FONT CONFIGURATIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 const poppins = Poppins({
@@ -22,14 +31,110 @@ const amiri = Amiri({
   display: "swap",
 });
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// METADATA CONFIGURATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export const metadata: Metadata = {
-  title: "Pondok Pesantren Al-Imam Al-Islami | PPDB 2026/2027",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://www.alimamalislami.sch.id"
+        : "http://localhost:3000")
+  ),
+
+  title: {
+    default: "Pondok Pesantren Al-Imam Al-Islami | PPDB 2026/2027",
+    template: "%s | Pondok Pesantren Al-Imam Al-Islami",
+  },
   description:
-    "Pendaftaran Santri Baru Pondok Pesantren Al-Imam Al-Islami. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafus shalih.",
-  keywords:
-    "ponpes al-imam, pesantren sukabumi, ppdb 2026, pendaftaran santri, pesantren salafi",
+    "Pendaftaran Santri Baru Pondok Pesantren Al-Imam Al-Islami. Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafus shalih. Sukabumi, Jawa Barat.",
+  keywords: [
+    "ponpes al-imam",
+    "pesantren sukabumi",
+    "ppdb 2026",
+    "pendaftaran santri",
+    "pesantren salafi",
+    "tahfidz quran",
+    "mts al-imam",
+    "ma al-imam",
+    "pondok pesantren jawa barat",
+    "pesantren salafiyah",
+    "pendidikan islam",
+  ],
+
+  authors: [{ name: "Pondok Pesantren Al-Imam Al-Islami" }],
+  creator: "Pondok Pesantren Al-Imam Al-Islami",
+  publisher: "Pondok Pesantren Al-Imam Al-Islami",
+
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+    shortcut: "/favicon.ico",
+  },
+
+  openGraph: {
+    title: "Pondok Pesantren Al-Imam Al-Islami | PPDB 2026/2027",
+    description:
+      "Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafus shalih. Daftar sekarang untuk tahun ajaran 2026/2027.",
+    url: "https://www.alimamalislami.sch.id",
+    siteName: "Pondok Pesantren Al-Imam Al-Islami",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Pondok Pesantren Al-Imam Al-Islami",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Pondok Pesantren Al-Imam Al-Islami | PPDB 2026/2027",
+    description:
+      "Pendidikan berbasis Al-Qur'an dan As-Sunnah sesuai pemahaman salafus shalih.",
+    images: ["/twitter-image.jpg"],
+    creator: "@alimam_islami",
+  },
+
+  verification: {
+    google: "your-google-verification-code",
+  },
+
+  alternates: {
+    canonical: "https://www.alimamalislami.sch.id",
+    languages: {
+      "id-ID": "https://www.alimamalislami.sch.id",
+    },
+  },
+
+  category: "education",
+  classification: "Islamic Education",
 };
 
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ROOT LAYOUT COMPONENT (✅ DENGAN NAVBAR & FOOTER)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,19 +143,37 @@ export default function RootLayout({
   return (
     <html lang="id" className="scroll-smooth">
       <head>
-        {/* Font Awesome CDN */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#8b5a3c" />
+        <meta name="msapplication-navbutton-color" content="#8b5a3c" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
         />
       </head>
       <body
-        className={`${plusJakartaSans.variable} ${poppins.variable} ${amiri.variable} font-sans antialiased`}
+        className={`${plusJakartaSans.variable} ${poppins.variable} ${amiri.variable} font-sans antialiased bg-[var(--color-cream-50)] text-[var(--color-text-900)] overflow-x-hidden`}
       >
-        {children}
+        {/* ✅ MAIN LAYOUT STRUCTURE */}
+        <div className="relative min-h-screen flex flex-col">
+          {/* ✅ NAVBAR - Muncul di semua halaman */}
+          <Navbar />
+
+          {/* ✅ MAIN CONTENT - Page content dengan offset untuk navbar fixed */}
+          <main className="flex-1 pt-16 md:pt-20">
+            {/* pt-16 md:pt-20 untuk offset navbar height (h-16 md:h-20) */}
+            {children}
+          </main>
+
+          {/* ✅ FOOTER - Muncul di semua halaman */}
+          <Footer />
+        </div>
       </body>
     </html>
   );

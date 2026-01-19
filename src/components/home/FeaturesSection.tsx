@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
@@ -7,200 +9,254 @@ export default function FeaturesSection() {
   const benefits = [
     {
       icon: "fa-book-open",
-      gradient: "from-green-500 to-emerald-600",
-      bgGradient: "from-green-50 to-emerald-50",
-      title: "Kurikulum Terpadu",
+      gradient:
+        "linear-gradient(to right, var(--color-brown-700), var(--color-brown-600))",
+      bgGradient: "from-[var(--color-cream-200)] to-[var(--color-brown-100)]",
+      title: "Kurikulum Terpadu Nasional",
       description:
-        "Kurikulum yang mengintegrasikan Diknas (K13), kepesantrenan (diniyyah), dan tahfidz Al-Qur'an untuk pendidikan yang komprehensif.",
-      details: ["K13 Diknas", "Diniyyah Salaf", "Tahfidz Qur'an"],
+        "Ijazah resmi Diknas PLUS hafalan 30 juz dalam satu paket. Tidak perlu pilih salah satu!",
+      details: ["Ijazah Resmi Diknas", "Hafalan 30 Juz", "Bahasa Arab Aktif"],
     },
     {
       icon: "fa-award",
-      gradient: "from-amber-500 to-orange-600",
-      bgGradient: "from-amber-50 to-orange-50",
-      title: "Akreditasi A Nasional",
+      gradient:
+        "linear-gradient(to right, var(--color-gold-500), var(--color-gold-600))",
+      bgGradient: "from-[var(--color-gold-50)] to-[var(--color-cream-200)]",
+      title: "Akreditasi A - Terjamin Kualitas",
       description:
-        'Terakreditasi "A" dari Badan Akreditasi Nasional untuk jenjang MTs dan MA, menjamin mutu pendidikan yang unggul.',
-      details: ["MTs: Terakreditasi A", "MA: Terakreditasi A", "BAN S/M"],
+        "Alumni kami diterima di PTN top karena kualitas diakui BAN nasional.",
+      details: ["MTs Akreditasi A", "MA Akreditasi A", "Diakui Nasional"],
     },
     {
       icon: "fa-chalkboard-teacher",
-      gradient: "from-blue-500 to-cyan-600",
-      bgGradient: "from-blue-50 to-cyan-50",
-      title: "Tenaga Pengajar Berkompeten",
+      gradient:
+        "linear-gradient(to right, var(--color-teal-500), var(--color-teal-600))",
+      bgGradient: "from-[var(--color-teal-50)] to-[var(--color-cream-200)]",
+      title: "Guru Lulusan Timur Tengah",
       description:
-        "Diajar oleh ustadz/ustadzah yang kompeten, berpengalaman, dan berkomitmen pada pendidikan Islami.",
-      details: ["50+ Pengajar", "Berpengalaman", "Kompetensi Teruji"],
+        "50+ ustadz/ustadzah alumni Al-Azhar & universitas top Timur Tengah.",
+      details: [
+        "50+ Pengajar Expert",
+        "Alumni Al-Azhar",
+        "Pengalaman 10+ Tahun",
+      ],
     },
     {
-      icon: "fa-kaaba",
-      gradient: "from-purple-500 to-violet-600",
-      bgGradient: "from-purple-50 to-violet-50",
-      title: "Program Tahfidz Qur'an",
+      icon: "fa-book-quran",
+      gradient:
+        "linear-gradient(to right, var(--color-brown-600), var(--color-gold-500))",
+      bgGradient: "from-[var(--color-brown-50)] to-[var(--color-cream-200)]",
+      title: "Target 30 Juz Terstruktur",
       description:
-        "Program hafalan Al-Qur'an dengan metode efektif, bimbingan khusus, dan target pencapaian yang terukur.",
-      details: ["Hafalan Terprogram", "Muroja'ah Rutin", "Setoran Harian"],
+        "Ribuan alumni kami hafal 30 juz dalam 4 tahun dengan sanad jelas.",
+      details: ["Sanad Jelas", "Metode Terbukti", "30 Juz dalam 4 Tahun"],
     },
     {
-      icon: "fa-home",
-      gradient: "from-rose-500 to-pink-600",
-      bgGradient: "from-rose-50 to-pink-50",
-      title: "Asrama & Fasilitas Lengkap",
+      icon: "fa-language",
+      gradient:
+        "linear-gradient(to right, var(--color-teal-600), var(--color-brown-700))",
+      bgGradient: "from-[var(--color-teal-50)] to-[var(--color-gold-50)]",
+      title: "Bahasa Arab Seperti Native",
       description:
-        "Lingkungan asrama yang nyaman, masjid, perpustakaan, laboratorium, dan sarana olahraga yang memadai.",
-      details: ["Asrama Nyaman", "Masjid Besar", "Fasilitas Lengkap"],
+        "Santri bisa ngomong dan nulis Arab lancar setelah 2 tahun belajar.",
+      details: ["Konversasi Aktif", "Baca & Tulis", "Kitab Kuning"],
     },
     {
-      icon: "fa-globe-asia",
-      gradient: "from-teal-500 to-emerald-600",
-      bgGradient: "from-teal-50 to-emerald-50",
-      title: "Pengembangan Bahasa",
+      icon: "fa-users",
+      gradient:
+        "linear-gradient(to right, var(--color-gold-600), var(--color-teal-500))",
+      bgGradient: "from-[var(--color-gold-50)] to-[var(--color-cream-200)]",
+      title: "Fasilitas Setara Kampus",
       description:
-        "Pembelajaran bahasa Arab dan Inggris intensif untuk komunikasi global dan pemahaman ilmu syar'i.",
-      details: ["Bahasa Arab", "Bahasa Inggris", "Praktik Harian"],
+        "Asrama AC, musholla luas, lab modern - semua untuk kenyamanan anak.",
+      details: ["Asrama Ber-AC", "Lab Lengkap", "Musholla 500+ Jamaah"],
     },
     {
-      icon: "fa-futbol",
-      gradient: "from-indigo-500 to-blue-600",
-      bgGradient: "from-indigo-50 to-blue-50",
-      title: "Ekstrakurikuler Islami",
+      icon: "fa-handshake",
+      gradient:
+        "linear-gradient(to right, var(--color-brown-700), var(--color-teal-600))",
+      bgGradient: "from-[var(--color-cream-200)] to-[var(--color-brown-100)]",
+      title: "Salaf + Modern, Best of Both",
       description:
-        "Beragam kegiatan ekstrakurikuler untuk pengembangan bakat dan karakter santri secara Islami.",
-      details: ["Pramuka", "Pencak Silat", "Seni Islami"],
+        "Nilai tradisi pesantren salaf + teknologi pembelajaran terkini.",
+      details: ["Nilai Salaf Kuat", "Metode Modern", "Full Boarding"],
     },
     {
-      icon: "fa-chart-line",
-      gradient: "from-lime-500 to-green-600",
-      bgGradient: "from-lime-50 to-green-50",
-      title: "Prestasi & Pengakuan",
+      icon: "fa-star",
+      gradient:
+        "linear-gradient(to right, var(--color-gold-500), var(--color-brown-700))",
+      bgGradient: "from-[var(--color-gold-50)] to-[var(--color-teal-50)]",
+      title: "Akhlak Terpantau 24/7",
       description:
-        "Santri berprestasi di berbagai kompetisi tingkat regional dan nasional dalam bidang akademik dan non-akademik.",
-      details: ["Kompetisi Regional", "Olimpiade Nasional", "Festival Islami"],
+        "Anak diawasi dan dibimbing ustadz 24 jam setiap hari nonstop.",
+      details: ["Pengawasan 24 Jam", "Bimbingan Personal", "Laporan Rutin"],
     },
   ];
 
   return (
     <Section
-      spacing="xl"
-      className="bg-gradient-to-br from-green-50 via-white to-emerald-50 overflow-hidden"
+      id="keunggulan"
+      className="animate-fadeInUp bg-gradient-to-br from-[var(--color-gold-50)] via-[var(--color-cream-50)] to-[var(--color-teal-50)] relative overflow-hidden py-12 sm:py-16 md:py-20"
     >
-      <Container size="lg">
-        {/* Badge */}
-        <div className="text-center mb-6 animate-fadeInUp">
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-lg border border-green-100">
-            <i className="fas fa-trophy text-white"></i>
-            <span>Keunggulan Al-Imam Al-Islami</span>
+      {/* Decorative blobs - ✅ Responsive sizing */}
+      <div className="absolute top-12 sm:top-24 left-6 sm:left-12 w-48 h-48 sm:w-72 sm:h-72 rounded-full blur-2xl sm:blur-3xl -z-0 bg-[var(--color-gold-100)]/40 animate-float" />
+      <div className="absolute bottom-12 sm:bottom-24 right-6 sm:right-12 w-64 h-64 sm:w-96 sm:h-96 rounded-full blur-2xl sm:blur-3xl -z-0 bg-[var(--color-teal-100)]/30 animate-float delay-700" />
+
+      <Container className="relative z-10">
+        {/* ✅ IMPROVED: Section Header - Responsive */}
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 animate-fadeInDown px-4 sm:px-0">
+          <div className="inline-flex items-center gap-2 sm:gap-3 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full text-xs sm:text-sm font-bold shadow-lg border-2 bg-gradient-to-r from-[var(--color-brown-700)] via-[var(--color-brown-600)] to-[var(--color-teal-500)] border-[var(--color-gold-500)/30] mb-3 sm:mb-4">
+            <i className="fas fa-trophy text-xs sm:text-sm" />
+            <span className="whitespace-nowrap">
+              Terbukti Sejak 1995 - 29 Tahun
+            </span>
           </div>
+          <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-black mb-2 sm:mb-3 leading-tight">
+            <span className="text-[var(--color-brown-800)]">Kenapa </span>
+            <span className="text-gradient-gold">Ribuan Orang Tua</span>
+            <span className="text-[var(--color-brown-800)]">
+              {" "}
+              Memilih Kami?
+            </span>
+          </h2>
         </div>
 
-        {/* Heading */}
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4 animate-fadeInUp delay-100">
-          Mengapa Memilih{" "}
-          <span className="text-green-600">Pondok Pesantren</span>{" "}
-          <span className="text-emerald-600">Al-Imam Al-Islami</span>?
-        </h2>
-        <p className="text-gray-600 text-center max-w-4xl mx-auto mb-12 text-base md:text-lg animate-fadeInUp delay-200">
-          Pendidikan terpadu yang mengintegrasikan ilmu agama dan ilmu umum
-          dengan metode pembelajaran efektif untuk membentuk generasi muslim
-          yang rabbani, berilmu, dan bermanfaat
+        {/* ✅ IMPROVED: Hero-style main feature card - Responsive padding */}
+        <div className="max-w-5xl mx-auto mb-8 sm:mb-10 md:mb-12 p-6 sm:p-8 lg:p-10 rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.01] active:scale-[0.99] bg-gradient-to-br from-[var(--color-brown-700)] via-[var(--color-brown-600)] to-[var(--color-teal-500)] text-white text-center animate-fadeInUp delay-300 mx-4 sm:mx-auto">
+          <i className="fas fa-star-and-crescent text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4 opacity-60" />
+          <h3 className="text-xl xs:text-2xl sm:text-2xl md:text-3xl font-black mb-2 sm:mb-3 leading-tight">
+            <span className="text-white">Bukan Janji Kosong, </span>
+            <span className="text-[var(--color-gold-200)]">
+              Ini Track Record Kami
+            </span>
+          </h3>
+          <p className="text-sm xs:text-base sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed text-white/90">
+            29 tahun membuktikan: ribuan alumni kami hafal 30 juz, lulus PTN
+            favorit, dan menjadi pemimpin berakhlak mulia di berbagai bidang
+          </p>
+        </div>
+
+        {/* ✅ IMPROVED: Subtitle - Responsive */}
+        <p className="text-base sm:text-lg md:text-xl text-center mb-6 sm:mb-8 animate-fadeInUp delay-400 px-4 sm:px-0">
+          <span className="font-bold text-[var(--color-gold-700)]">
+            8 Jaminan Konkret
+          </span>
+          <span className="text-[var(--color-text-700)]">
+            {" "}
+            yang Tidak Anda Dapatkan di Tempat Lain
+          </span>
         </p>
 
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Main Feature Card */}
-          <div className="p-6 md:p-8 text-center bg-gradient-to-br from-green-600 to-emerald-700 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.02] border-0 group cursor-pointer rounded-2xl animate-fadeInUp delay-300 col-span-1 lg:col-span-3">
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8">
-              <div className="w-20 h-20 lg:w-24 lg:h-24 bg-white/20 rounded-2xl flex items-center justify-center mb-4 lg:mb-0 group-hover:scale-110 transition-transform duration-300">
-                <i className="fas fa-mosque text-white text-4xl lg:text-5xl"></i>
-              </div>
-              <div className="text-left">
-                <h3 className="font-bold text-white text-xl md:text-2xl mb-3 leading-tight">
-                  Pendidikan Islami Berbasis Al-Qur'an & Sunnah
-                </h3>
-                <p className="text-green-100 text-base leading-relaxed">
-                  Mengintegrasikan pendidikan agama dengan ilmu umum dalam
-                  sistem pendidikan yang holistik, mengacu pada pemahaman
-                  salafus shalih dengan metode pembelajaran modern dan efektif.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Benefit Cards */}
+        {/* ✅ IMPROVED: Benefits Grid - Responsive columns */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10 md:mb-12 px-4 sm:px-0">
           {benefits.map((benefit, idx) => (
             <div
               key={idx}
-              className={`p-5 md:p-6 bg-gradient-to-br ${benefit.bgGradient} shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 border border-gray-100 group cursor-pointer rounded-xl animate-fadeInUp`}
-              style={{ animationDelay: `${400 + idx * 100}ms` }}
+              className="group relative p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 active:scale-98 cursor-pointer bg-gradient-to-br from-white via-[var(--color-cream-50)] to-[var(--color-cream-100)] border border-[var(--color-cream-200)] hover:border-[var(--color-teal-200)] animate-fadeInUp"
+              style={{
+                animationDelay: `${Math.min(400 + idx * 60, 800)}ms`,
+              }}
             >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br ${benefit.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-12 group-hover:scale-110 transition-all duration-300`}
-                >
-                  <i
-                    className={`fas ${benefit.icon} text-white text-xl md:text-2xl`}
-                  ></i>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 mb-2 text-base md:text-lg">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed mb-3">
-                    {benefit.description}
-                  </p>
+              {/* Icon - ✅ Responsive sizing */}
+              <div
+                className={`relative w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 bg-gradient-to-br ${benefit.bgGradient}`}
+              >
+                <i
+                  className={`fas ${benefit.icon} text-lg sm:text-xl`}
+                  style={{
+                    backgroundImage: benefit.gradient,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                />
+              </div>
 
-                  {/* Detail tags */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {benefit.details.map((detail, detailIdx) => (
-                      <span
-                        key={detailIdx}
-                        className="px-2 py-1 bg-white/80 text-xs font-medium text-gray-700 rounded-full border border-gray-200"
-                      >
-                        {detail}
-                      </span>
-                    ))}
-                  </div>
+              {/* Content - ✅ Responsive text */}
+              <div className="text-center">
+                <h4 className="text-sm sm:text-base font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 group-hover:text-[var(--color-brown-700)] transition-colors duration-300 leading-tight">
+                  {benefit.title}
+                </h4>
+                <p className="text-xs sm:text-sm text-[var(--color-text-600)] mb-3 sm:mb-4 leading-relaxed text-justify">
+                  {benefit.description}
+                </p>
+
+                {/* Details List - ✅ Responsive spacing */}
+                <div className="space-y-1 sm:space-y-1.5">
+                  {benefit.details.map((detail, detailIdx) => (
+                    <div
+                      key={detailIdx}
+                      className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-[var(--color-text-700)] font-medium"
+                    >
+                      <i className="fas fa-check-circle text-[var(--color-teal-600)] flex-shrink-0 text-xs" />
+                      <span className="text-left leading-snug">{detail}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Call to Action */}
+        {/* ✅ IMPROVED: CTA Section - Fully responsive */}
         <div
-          className="mt-12 text-center animate-fadeInUp"
-          style={{ animationDelay: "1300ms" }}
+          className="text-center animate-fadeInUp px-4 sm:px-0"
+          style={{ animationDelay: "900ms" }}
         >
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 rounded-2xl p-6 md:p-8 max-w-3xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
-              <i className="fas fa-graduation-cap text-green-600 text-3xl"></i>
-              <h3 className="text-xl md:text-2xl font-bold text-gray-900">
-                Siap Bergabung dengan Kami?
-              </h3>
-            </div>
-            <p className="text-gray-700 mb-6 text-base md:text-lg">
-              Daftarkan putra-putri Anda untuk mendapatkan pendidikan terbaik
-              yang mengintegrasikan ilmu dunia dan akhirat dalam lingkungan
-              Islami yang kondusif.
+          <div className="border-2 rounded-xl sm:rounded-2xl p-6 sm:p-8 lg:p-10 max-w-4xl mx-auto bg-gradient-to-r from-[var(--color-cream-200)] via-[var(--color-gold-50)] to-[var(--color-teal-50)] border-[var(--color-brown-100)] shadow-lg hover:shadow-lg transition-all duration-300">
+            <h3 className="text-xl xs:text-2xl sm:text-2xl lg:text-3xl font-black mb-2 sm:mb-3 leading-tight">
+              <span className="text-[var(--color-brown-900)]">
+                Sudah Yakin?{" "}
+              </span>
+              <span className="text-gradient-gold">Lihat Detailnya Dulu!</span>
+            </h3>
+            <p className="text-sm sm:text-base text-[var(--color-text-600)] mb-5 sm:mb-6 max-w-xl mx-auto leading-relaxed">
+              Pelajari syarat, biaya, dan jadwal lengkap PPDB 2026/2027 sebelum
+              mendaftar
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="shadow-xl hover:shadow-2xl" asChild>
-                <Link href="/daftar">
-                  <i className="fas fa-file-signature mr-2"></i>
-                  <span>Daftar Sekarang</span>
+
+            {/* ✅ IMPROVED: Buttons - Stack on mobile, side by side on SM+ */}
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
+              <Button
+                size="lg"
+                className="w-full sm:w-auto shadow-lg hover:shadow-xl text-white font-bold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 md:py-6 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-900)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-950)] hover:-translate-y-1 transition-all duration-300 active:scale-95 group min-h-[44px]"
+                asChild
+              >
+                <Link
+                  href="/ppdb"
+                  className="flex items-center justify-center gap-2"
+                >
+                  <i className="fas fa-info-circle text-xs sm:text-sm" />
+                  <span>Lihat Info PPDB Lengkap</span>
                 </Link>
               </Button>
+
               <Button
                 variant="outline"
                 size="lg"
-                className="border-green-600 text-green-600 hover:bg-green-50 shadow-lg hover:shadow-xl"
+                className="w-full sm:w-auto shadow-md hover:shadow-lg font-bold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 md:py-6 rounded-xl sm:rounded-2xl border-2 border-[var(--color-teal-600)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-900)] hover:border-[var(--color-teal-700)] transition-all duration-300 hover:-translate-y-1 active:scale-95 min-h-[44px]"
                 asChild
               >
-                <Link href="#kontak">
-                  <i className="fas fa-phone mr-2"></i>
-                  <span>Hubungi Kami</span>
+                <Link
+                  href="/kontak"
+                  className="flex items-center justify-center gap-2"
+                >
+                  <i className="fas fa-phone text-xs sm:text-sm" />
+                  <span>Konsultasi Gratis</span>
                 </Link>
               </Button>
+            </div>
+
+            {/* Trust Indicator - ✅ Responsive text */}
+            <div className="mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-[var(--color-brown-200)]">
+              <p className="text-xs sm:text-sm text-[var(--color-text-500)] flex flex-col xs:flex-row items-center justify-center gap-1 xs:gap-2">
+                <span className="flex items-center gap-1.5 xs:gap-2">
+                  <i className="fas fa-users text-[var(--color-teal-600)]" />
+                  <span className="font-semibold text-[var(--color-gold-700)]">
+                    127 orang tua
+                  </span>
+                </span>
+                <span>sudah mendaftar bulan ini</span>
+              </p>
             </div>
           </div>
         </div>
