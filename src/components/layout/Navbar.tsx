@@ -379,6 +379,8 @@ export default function Navbar() {
             <div className="px-3 sm:px-4 py-4 sm:py-6 space-y-1">
               {/* Main Links */}
               {navLinks.map((link) => {
+                const linkIsActive = isActive(link.href, link.sectionId);
+
                 if (link.type === "scroll") {
                   return (
                     <a
@@ -386,7 +388,7 @@ export default function Navbar() {
                       href={link.href}
                       onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
                       className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer ${
-                        isActive(link.href, link.sectionId)
+                        linkIsActive
                           ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
                           : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
                       }`}
@@ -394,7 +396,7 @@ export default function Navbar() {
                     >
                       <i
                         className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
-                          isActive(link.href, link.sectionId)
+                          linkIsActive
                             ? "text-[var(--color-brown-700)]"
                             : "text-[var(--color-teal-500)]"
                         }`}
@@ -409,7 +411,7 @@ export default function Navbar() {
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${
-                      isActive(link.href)
+                      linkIsActive
                         ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
                         : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
                     }`}
@@ -417,7 +419,7 @@ export default function Navbar() {
                   >
                     <i
                       className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
-                        isActive(link.href)
+                        linkIsActive
                           ? "text-[var(--color-brown-700)]"
                           : "text-[var(--color-teal-500)]"
                       }`}
