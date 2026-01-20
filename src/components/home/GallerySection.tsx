@@ -22,7 +22,7 @@ export default function GallerySection() {
       image: "/images/kitab.JPG",
       title: "Pembelajaran Kitab",
       description:
-        "Santri menguasai kitab kuning dengan metode bandongan & sorogan langsung dari ustadz expert.",
+        "Mengkaji kitab kuning dengan metode bandongan dan sorogan di bawah bimbingan asatidz yang kompeten.",
       icon: BookOpen,
       gradient:
         "from-[var(--color-brown-700)]/90 via-[var(--color-brown-600)]/70 to-[var(--color-gold-500)]/50",
@@ -34,7 +34,7 @@ export default function GallerySection() {
       image: "/images/tahfiz.JPG",
       title: "Program Tahfidz",
       description:
-        "Target 30 juz dalam 4 tahun dengan sistem setoran harian dan muroja'ah intensif.",
+        "Menghafal 30 juz dengan sistem setoran harian, muroja'ah rutin, dan bimbingan intensif dari tahfidz.",
       icon: BookMarked,
       gradient:
         "from-[var(--color-gold-500)]/90 via-[var(--color-gold-600)]/70 to-[var(--color-teal-500)]/50",
@@ -46,7 +46,7 @@ export default function GallerySection() {
       image: "/images/ekstra.jpg",
       title: "Ekstrakurikuler",
       description:
-        "Pramuka, pencak silat, hingga seni Islami untuk mengembangkan bakat dan kepercayaan diri.",
+        "Pramuka, bela diri, dan seni Islami untuk mengembangkan potensi santri secara menyeluruh.",
       icon: Target,
       gradient:
         "from-[var(--color-teal-500)]/90 via-[var(--color-teal-600)]/70 to-[var(--color-brown-700)]/50",
@@ -58,7 +58,7 @@ export default function GallerySection() {
       image: "/images/fasilitas.jpeg",
       title: "Fasilitas Pesantren",
       description:
-        "Masjid megah, asrama ber-AC, perpustakaan 5000+ buku, dan lab komputer untuk kenyamanan santri.",
+        "Masjid, asrama nyaman, perpustakaan kitab, dan sarana belajar yang menunjang pendidikan Islami.",
       icon: School,
       gradient:
         "from-[var(--color-brown-700)]/90 via-[var(--color-gold-500)]/70 to-[var(--color-cream-200)]/50",
@@ -109,34 +109,33 @@ export default function GallerySection() {
       <div className="hidden md:block absolute bottom-20 left-10 w-48 h-48 bg-gradient-to-tr from-[var(--color-teal-100)]/30 to-[var(--color-gold-50)]/30 rounded-full blur-3xl animate-float delay-700" />
 
       <Container size="lg" className="relative z-10">
-        {/* ✅ IMPROVED: Section Badge - Responsive padding and text */}
+        {/* ✅ REVISED: Section Badge */}
         <div className="text-center mb-4 sm:mb-6 animate-fadeInDown px-4 sm:px-0">
           <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-teal-500)] text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold shadow-lg">
             <BookText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="whitespace-nowrap">
-              Lihat Sendiri Kehidupan Santri Kami
+              Keseharian Santri Berakhlak Islami
             </span>
           </span>
         </div>
 
-        {/* ✅ IMPROVED: Section Header - Responsive text sizes */}
+        {/* ✅ REVISED: Section Header */}
         <div className="text-center mb-6 sm:mb-8 md:mb-10 animate-fadeInUp delay-200 px-4 sm:px-0">
           <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 leading-tight">
             <span className="text-[var(--color-brown-800)]">
-              Rutinitas Harian Santri{" "}
+              Rutinitas Santri yang{" "}
             </span>
-            <span className="text-gradient-gold">Penuh Manfaat</span>
+            <span className="text-gradient-gold">Penuh Ibadah & Ilmu</span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-[var(--color-text-700)] max-w-3xl mx-auto leading-relaxed">
             <span className="font-bold text-[var(--color-gold-700)]">
-              Dari subuh hingga malam,
+              Setiap waktu diisi dengan kegiatan bermanfaat:
             </span>{" "}
-            setiap jam diisi dengan kegiatan yang membentuk akhlak mulia dan
-            kecintaan pada ilmu
+            tahfidz Al-Qur'an, mendalami ilmu syar'i, dan pembinaan akhlaq mulia
           </p>
         </div>
 
-        {/* ✅ IMPROVED: Preview Cards - Better mobile layout (1 col on xs, 2 on sm) */}
+        {/* ✅ REVISED: Preview Cards - Content only */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8 px-4 sm:px-0">
           {previewItems.map((item, idx) => (
             <Link
@@ -144,7 +143,7 @@ export default function GallerySection() {
               href={item.categoryLink}
               className="group relative rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_25px_50px_-15px_rgba(107,68,35,0.3)] transition-all duration-700 hover:-translate-y-2 active:scale-98 cursor-pointer border-2 border-white/60"
             >
-              {/* ✅ IMPROVED: Category Badge - Responsive sizing */}
+              {/* ✅ Category Badge */}
               <div className="absolute top-2 sm:top-3 left-2 sm:left-3 z-20">
                 <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/95 backdrop-blur-md text-[10px] sm:text-xs font-bold text-[var(--color-brown-700)] rounded-lg sm:rounded-xl shadow-lg">
                   <item.icon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -152,7 +151,7 @@ export default function GallerySection() {
                 </span>
               </div>
 
-              {/* ✅ IMPROVED: Image - Better aspect ratio for mobile */}
+              {/* ✅ Image */}
               <div className="relative w-full pb-[85%] sm:pb-[75%] overflow-hidden">
                 <div className="absolute inset-0">
                   <img
@@ -166,7 +165,7 @@ export default function GallerySection() {
                 </div>
               </div>
 
-              {/* ✅ IMPROVED: Bottom Info - Responsive padding and text */}
+              {/* ✅ Bottom Info */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[var(--color-brown-900)]/90 via-[var(--color-brown-800)]/50 to-transparent p-3 sm:p-4 transition-all duration-700">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <div
@@ -178,7 +177,7 @@ export default function GallerySection() {
                     <h3 className="text-white text-xs sm:text-sm font-bold drop-shadow-lg leading-tight mb-0.5">
                       {item.title}
                     </h3>
-                    {/* ✅ IMPROVED: Description - Better mobile visibility */}
+                    {/* ✅ REVISED: Description */}
                     <p className="text-white/0 text-[10px] sm:text-xs leading-relaxed transition-all duration-700 group-hover:text-white/90 max-h-0 group-hover:max-h-24 overflow-hidden">
                       {item.description}
                     </p>
@@ -192,7 +191,7 @@ export default function GallerySection() {
           ))}
         </div>
 
-        {/* ✅ IMPROVED: CTA Buttons - Stack on mobile, better touch targets */}
+        {/* ✅ CTA Buttons - No changes (already good) */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center mb-8 sm:mb-10 md:mb-12 px-4 sm:px-0">
           <Button
             size="lg"
@@ -225,24 +224,23 @@ export default function GallerySection() {
           </Button>
         </div>
 
-        {/* ✅ IMPROVED: Activity Timeline - Fully responsive */}
+        {/* ✅ REVISED: Activity Timeline */}
         <div className="bg-gradient-to-br from-[var(--color-cream-100)] to-[var(--color-gold-50)] border-2 border-[var(--color-brown-100)]/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-xl mx-4 sm:mx-0">
           <div className="text-center mb-4 sm:mb-6">
             <h3 className="text-xl xs:text-2xl sm:text-2xl lg:text-3xl font-black mb-2 flex flex-col xs:flex-row items-center justify-center gap-2 sm:gap-3">
               <BookText className="w-5 h-5 sm:w-6 sm:h-6 text-[var(--color-gold-600)]" />
-              <span className="text-[var(--color-brown-900)]">24 Jam </span>
-              <span className="text-gradient-gold">Penuh Manfaat</span>
+              <span className="text-[var(--color-brown-900)]">
+                24 Jam Produktif{" "}
+              </span>
+              <span className="text-gradient-gold">dalam Ketaatan</span>
             </h3>
             <p className="text-xs sm:text-sm text-[var(--color-text-700)] font-semibold leading-relaxed px-4 sm:px-0">
-              Jadwal terstruktur dari subuh hingga malam untuk{" "}
-              <span className="text-[var(--color-gold-700)]">
-                membentuk santri disiplin
-              </span>{" "}
-              dan berakhlak mulia
+              Jadwal terstruktur yang membina santri berakhlaq mulia, disiplin,
+              dan istiqomah dalam menuntut ilmu
             </p>
           </div>
 
-          {/* ✅ IMPROVED: Activity Cards - Better mobile grid (2 cols on mobile) */}
+          {/* ✅ Activity Cards - No changes (already good) */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
             {dailyActivities.map((activity, idx) => (
               <div

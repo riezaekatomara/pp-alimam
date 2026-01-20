@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   AlertCircle,
   CheckCircle2,
@@ -33,6 +34,8 @@ interface FormData {
 }
 
 export default function DaftarPage() {
+  const router = useRouter(); // ✅ Next.js router untuk redirect
+
   const [formData, setFormData] = useState<FormData>({
     nik: "",
     nama_lengkap: "",
@@ -48,6 +51,17 @@ export default function DaftarPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // ✅ AUTO REDIRECT setelah sukses registrasi
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        router.push("/login");
+      }, 3000); // 3 detik
+
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, router]);
 
   const handleChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({
@@ -627,6 +641,7 @@ export default function DaftarPage() {
                 <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span>Chat WhatsApp Admin</span>
               </a>
+
               <a
                 href="tel:+622667345601"
                 className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 xs:px-5 sm:px-5 py-3 xs:py-3.5 sm:py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-bold text-xs xs:text-sm sm:text-sm transition-all duration-300 active:scale-95"

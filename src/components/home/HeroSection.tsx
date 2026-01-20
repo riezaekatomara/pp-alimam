@@ -75,8 +75,9 @@ function HeroTitle() {
       <span className="block text-[var(--color-brown-800)] mb-2 sm:mb-3 lg:mb-4">
         Membina Generasi
       </span>
-      <span className="block text-gradient-brown mb-2 sm:mb-3 lg:mb-4">
-        Rabbani, Qur'ani,
+      <span className="block mb-2 sm:mb-3 lg:mb-4">
+        <span className="text-[var(--color-brown-700)]">Rabbani, </span>
+        <span className="text-gradient-brown">Qur'ani</span>
       </span>
       <span className="block">
         <span className="text-gradient-teal">dan </span>
@@ -283,7 +284,7 @@ function HeroImage() {
           src="/images/hero.jpg"
           alt="Santri Pondok Pesantren Al-Imam Al-Islami sedang belajar Al-Qur'an"
           fill
-          className="object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
+          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
           priority
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 50vw"
         />

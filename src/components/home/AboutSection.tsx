@@ -25,8 +25,8 @@ export default function AboutSection() {
     {
       icon: Calendar,
       value: "29+",
-      label: "Tahun Dipercaya",
-      subtitle: "Ribuan Alumni Sukses",
+      label: "Tahun Mengabdi",
+      subtitle: "Sejak 1995",
       bgColor: "bg-[var(--color-brown-100)]",
       borderColor: "border-[var(--color-brown-100)]",
       iconColor: "text-[var(--color-brown-700)]",
@@ -35,8 +35,8 @@ export default function AboutSection() {
     {
       icon: Users,
       value: "500+",
-      label: "Santri Berprestasi",
-      subtitle: "Hafidz & Akademis",
+      label: "Santri Aktif",
+      subtitle: "Menuntut Ilmu",
       bgColor: "bg-[var(--color-cream-200)]",
       borderColor: "border-[var(--color-cream-200)]",
       iconColor: "text-[var(--color-teal-500)]",
@@ -45,8 +45,8 @@ export default function AboutSection() {
     {
       icon: GraduationCap,
       value: "50+",
-      label: "Guru Berpengalaman",
-      subtitle: "Lulusan Timur Tengah",
+      label: "Tenaga Pendidik",
+      subtitle: "Ustadz Berpengalaman",
       bgColor: "bg-[var(--color-gold-50)]",
       borderColor: "border-[var(--color-gold-50)]",
       iconColor: "text-[var(--color-gold-500)]",
@@ -59,14 +59,14 @@ export default function AboutSection() {
     {
       icon: BookOpen,
       title: "Kitab Kuning",
-      description: "Metode pembelajaran Salaf terbukti efektif",
+      description: "Metode pembelajaran dengan manhaj salaf",
       bgColor: "bg-[var(--color-brown-100)]",
       iconColor: "text-[var(--color-brown-700)]",
     },
     {
       icon: BookHeart,
-      title: "Tahfidz Qur'an",
-      description: "Target 30 Juz dengan metode terstruktur",
+      title: "Tahfidz Al-Qur'an",
+      description: "Target hafalan 30 Juz",
       bgColor: "bg-[var(--color-gold-50)]",
       iconColor: "text-[var(--color-gold-500)]",
     },
@@ -76,18 +76,18 @@ export default function AboutSection() {
   const visiMisi = [
     {
       icon: CheckCircle,
-      label: "Jaminan Hafalan:",
-      text: "Target 30 Juz dengan metode tahfidz terstruktur & terbukti efektif",
+      label: "Program Tahfidz:",
+      text: "Bimbingan hafalan 30 Juz dengan metode mutqin (kokoh)",
     },
     {
       icon: CheckCircle,
-      label: "Pembinaan Akhlak:",
-      text: "Pendampingan 24 jam untuk membentuk karakter Qur'ani yang kuat",
+      label: "Pembinaan Akhlaq:",
+      text: "Pendampingan pembentukan karakter Islami sehari-hari",
     },
     {
       icon: CheckCircle,
-      label: "Prestasi Akademik:",
-      text: "Kurikulum terintegrasi untuk persiapan pendidikan tinggi terbaik",
+      label: "Pendidikan Formal:",
+      text: "Kurikulum MTs & MA terintegrasi ilmu syar'i",
     },
   ];
 
@@ -107,29 +107,29 @@ export default function AboutSection() {
           <div className="inline-flex items-center gap-1.5 sm:gap-2 font-bold text-[10px] sm:text-xs md:text-sm uppercase tracking-wider mb-2 sm:mb-3 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full border-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-teal-600)] text-white shadow-lg">
             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="whitespace-nowrap">
-              29 Tahun Membentuk Generasi Qur'ani
+              Berpengalaman Sejak 1995 - Manhaj Ahlussunnah wal Jama'ah
             </span>
           </div>
 
           {/* Title - ✅ Better mobile sizing */}
           <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl lg:text-5xl font-bold mb-2 sm:mb-3 leading-tight px-4 sm:px-0">
             <span className="block text-[var(--color-brown-800)] mb-1">
-              Mengapa Ribuan Orang Tua
+              Membina Generasi Qur'ani
             </span>
             <span className="block">
-              <span className="text-gradient-gold">Mempercayakan Anak</span>
-              <span className="text-[var(--color-brown-800)]"> Kepada </span>
-              <span className="text-gradient-teal">Kami?</span>
+              <span className="text-gradient-gold">dengan Manhaj</span>
+              <span className="text-[var(--color-brown-800)]"> </span>
+              <span className="text-gradient-teal">Salafush Shalih</span>
             </span>
           </h2>
 
-          {/* Subtitle - ✅ Responsive text */}
+          {/* Subtitle - ✅ REVISI: Hapus "Cabang" */}
           <p className="text-sm sm:text-base md:text-lg lg:text-xl text-[var(--color-text-600)] max-w-2xl mx-auto px-4 sm:px-0">
-            Bukan sekadar pesantren, kami{" "}
+            Pondok Pesantren{" "}
             <span className="font-bold text-[var(--color-brown-700)]">
-              mitra terpercaya
+              Al-Imam Al-Islami
             </span>{" "}
-            Anda
+            Sukabumi, Jawa Barat
           </p>
         </div>
 
@@ -143,7 +143,7 @@ export default function AboutSection() {
               <div className="relative w-full h-[200px] xs:h-[240px] sm:h-[280px] md:h-[320px]">
                 <Image
                   src="/images/about.jpg"
-                  alt="Pondok Pesantren Al-Hidayah"
+                  alt="Pondok Pesantren Al-Imam Al-Islami"
                   fill
                   className="object-cover"
                   priority
@@ -161,7 +161,7 @@ export default function AboutSection() {
                 </div>
                 <div className="inline-flex items-center gap-1.5 sm:gap-2 text-white px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-xs font-bold shadow-lg backdrop-blur-sm bg-gradient-to-r from-[var(--color-gold-600)] to-[var(--color-gold-700)]">
                   <Shield className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
-                  <span>Dipercaya Sejak 1995</span>
+                  <span>Sejak 1995</span>
                 </div>
               </div>
             </div>
@@ -232,7 +232,7 @@ export default function AboutSection() {
                 >
                   <i className="fas fa-info-circle text-xs sm:text-sm" />
                   <span className="whitespace-nowrap">
-                    Selengkapnya Tentang Kami
+                    Profil Lengkap Pesantren
                   </span>
                   <i className="fas fa-arrow-right text-[10px] sm:text-xs group-hover:translate-x-1 transition-transform duration-300" />
                 </Link>
@@ -249,16 +249,16 @@ export default function AboutSection() {
                   className="flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                  <span>Lihat Syarat & Jadwal PPDB</span>
+                  <span>Informasi Pendaftaran</span>
                 </Link>
               </Button>
 
               {/* Soft Urgency - ✅ Smaller text on mobile */}
               <p className="text-[10px] sm:text-xs text-center text-[var(--color-text-500)]">
+                Penerimaan santri baru tahun ajaran{" "}
                 <span className="font-bold text-[var(--color-gold-700)]">
-                  50 kuota tersisa
-                </span>{" "}
-                untuk tahun ajaran 2026/2027
+                  2026/2027
+                </span>
               </p>
             </div>
           </div>
@@ -266,32 +266,33 @@ export default function AboutSection() {
           {/* Right Column: Description + Visi Misi */}
           <div className="lg:w-1/2 animate-fadeInRight delay-300 flex flex-col">
             <div className="space-y-4 sm:space-y-5 md:space-y-6 flex-1 flex flex-col">
-              {/* Description - ✅ Responsive text */}
+              {/* Description - ✅ Responsive text + JUSTIFY */}
               <div className="space-y-2.5 sm:space-y-3">
                 <h3 className="text-lg sm:text-xl font-bold text-[var(--color-text-900)]">
-                  Lebih dari Sekadar Pesantren
+                  Pondok Pesantren Al-Imam Al-Islami
                 </h3>
 
-                <p className="text-[var(--color-text-600)] text-sm sm:text-base leading-relaxed">
+                <p className="text-[var(--color-text-600)] text-sm sm:text-base leading-relaxed text-justify">
                   Sejak{" "}
                   <span className="font-bold text-[var(--color-brown-700)]">
                     1995
                   </span>
-                  , kami telah membantu{" "}
+                  , Pondok Pesantren Al-Imam Al-Islami telah membina santri
+                  dengan manhaj{" "}
                   <span className="font-bold text-[var(--color-teal-700)]">
-                    ribuan orang tua
+                    Ahlussunnah wal Jama'ah
                   </span>{" "}
-                  mewujudkan impian: anak yang berakhlak mulia, hafal Al-Qur'an,
-                  dan berprestasi.
+                  sesuai pemahaman salafush shalih.
                 </p>
 
-                <p className="text-[var(--color-text-600)] text-sm sm:text-base leading-relaxed">
-                  Kami memahami kekhawatiran Anda tentang pergaulan anak di era
-                  digital. Itulah mengapa kami ciptakan{" "}
+                <p className="text-[var(--color-text-600)] text-sm sm:text-base leading-relaxed text-justify">
+                  Kami fokus pada tiga pilar utama: tahfidz Al-Qur'an 30 Juz,
+                  penguasaan ilmu-ilmu syar'i melalui kitab kuning, dan
+                  pembinaan akhlaq mulia dengan{" "}
                   <span className="font-bold text-[var(--color-brown-700)]">
-                    lingkungan Islami 24/7
-                  </span>{" "}
-                  dengan pengawasan ketat namun penuh kasih sayang.
+                    lingkungan Islami yang kondusif
+                  </span>
+                  .
                 </p>
               </div>
 
@@ -300,7 +301,7 @@ export default function AboutSection() {
                 <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                   <Target className="w-6 h-6 sm:w-7 sm:h-7 text-[var(--color-brown-700)] rounded-lg p-1.5 bg-white/50" />
                   <h3 className="text-base sm:text-lg md:text-xl font-black text-gradient-brown">
-                    Komitmen Kami untuk Anak Anda
+                    Program Unggulan Kami
                   </h3>
                 </div>
                 <div className="space-y-2.5 sm:space-y-3 flex-1 flex flex-col justify-center">
@@ -322,12 +323,12 @@ export default function AboutSection() {
                   ))}
                 </div>
 
-                {/* Trust Badge at Bottom - ✅ Responsive */}
+                {/* Trust Badge at Bottom - ✅ REVISI: Hapus "Cabang" */}
                 <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-[var(--color-brown-200)]/30">
                   <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-[var(--color-text-500)]">
                     <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--color-teal-600)]" />
                     <span className="font-medium text-center">
-                      Dipercaya ribuan orang tua se-Indonesia
+                      Terakreditasi A - Sukabumi, Jawa Barat
                     </span>
                   </div>
                 </div>
