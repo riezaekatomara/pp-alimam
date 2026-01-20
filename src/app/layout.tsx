@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL ||
       (process.env.NODE_ENV === "production"
         ? "https://www.alimamalislami.sch.id"
-        : "http://localhost:3000")
+        : "http://localhost:3000"),
   ),
 
   title: {
