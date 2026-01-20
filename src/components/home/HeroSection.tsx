@@ -283,7 +283,7 @@ function HeroImage() {
           src="/images/hero.jpg"
           alt="Santri Pondok Pesantren Al-Imam Al-Islami sedang belajar Al-Qur'an"
           fill
-          className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+          className="object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-500"
           priority
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 50vw"
         />
