@@ -2,8 +2,8 @@
 
 import { AlertCircle } from "lucide-react";
 
-export default function TabPlaceholder() {
-  const tabName = "Status Pembayaran"; // Ganti sesuai nama file
+export default function DaftarUlangTab() {
+  const tabName = "Daftar Ulang";
   
   return (
     <div className="space-y-6">

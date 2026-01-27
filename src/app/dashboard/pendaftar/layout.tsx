@@ -4,12 +4,12 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   User,
-  FileText,
-  Upload,
-  CheckSquare,
+  ClipboardList,
   CreditCard,
+  FileCheck,
   Calendar,
-  Award,
+  Trophy,
+  CheckCircle,
   Settings,
   LogOut,
   Menu,
@@ -31,32 +31,20 @@ export default function DashboardLayout({
     {
       name: "Data Pendaftaran",
       href: "/dashboard/pendaftar",
-      icon: User,
+      icon: ClipboardList,
       active: pathname === "/dashboard/pendaftar",
     },
     {
-      name: "Download Berkas",
-      href: "/dashboard/pendaftar/download-berkas",
-      icon: FileText,
-      active: pathname === "/dashboard/pendaftar/download-berkas",
-    },
-    {
-      name: "Upload Berkas",
-      href: "/dashboard/pendaftar/upload-berkas",
-      icon: Upload,
-      active: pathname === "/dashboard/pendaftar/upload-berkas",
+      name: "Pembayaran Pendaftaran",
+      href: "/dashboard/pendaftar/pembayaran-pendaftaran",
+      icon: CreditCard,
+      active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
     },
     {
       name: "Kelengkapan Berkas",
       href: "/dashboard/pendaftar/kelengkapan-berkas",
-      icon: CheckSquare,
+      icon: FileCheck,
       active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
-    },
-    {
-      name: "Status Pembayaran",
-      href: "/dashboard/pendaftar/status-pembayaran",
-      icon: CreditCard,
-      active: pathname === "/dashboard/pendaftar/status-pembayaran",
     },
     {
       name: "Undangan Seleksi",
@@ -67,8 +55,14 @@ export default function DashboardLayout({
     {
       name: "Pengumuman",
       href: "/dashboard/pendaftar/pengumuman",
-      icon: Award,
+      icon: Trophy,
       active: pathname === "/dashboard/pendaftar/pengumuman",
+    },
+    {
+      name: "Daftar Ulang",
+      href: "/dashboard/pendaftar/daftar-ulang",
+      icon: CheckCircle,
+      active: pathname === "/dashboard/pendaftar/daftar-ulang",
     },
     {
       name: "Profil",

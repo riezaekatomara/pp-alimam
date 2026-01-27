@@ -74,3 +74,52 @@ export interface Pendaftar {
   created_at: string;
   updated_at: string;
 }
+
+// ============================================
+// PEMBAYARAN TYPES
+// ============================================
+
+export type StatusPembayaran = "pending" | "verified" | "rejected" | "expired";
+export type MetodePembayaran = "midtrans" | "transfer_manual";
+
+export interface Pembayaran {
+  id: string;
+  pendaftar_id: string;
+  tahun_ajaran_id: string;
+  metode_pembayaran: MetodePembayaran;
+  jumlah: number;
+  midtrans_order_id?: string;
+  midtrans_transaction_id?: string;
+  midtrans_transaction_status?: string;
+  midtrans_payment_type?: string;
+  midtrans_response_json?: Record<string, any>;
+  bukti_transfer_path?: string;
+  bukti_transfer_filename?: string;
+  status_pembayaran: StatusPembayaran;
+  verified_by?: string;
+  verified_at?: string;
+  catatan_verifikasi?: string;
+  expired_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TahunAjaran {
+  id: string;
+  tahun_mulai: number;
+  tahun_selesai: number;
+  nama: string;
+  is_active: boolean;
+  tanggal_buka_pendaftaran: string;
+  tanggal_tutup_pendaftaran: string;
+  biaya_pendaftaran: number;
+  link_tes_tertulis?: string;
+  deskripsi_tes_tertulis?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PembayaranWithDetails extends Pembayaran {
+  pendaftar?: Pendaftar;
+  tahun_ajaran?: TahunAjaran;
+}

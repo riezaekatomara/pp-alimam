@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
-      "Bash(pnpm dev)"
+      "Bash(pnpm dev)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
