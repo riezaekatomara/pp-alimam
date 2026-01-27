@@ -152,3 +152,4 @@ $RECYCLE.BIN/
 # ============================================
 # Uncomment jika tidak ingin commit email testing
 # /emails/test-*
+/src/generated/prisma

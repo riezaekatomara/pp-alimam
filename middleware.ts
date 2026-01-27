@@ -1,6 +1,6 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// MIDDLEWARE: SIMPLE & AMAN 🛡️ (FIXED)
-// Sistem Auth dengan Sliding Session + Auto Logout
+// MIDDLEWARE: SIMPLE & AMAN 🛡️ 
+// Sistem Auth dengan Sliding Session + Role-Based Protection
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Path: middleware.ts (root project)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -13,6 +13,31 @@ import { NextResponse, type NextRequest } from "next/server";
 // ============================================
 const SESSION_MAX_AGE = 7 * 24 * 60 * 60; // 7 hari dalam detik (604800)
 const SESSION_REFRESH_THRESHOLD = 24 * 60 * 60; // Refresh jika < 1 hari tersisa
+
+// Helper function untuk parse session cookie
+function getSessionFromCookie(request: NextRequest): {
+  role: string | null;
+  id: string | null;
+} {
+  const sessionCookie = request.cookies.get("app_session");
+  
+  if (!sessionCookie) {
+    console.log("🍪 [Middleware] No app_session cookie found");
+    return { role: null, id: null };
+  }
+
+  try {
+    const session = JSON.parse(sessionCookie.value);
+    console.log(`🍪 [Middleware] Session found - Role: ${session.role}, ID: ${session.id}`);
+    return {
+      role: session.role || null,
+      id: session.id || null,
+    };
+  } catch (e) {
+    console.log(`❌ [Middleware] Failed to parse session cookie:`, e);
+    return { role: null, id: null };
+  }
+}
 
 // ============================================
 // 🛡️ MIDDLEWARE FUNCTION
@@ -51,14 +76,12 @@ export async function middleware(request: NextRequest) {
   );
 
   // ============================================
-  // 2️⃣ GET SESSION & USER (FIXED!)
+  // 2️⃣ GET SESSION & USER
   // ============================================
-  // Get session dulu
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Get user dari session
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -68,13 +91,11 @@ export async function middleware(request: NextRequest) {
   // ============================================
   if (session && user) {
     try {
-      // Cek expiry time
       const expiresAt = new Date(session.expires_at || 0).getTime();
       const now = Date.now();
       const timeUntilExpiry = expiresAt - now;
 
       // 🔄 AUTO-REFRESH: Jika session < 1 hari lagi
-      // Ini membuat session "sliding" - perpanjang otomatis
       if (timeUntilExpiry < SESSION_REFRESH_THRESHOLD * 1000) {
         console.log("🔄 Refreshing session (sliding window)...");
 
@@ -82,7 +103,6 @@ export async function middleware(request: NextRequest) {
 
         if (error) {
           console.error("❌ Session refresh failed:", error.message);
-          // Jika gagal refresh, logout user
           await supabase.auth.signOut();
           const loginUrl = new URL("/login", request.url);
           loginUrl.searchParams.set(
@@ -102,32 +122,110 @@ export async function middleware(request: NextRequest) {
   }
 
   // ============================================
-  // 4️⃣ ROUTE PROTECTION
+  // 4️⃣ GET USER METADATA (ROLE)
   // ============================================
+  // Cek session dari cookie dulu
+  const cookieSession = getSessionFromCookie(request);
+  let userRole: string | null = cookieSession.role;
 
-  // 🔒 Protected routes - require authentication
-  const protectedPaths = ["/dashboard"];
-  const isProtectedPath = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
-
-  if (isProtectedPath && !user) {
-    // User belum login, redirect ke login
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
-    loginUrl.searchParams.set("message", "Silakan login terlebih dahulu");
-    return NextResponse.redirect(loginUrl);
+  // Jika tidak ada di cookie, cek dari Supabase user metadata
+  if (!userRole && user && user.user_metadata) {
+    userRole = user.user_metadata.role || null;
   }
 
-  // 🚪 Auth routes - redirect to dashboard if already logged in
-  const authPaths = ["/login", "/daftar"];
-  const isAuthPath = authPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
+  const { pathname } = request.nextUrl;
+  console.log(`📍 [Middleware] Path: ${pathname}, Role: ${userRole || "null"}`);
 
-  if (isAuthPath && user) {
-    // User sudah login, redirect ke dashboard
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // ═══════════════════════════════════════════
+  // PROTECT: /dashboard/pendaftar
+  // ═══════════════════════════════════════════
+  if (pathname.startsWith("/dashboard/pendaftar")) {
+    if (!userRole || userRole !== "pendaftar") {
+      console.log(`❌ [Protect] Access denied to /dashboard/pendaftar (role: ${userRole})`);
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    console.log(`✅ [Protect] Access granted to /dashboard/pendaftar`);
+  }
+
+  // ═══════════════════════════════════════════
+  // PROTECT: /dashboard/admin
+  // ═══════════════════════════════════════════
+  if (pathname.startsWith("/dashboard/admin")) {
+    if (!userRole || userRole !== "admin") {
+      console.log(`❌ [Protect] Access denied to /dashboard/admin (role: ${userRole})`);
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    console.log(`✅ [Protect] Access granted to /dashboard/admin`);
+  }
+
+  // ═══════════════════════════════════════════
+  // PROTECT: /dashboard/penguji
+  // ═══════════════════════════════════════════
+  if (pathname.startsWith("/dashboard/penguji")) {
+    if (!userRole || userRole !== "penguji") {
+      console.log(`❌ [Protect] Access denied to /dashboard/penguji (role: ${userRole})`);
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+    console.log(`✅ [Protect] Access granted to /dashboard/penguji`);
+  }
+
+  // ═══════════════════════════════════════════
+  // REDIRECT: /dashboard (root) based on role
+  // ═══════════════════════════════════════════
+  if (pathname === "/dashboard" || pathname === "/dashboard/") {
+    console.log(`📍 [Middleware] At /dashboard, userRole: ${userRole}`);
+    
+    if (!userRole) {
+      console.log(`❌ [Redirect] /dashboard → /login (no role)`);
+      const loginUrl = new URL("/login", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Redirect sesuai role
+    if (userRole === "pendaftar") {
+      console.log(`➡️ [Redirect] /dashboard → /dashboard/pendaftar`);
+      return NextResponse.redirect(
+        new URL("/dashboard/pendaftar", request.url)
+      );
+    } else if (userRole === "admin") {
+      console.log(`➡️ [Redirect] /dashboard → /dashboard/admin`);
+      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+    } else if (userRole === "penguji") {
+      console.log(`➡️ [Redirect] /dashboard → /dashboard/penguji`);
+      return NextResponse.redirect(new URL("/dashboard/penguji", request.url));
+    }
+
+    // Role tidak dikenali, redirect ke login
+    console.log(`❌ [Redirect] /dashboard → /login (role not recognized: ${userRole})`);
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // ═══════════════════════════════════════════
+  // REDIRECT: /login if already logged in
+  // ═══════════════════════════════════════════
+  if (pathname === "/login" && userRole) {
+    // Redirect ke dashboard sesuai role
+    if (userRole === "pendaftar") {
+      return NextResponse.redirect(
+        new URL("/dashboard/pendaftar", request.url)
+      );
+    } else if (userRole === "admin") {
+      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+    } else if (userRole === "penguji") {
+      return NextResponse.redirect(new URL("/dashboard/penguji", request.url));
+    }
+  }
+
+  // ═══════════════════════════════════════════
+  // REDIRECT: /daftar if already logged in
+  // ═══════════════════════════════════════════
+  if (pathname.startsWith("/daftar") && userRole === "pendaftar") {
+    return NextResponse.redirect(
+      new URL("/dashboard/pendaftar", request.url)
+    );
   }
 
   return response;
@@ -137,37 +235,5 @@ export async function middleware(request: NextRequest) {
 // ⚙️ MIDDLEWARE CONFIG
 // ============================================
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder (images, etc)
-     * - api routes (protected internally)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|images|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
-  ],
+  matcher: ["/dashboard/:path*", "/login"],
 };
-
-// ============================================
-// 📖 CARA KERJA SLIDING SESSION:
-// ============================================
-//
-// 1. User login → Session berlaku 7 hari
-// 2. Setiap user akses dashboard:
-//    - Middleware cek: "Apakah session < 1 hari lagi expired?"
-//    - Jika YA → Refresh session (perpanjang 7 hari lagi)
-//    - Jika TIDAK → Biarkan saja
-// 3. Hasilnya:
-//    - User aktif setiap hari = Tidak pernah logout!
-//    - User tidak aktif 7 hari = Logout otomatis
-//
-// Contoh Timeline:
-// ┌────────────────────────────────────────────┐
-// │ Hari 1: Login → Session valid s/d Hari 8  │
-// │ Hari 6: Akses → Session diperpanjang!     │
-// │         Session valid s/d Hari 13         │
-// │ Hari 10: Akses → Session diperpanjang!    │
-// │          Session valid s/d Hari 17        │
-// └────────────────────────────────────────────┘

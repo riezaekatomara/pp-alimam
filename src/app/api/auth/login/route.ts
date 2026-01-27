@@ -1,161 +1,211 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
 
-interface LoginRequest {
-  nik: string;
-  password: string;
-}
+// Service role client untuk query database
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-interface LoginResponse {
-  user_id: string;
-  nomor_pendaftaran: string;
-  nama_lengkap: string;
-  role: string;
-  jenjang: string;
-  status_pendaftaran: string;
-}
-
-interface ApiResponse<T = any> {
-  success: boolean;
-  message: string;
-  data?: T;
-  error?: string;
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const body: LoginRequest = await request.json();
+    const body = await request.json();
+    const { login_type } = body;
 
-    // ============================================
-    // 1️⃣ VALIDATE INPUT
-    // ============================================
-    if (!body.nik || !body.password) {
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          message: "Data tidak lengkap",
-          error: "NIK dan password wajib diisi",
-        },
-        { status: 400 }
-      );
-    }
+    console.log(`\n🔐 LOGIN ATTEMPT: ${login_type}`);
 
-    if (!/^\d{16}$/.test(body.nik)) {
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          message: "NIK tidak valid",
-          error: "NIK harus 16 digit angka",
-        },
-        { status: 400 }
-      );
-    }
+    // ═══════════════════════════════════════════
+    // LOGIN PENDAFTAR (NIK + Nomor Pendaftaran)
+    // ═══════════════════════════════════════════
+    if (login_type === "pendaftar") {
+      const { nik, nomor_pendaftaran } = body;
 
-    // ============================================
-    // 2️⃣ INITIALIZE SUPABASE CLIENT
-    // ============================================
-    const supabase = await createServerSupabaseClient();
+      // Validasi input
+      if (!nik || !nomor_pendaftaran) {
+        return NextResponse.json(
+          { error: "NIK dan Nomor Pendaftaran wajib diisi" },
+          { status: 400 },
+        );
+      }
 
-    // ============================================
-    // 3️⃣ FORMAT EMAIL (MUST MATCH REGISTER!)
-    // ============================================
-    const email = `${body.nik}@pendaftar.local`;
+      // Validasi format NIK
+      if (!/^\d{16}$/.test(nik)) {
+        return NextResponse.json(
+          { error: "NIK harus 16 digit angka" },
+          { status: 400 },
+        );
+      }
 
-    // ============================================
-    // 4️⃣ ATTEMPT LOGIN
-    // ============================================
-    const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
-        email,
-        password: body.password,
-      });
+      console.log(`   NIK: ${nik}`);
+      console.log(`   Nomor: ${nomor_pendaftaran}`);
 
-    if (authError || !authData.user) {
-      console.error("Login error:", authError);
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          message: "Login gagal",
-          error:
-            "NIK atau password salah. Pastikan NIK dan password Anda benar.",
-        },
-        { status: 401 }
-      );
-    }
+      // Cari pendaftar di database
+      const { data: pendaftar, error: pendaftarError } = await supabase
+        .from("pendaftar")
+        .select("*")
+        .eq("nik", nik)
+        .eq("nomor_pendaftaran", nomor_pendaftaran.toUpperCase())
+        .single();
 
-    const userId = authData.user.id;
+      if (pendaftarError || !pendaftar) {
+        console.log(`   ❌ Not found`);
+        return NextResponse.json(
+          {
+            error:
+              "NIK atau Nomor Pendaftaran tidak ditemukan. Periksa kembali data Anda.",
+          },
+          { status: 404 },
+        );
+      }
 
-    // ============================================
-    // 5️⃣ GET USER PROFILE (QUERY 1 - SEPARATE!)
-    // ============================================
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("id, role, full_name, phone")
-      .eq("id", userId)
-      .single();
+      console.log(`   ✅ Found: ${pendaftar.nama_lengkap}`);
+      console.log(`   Status: ${pendaftar.status_pendaftaran}`);
 
-    if (profileError || !profile) {
-      console.error("Profile error:", profileError);
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          message: "Data pengguna tidak ditemukan",
-          error: "Terjadi kesalahan saat mengambil data profil.",
-        },
-        { status: 500 }
-      );
-    }
-
-    // ============================================
-    // 6️⃣ GET PENDAFTAR DATA (QUERY 2 - SEPARATE!)
-    // ============================================
-    const { data: pendaftar, error: pendaftarError } = await supabase
-      .from("pendaftar")
-      .select(
-        "id, nomor_pendaftaran, nama_lengkap, jenis_kelamin, jenjang, status_pendaftaran"
-      )
-      .eq("user_id", userId)
-      .single();
-
-    if (pendaftarError || !pendaftar) {
-      console.error("Pendaftar error:", pendaftarError);
-      return NextResponse.json<ApiResponse>(
-        {
-          success: false,
-          message: "Data pendaftar tidak ditemukan",
-          error: "Akun Anda belum memiliki data pendaftaran. Hubungi admin.",
-        },
-        { status: 404 }
-      );
-    }
-
-    // ============================================
-    // 7️⃣ SUCCESS RESPONSE
-    // ============================================
-    return NextResponse.json<ApiResponse<LoginResponse>>(
-      {
+      // Success - create session & return
+      const responseJson = NextResponse.json({
         success: true,
-        message: "Login berhasil!",
+        message: "Login berhasil",
+        role: "pendaftar",
         data: {
-          user_id: userId,
+          id: pendaftar.id,
           nomor_pendaftaran: pendaftar.nomor_pendaftaran,
+          nik: pendaftar.nik,
           nama_lengkap: pendaftar.nama_lengkap,
-          role: profile.role,
+          jenis_kelamin: pendaftar.jenis_kelamin,
           jenjang: pendaftar.jenjang,
           status_pendaftaran: pendaftar.status_pendaftaran,
+          tahun_ajaran_id: pendaftar.tahun_ajaran_id,
         },
-      },
-      { status: 200 }
-    );
+      });
+
+      // Set custom auth cookie
+      responseJson.cookies.set(
+        "app_session",
+        JSON.stringify({
+          role: "pendaftar",
+          id: pendaftar.id,
+          nik: pendaftar.nik,
+          nomor_pendaftaran: pendaftar.nomor_pendaftaran,
+          nama_lengkap: pendaftar.nama_lengkap,
+        }),
+        {
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        }
+      );
+
+      console.log(`   🍪 Session cookie set\n`);
+      return responseJson;
+    }
+
+    // ═══════════════════════════════════════════
+    // LOGIN ADMIN/PENGUJI (Email + Password)
+    // ═══════════════════════════════════════════
+    else if (login_type === "admin") {
+      const { email, password } = body;
+
+      // Validasi input
+      if (!email || !password) {
+        return NextResponse.json(
+          { error: "Email dan Password wajib diisi" },
+          { status: 400 },
+        );
+      }
+
+      console.log(`   Email: ${email}`);
+
+      // Authenticate via Supabase Auth
+      const { data: authData, error: authError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+      if (authError || !authData.user) {
+        console.log(`   ❌ Auth failed: ${authError?.message}`);
+        return NextResponse.json(
+          { error: "Email atau Password salah" },
+          { status: 401 },
+        );
+      }
+
+      console.log(`   ✅ Auth success: ${authData.user.id}`);
+
+      // Get profile to check role
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authData.user.id)
+        .single();
+
+      if (profileError || !profile) {
+        console.log(`   ❌ Profile not found`);
+        return NextResponse.json(
+          { error: "Profil tidak ditemukan" },
+          { status: 404 },
+        );
+      }
+
+      // Check role
+      if (profile.role !== "admin" && profile.role !== "penguji") {
+        console.log(`   ❌ Invalid role: ${profile.role}`);
+        return NextResponse.json(
+          { error: "Akun ini tidak memiliki akses admin/penguji" },
+          { status: 403 },
+        );
+      }
+
+      console.log(`   ✅ Role: ${profile.role}`);
+      console.log(`   Name: ${profile.full_name}`);
+
+      // Create session & return
+      const responseJson = NextResponse.json({
+        success: true,
+        message: "Login berhasil",
+        role: profile.role,
+        data: {
+          id: profile.id,
+          full_name: profile.full_name,
+          phone: profile.phone,
+          role: profile.role,
+        },
+      });
+
+      // Set custom auth cookie
+      responseJson.cookies.set(
+        "app_session",
+        JSON.stringify({
+          role: profile.role,
+          id: profile.id,
+          full_name: profile.full_name,
+        }),
+        {
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        }
+      );
+
+      console.log(`   🍪 Session cookie set\n`);
+      return responseJson;
+    }
+
+    // Invalid login_type
+    else {
+      return NextResponse.json(
+        { error: "Tipe login tidak valid" },
+        { status: 400 },
+      );
+    }
   } catch (error: any) {
-    console.error("Login error:", error);
-    return NextResponse.json<ApiResponse>(
-      {
-        success: false,
-        message: "Terjadi kesalahan",
-        error: error.message || "Internal server error",
-      },
-      { status: 500 }
+    console.error("❌ Login Error:", error);
+    return NextResponse.json(
+      { error: error.message || "Terjadi kesalahan saat login" },
+      { status: 500 },
     );
   }
 }

@@ -25,7 +25,7 @@ import {
   Calendar,
   PartyPopper,
 } from "lucide-react";
-import { getCurrentUser, logoutUser } from "@/lib/auth";
+import { logoutUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase";
 
 interface PendaftarData {
@@ -132,27 +132,47 @@ export default function DashboardPage() {
 
   const checkAuth = async () => {
     try {
-      const user = await getCurrentUser();
-      if (!user) {
+      // Call server API to get session (server-side can read httpOnly cookies!)
+      const response = await fetch("/api/auth/session", {
+        method: "GET",
+        credentials: "include", // Include cookies in request
+      });
+
+      if (!response.ok) {
+        console.log("❌ No session - API returned:", response.status);
         router.push("/login");
+        setIsLoading(false);
         return;
       }
 
-      // Fetch pendaftar data
+      const { session } = await response.json();
+
+      if (!session || !session.id || session.role !== "pendaftar") {
+        console.log("❌ Invalid session or wrong role");
+        router.push("/login");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("✅ Session valid - Role:", session.role);
+
+      // Fetch pendaftar data using ID from session
       const supabase = createClient();
       const { data, error } = await supabase
         .from("pendaftar")
         .select("*")
-        .eq("user_id", user.id)
+        .eq("id", session.id)
         .single();
 
       if (error || !data) {
         console.error("Error fetching pendaftar:", error);
         alert("Data pendaftar tidak ditemukan. Hubungi admin.");
         router.push("/login");
+        setIsLoading(false);
         return;
       }
 
+      console.log("✅ Pendaftar data loaded:", data.nama_lengkap);
       setPendaftar(data);
     } catch (error) {
       console.error("Auth error:", error);
@@ -396,18 +416,46 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Action Cards - MOTIVATING - Fully Responsive Grid */}
+        {/* Action Cards - Flow PPDB: Pembayaran → Data Pribadi → Upload Dokumen */}
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-5 sm:gap-6">
-          {/* Data Pribadi - Responsive */}
+          {/* Step 1: Pembayaran */}
           <Link
-            href="/dashboard/data-pribadi"
+            href="/dashboard/pendaftar/status-pembayaran"
+            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-gold-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
+          >
+            <div className="flex items-start justify-between mb-3 sm:mb-4">
+              <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-gold-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <CreditCard className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-gold-700)]" />
+              </div>
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] xs:text-xs font-bold bg-[var(--color-gold-100)] text-[var(--color-gold-700)]">
+                Step 1 - Wajib
+              </span>
+            </div>
+            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
+              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+              <span>Pembayaran</span>
+            </h3>
+            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
+              Bayar biaya pendaftaran Rp 200.000
+            </p>
+            <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-gold-600)] font-semibold flex items-center gap-1">
+              <Sparkles className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0" />
+              <span>Transfer mudah & aman</span>
+            </div>
+          </Link>
+
+          {/* Step 2: Data Pribadi */}
+          <Link
+            href="/dashboard/pendaftar"
             className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-teal-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-teal-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
                 <User className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-teal-700)]" />
               </div>
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-text-400)] group-hover:text-[var(--color-teal-600)] transition-colors flex-shrink-0" />
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] xs:text-xs font-bold bg-[var(--color-teal-100)] text-[var(--color-teal-700)]">
+                Step 2
+              </span>
             </div>
             <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
               <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
@@ -422,16 +470,18 @@ export default function DashboardPage() {
             </div>
           </Link>
 
-          {/* Upload Dokumen - Responsive */}
+          {/* Step 3: Upload Dokumen */}
           <Link
-            href="/dashboard/dokumen"
-            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-gold-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
+            href="/dashboard/pendaftar/upload-berkas"
+            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-brown-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:col-span-2 md:col-span-1 active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">
-              <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-gold-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <FileText className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-gold-700)]" />
+              <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-brown-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <FileText className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-brown-700)]" />
               </div>
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-text-400)] group-hover:text-[var(--color-gold-600)] transition-colors flex-shrink-0" />
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] xs:text-xs font-bold bg-[var(--color-brown-100)] text-[var(--color-brown-700)]">
+                Step 3
+              </span>
             </div>
             <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
               <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
@@ -440,33 +490,9 @@ export default function DashboardPage() {
             <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
               Upload berkas persyaratan dengan mudah
             </p>
-            <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-gold-600)] font-semibold flex items-center gap-1">
-              <Sparkles className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0" />
-              <span>Terima file foto/PDF</span>
-            </div>
-          </Link>
-
-          {/* Pembayaran - Responsive - Full width on mobile */}
-          <Link
-            href="/dashboard/pembayaran"
-            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-brown-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:col-span-2 md:col-span-1 active:scale-95"
-          >
-            <div className="flex items-start justify-between mb-3 sm:mb-4">
-              <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-brown-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <CreditCard className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-brown-700)]" />
-              </div>
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-text-400)] group-hover:text-[var(--color-brown-600)] transition-colors flex-shrink-0" />
-            </div>
-            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
-              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span>Pembayaran</span>
-            </h3>
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
-              Bayar biaya pendaftaran Rp 200.000
-            </p>
             <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-brown-600)] font-semibold flex items-center gap-1">
               <Sparkles className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0" />
-              <span>Transfer mudah & aman</span>
+              <span>Terima file foto/PDF</span>
             </div>
           </Link>
         </div>
