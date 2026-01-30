@@ -25,6 +25,7 @@ import {
   Calendar,
   PartyPopper,
 } from "lucide-react";
+import BackToHomeButton from "@/components/common/BackToHomeButton";
 import { logoutUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase";
 
@@ -231,6 +232,7 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-[var(--color-cream-50)] via-white to-[var(--color-brown-50)] pt-14 sm:pt-16 md:pt-20">
+      <BackToHomeButton position="top-left" />
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           HEADER - CELEBRATORY & WELCOMING ✨ - Fully Responsive
           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}

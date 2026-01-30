@@ -119,9 +119,7 @@ function DaftarSuksesContent() {
             NIK Santri (Password)
           </p>
           <div className="flex items-center justify-between gap-3">
-            <p className="text-lg font-black text-amber-700 break-all">
-              {nik}
-            </p>
+            <p className="text-lg font-black text-amber-700 break-all">{nik}</p>
             <button
               onClick={() => handleCopy(nik, "nik")}
               className="p-2 hover:bg-amber-50 rounded-lg transition-colors flex-shrink-0"

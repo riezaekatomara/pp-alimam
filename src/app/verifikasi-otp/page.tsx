@@ -372,9 +372,7 @@ function VerifikasiOTPContent() {
 
       {/* Help Info */}
       <div className="mt-6 p-4 bg-amber-50 border-2 border-amber-200 rounded-xl">
-        <p className="text-sm text-amber-900 font-bold mb-2">
-          Tips Verifikasi
-        </p>
+        <p className="text-sm text-amber-900 font-bold mb-2">Tips Verifikasi</p>
         <ul className="text-xs text-amber-800 space-y-1">
           <li>
             - Pastikan nomor HP Anda aktif dan bisa menerima{" "}

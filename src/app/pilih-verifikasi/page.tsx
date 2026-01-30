@@ -256,9 +256,7 @@ function PilihVerifikasiContent() {
             <div className="flex-1">
               <h3
                 className={`text-xl font-black mb-1 ${
-                  selectedChannel === "sms"
-                    ? "text-blue-700"
-                    : "text-stone-900"
+                  selectedChannel === "sms" ? "text-blue-700" : "text-stone-900"
                 }`}
               >
                 SMS
@@ -382,8 +380,7 @@ function PilihVerifikasiContent() {
             ) : (
               <ul className="text-xs text-amber-800 space-y-1">
                 <li>
-                  - <strong>WhatsApp:</strong> Lebih cepat & bisa chat
-                  langsung
+                  - <strong>WhatsApp:</strong> Lebih cepat & bisa chat langsung
                 </li>
                 <li>
                   - <strong>SMS:</strong> Tidak perlu internet/kuota data

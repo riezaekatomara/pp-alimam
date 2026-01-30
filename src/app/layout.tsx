@@ -6,6 +6,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // ✅ IMPORT NAVBAR & FOOTER YANG SUDAH ADA
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LayoutWrapper from "@/components/layout/LayoutWrapper";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // FONT CONFIGURATIONS
@@ -160,20 +161,9 @@ export default function RootLayout({
       <body
         className={`${plusJakartaSans.variable} ${poppins.variable} ${amiri.variable} font-sans antialiased bg-[var(--color-cream-50)] text-[var(--color-text-900)] overflow-x-hidden`}
       >
-        {/* ✅ MAIN LAYOUT STRUCTURE */}
-        <div className="relative min-h-screen flex flex-col">
-          {/* ✅ NAVBAR - Muncul di semua halaman */}
-          <Navbar />
-
-          {/* ✅ MAIN CONTENT - Page content dengan offset untuk navbar fixed */}
-          <main className="flex-1 pt-16 md:pt-20">
-            {/* pt-16 md:pt-20 untuk offset navbar height (h-16 md:h-20) */}
-            {children}
-          </main>
-
-          {/* ✅ FOOTER - Muncul di semua halaman */}
-          <Footer />
-        </div>
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );

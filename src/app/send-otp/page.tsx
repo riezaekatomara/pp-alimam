@@ -102,6 +102,7 @@ export default function SendOtpPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
+      <BackToHomeButton position="top-left" />
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 md:p-8">
         {/* Header */}
         <div className="mb-8">

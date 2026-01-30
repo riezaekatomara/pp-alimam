@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import {
   User,
@@ -15,9 +15,15 @@ import {
   Menu,
   X,
   Home,
+  Lock,
 } from "lucide-react";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
+import {
+  canAccessTab,
+  type StatusProses,
+  type TabName,
+} from "@/lib/access-control";
 
 export default function DashboardLayout({
   children,
@@ -26,51 +32,122 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [statusProses, setStatusProses] = useState<StatusProses>("draft");
+  const [nomorPendaftaran, setNomorPendaftaran] = useState("");
+
+  // Fetch user status dari database
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        const data = await response.json();
+        if (data.pendaftar_id) {
+          // Fetch user status dari database
+          const res = await fetch(
+            `/api/pendaftar/status?pendaftar_id=${data.pendaftar_id}`,
+          );
+          const userData = await res.json();
+          setStatusProses((userData.status_proses || "draft") as StatusProses);
+          setNomorPendaftaran(userData.nomor_pendaftaran || "");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Default ke draft jika error
+        setStatusProses("draft");
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const menuItems = [
     {
-      name: "Data Pendaftaran",
+      name: "Data Pribadi",
       href: "/dashboard/pendaftar",
-      icon: ClipboardList,
+      tabName: "data-pribadi" as TabName,
+      icon: User,
       active: pathname === "/dashboard/pendaftar",
     },
     {
       name: "Pembayaran Pendaftaran",
       href: "/dashboard/pendaftar/pembayaran-pendaftaran",
+      tabName: "pembayaran-pendaftaran" as TabName,
       icon: CreditCard,
       active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
     },
     {
       name: "Kelengkapan Berkas",
       href: "/dashboard/pendaftar/kelengkapan-berkas",
+      tabName: "kelengkapan-berkas" as TabName,
       icon: FileCheck,
       active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
     },
     {
-      name: "Undangan Seleksi",
-      href: "/dashboard/pendaftar/undangan-seleksi",
+      name: "Jadwal Ujian",
+      href: "/dashboard/pendaftar/jadwal-ujian",
+      tabName: "jadwal-ujian" as TabName,
       icon: Calendar,
-      active: pathname === "/dashboard/pendaftar/undangan-seleksi",
+      active: pathname === "/dashboard/pendaftar/jadwal-ujian",
+    },
+    {
+      name: "Hasil Ujian",
+      href: "/dashboard/pendaftar/hasil-ujian",
+      tabName: "hasil-ujian" as TabName,
+      icon: Trophy,
+      active: pathname === "/dashboard/pendaftar/hasil-ujian",
     },
     {
       name: "Pengumuman",
       href: "/dashboard/pendaftar/pengumuman",
-      icon: Trophy,
+      tabName: "pengumuman" as TabName,
+      icon: CheckCircle,
       active: pathname === "/dashboard/pendaftar/pengumuman",
     },
     {
       name: "Daftar Ulang",
       href: "/dashboard/pendaftar/daftar-ulang",
-      icon: CheckCircle,
+      tabName: "daftar-ulang" as TabName,
+      icon: Settings,
       active: pathname === "/dashboard/pendaftar/daftar-ulang",
     },
-    {
-      name: "Profil",
-      href: "/dashboard/pendaftar/profil",
-      icon: Settings,
-      active: pathname === "/dashboard/pendaftar/profil",
-    },
   ];
+
+  // Function untuk cek apakah tab bisa diakses
+  const isTabAccessible = (tabName: TabName) => {
+    return canAccessTab(tabName, statusProses);
+  };
+
+  // NavLink component dengan conditional rendering
+  const NavLink = ({ item }: { item: (typeof menuItems)[0] }) => {
+    const isAccessible = isTabAccessible(item.tabName);
+
+    if (!isAccessible) {
+      return (
+        <div
+          title={`Akses akan terbuka di status: ${statusProses}`}
+          className="flex items-center px-4 py-3 text-sm font-medium rounded-xl text-stone-400 opacity-50 cursor-not-allowed bg-stone-100"
+        >
+          <item.icon className="w-5 h-5 mr-3" />
+          {item.name}
+          <Lock className="w-4 h-4 ml-auto" />
+        </div>
+      );
+    }
+
+    return (
+      <Link
+        href={item.href}
+        className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all ${
+          item.active
+            ? "bg-teal-500 text-white shadow-lg"
+            : "text-stone-700 hover:bg-teal-100 hover:text-teal-700"
+        }`}
+      >
+        <item.icon className="w-5 h-5 mr-3" />
+        {item.name}
+      </Link>
+    );
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -109,10 +186,10 @@ export default function DashboardLayout({
 
         <div className="flex">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
-            <div className="flex flex-col flex-grow pt-8 bg-white border-r-2 border-teal-200 overflow-y-auto">
+          <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen">
+            <div className="flex flex-col h-full bg-white border-r-2 border-teal-200 overflow-y-auto">
               {/* Logo & Brand */}
-              <div className="flex items-center justify-center mb-8 px-6">
+              <div className="flex items-center justify-center mb-8 px-6 pt-8">
                 <div className="bg-teal-600 text-white p-3 rounded-2xl">
                   <User className="w-8 h-8" />
                 </div>
@@ -125,25 +202,14 @@ export default function DashboardLayout({
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 px-4 space-y-2">
+              <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
                 {menuItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all ${
-                      item.active
-                        ? "bg-teal-500 text-white shadow-lg"
-                        : "text-stone-700 hover:bg-teal-100 hover:text-teal-700"
-                    }`}
-                  >
-                    <item.icon className="w-5 h-5 mr-3" />
-                    {item.name}
-                  </Link>
+                  <NavLink key={item.name} item={item} />
                 ))}
               </nav>
 
               {/* Bottom Section */}
-              <div className="border-t border-stone-200 p-4">
+              <div className="flex-shrink-0 border-t border-stone-200 p-4">
                 <div className="bg-teal-50 rounded-xl p-4 mb-4">
                   <p className="text-xs text-stone-600 mb-1">
                     Nomor Pendaftaran
@@ -182,21 +248,39 @@ export default function DashboardLayout({
                     </div>
                   </div>
                   <nav className="flex-1 px-4 space-y-2">
-                    {menuItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setSidebarOpen(false)}
-                        className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl ${
-                          item.active
-                            ? "bg-teal-500 text-white"
-                            : "text-stone-700 hover:bg-teal-100"
-                        }`}
-                      >
-                        <item.icon className="w-5 h-5 mr-3" />
-                        {item.name}
-                      </Link>
-                    ))}
+                    {menuItems.map((item) => {
+                      const isAccessible = isTabAccessible(item.tabName);
+
+                      if (!isAccessible) {
+                        return (
+                          <div
+                            key={item.name}
+                            title={`Akses akan terbuka di status: ${statusProses}`}
+                            className="flex items-center px-4 py-3 text-sm font-medium rounded-xl text-stone-400 opacity-50 cursor-not-allowed bg-stone-100"
+                          >
+                            <item.icon className="w-5 h-5 mr-3" />
+                            {item.name}
+                            <Lock className="w-4 h-4 ml-auto" />
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setSidebarOpen(false)}
+                          className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl ${
+                            item.active
+                              ? "bg-teal-500 text-white"
+                              : "text-stone-700 hover:bg-teal-100"
+                          }`}
+                        >
+                          <item.icon className="w-5 h-5 mr-3" />
+                          {item.name}
+                        </Link>
+                      );
+                    })}
                   </nav>
                   <div className="border-t border-stone-200 p-4">
                     <button

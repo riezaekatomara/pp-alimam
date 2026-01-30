@@ -17,6 +17,7 @@ import {
   Sparkles,
   FileText,
 } from "lucide-react";
+import BackToHomeButton from "@/components/common/BackToHomeButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -143,8 +144,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-teal-50 flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full">
+    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-teal-50 flex items-center justify-center px-4 py-12">      <BackToHomeButton position="top-left" />      <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 bg-gradient-to-r from-teal-600 to-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl">
