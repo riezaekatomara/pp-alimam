@@ -73,6 +73,11 @@ export default function AdminPendaftarPage() {
   const [kabupatenList, setKabupatenList] = useState<string[]>([]);
   const [kecamatanList, setKecamatanList] = useState<string[]>([]);
   const [kelurahanList, setKelurahanList] = useState<string[]>([]);
+  // Loading states for location dropdowns
+  const [provinsiLoading, setProvinsiLoading] = useState(false);
+  const [kabupatenLoading, setKabupatenLoading] = useState(false);
+  const [kecamatanLoading, setKecamatanLoading] = useState(false);
+  const [kelurahanLoading, setKelurahanLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkUpdating, setBulkUpdating] = useState(false);
@@ -149,6 +154,7 @@ export default function AdminPendaftarPage() {
     // Fetch provinsi list
     const fetchProvinsi = async () => {
       try {
+        setProvinsiLoading(true);
         const response = await fetch("/api/admin/locations/provinsi");
         if (response.ok) {
           const result = await response.json();
@@ -156,6 +162,8 @@ export default function AdminPendaftarPage() {
         }
       } catch (error) {
         console.error("Error fetching provinsi:", error);
+      } finally {
+        setProvinsiLoading(false);
       }
     };
     fetchProvinsi();
@@ -175,6 +183,7 @@ export default function AdminPendaftarPage() {
 
     const fetchKabupaten = async () => {
       try {
+        setKabupatenLoading(true);
         const response = await fetch(
           `/api/admin/locations/kabupaten?provinsi=${encodeURIComponent(provinsiFilter)}`
         );
@@ -184,6 +193,8 @@ export default function AdminPendaftarPage() {
         }
       } catch (error) {
         console.error("Error fetching kabupaten:", error);
+      } finally {
+        setKabupatenLoading(false);
       }
     };
     fetchKabupaten();
@@ -201,6 +212,7 @@ export default function AdminPendaftarPage() {
 
     const fetchKecamatan = async () => {
       try {
+        setKecamatanLoading(true);
         const response = await fetch(
           `/api/admin/locations/kecamatan?kabupaten=${encodeURIComponent(kabupatenFilter)}`
         );
@@ -210,6 +222,8 @@ export default function AdminPendaftarPage() {
         }
       } catch (error) {
         console.error("Error fetching kecamatan:", error);
+      } finally {
+        setKecamatanLoading(false);
       }
     };
     fetchKecamatan();
@@ -225,6 +239,7 @@ export default function AdminPendaftarPage() {
 
     const fetchKelurahan = async () => {
       try {
+        setKelurahanLoading(true);
         const response = await fetch(
           `/api/admin/locations/kelurahan?kecamatan=${encodeURIComponent(kecamatanFilter)}`
         );
@@ -234,6 +249,8 @@ export default function AdminPendaftarPage() {
         }
       } catch (error) {
         console.error("Error fetching kelurahan:", error);
+      } finally {
+        setKelurahanLoading(false);
       }
     };
     fetchKelurahan();
@@ -528,10 +545,14 @@ export default function AdminPendaftarPage() {
         {/* Location cascading filters */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Provinsi</label>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              Provinsi {provinsiLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            </label>
             <select
               value={provinsiFilter}
               onChange={(e) => setProvinsiFilter(e.target.value)}
+              aria-label="Filter provinsi"
+              aria-busy={provinsiLoading}
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
             >
               <option value="">Semua Provinsi</option>
@@ -542,11 +563,15 @@ export default function AdminPendaftarPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Kabupaten / Kota</label>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              Kabupaten / Kota {kabupatenLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            </label>
             <select
               value={kabupatenFilter}
               onChange={(e) => setKabupatenFilter(e.target.value)}
-              disabled={kabupatenList.length === 0}
+              disabled={kabupatenList.length === 0 || kabupatenLoading}
+              aria-label="Filter kabupaten atau kota"
+              aria-busy={kabupatenLoading}
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
             >
               <option value="">Semua Kabupaten / Kota</option>
@@ -557,11 +582,15 @@ export default function AdminPendaftarPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Kecamatan</label>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              Kecamatan {kecamatanLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            </label>
             <select
               value={kecamatanFilter}
               onChange={(e) => setKecamatanFilter(e.target.value)}
-              disabled={kecamatanList.length === 0}
+              disabled={kecamatanList.length === 0 || kecamatanLoading}
+              aria-label="Filter kecamatan"
+              aria-busy={kecamatanLoading}
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
             >
               <option value="">Semua Kecamatan</option>
@@ -572,11 +601,15 @@ export default function AdminPendaftarPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">Kelurahan</label>
+            <label className="block text-sm font-medium text-stone-700 mb-2">
+              Kelurahan {kelurahanLoading && <span className="inline-block ml-2 text-xs text-stone-500">Memuat...</span>}
+            </label>
             <select
               value={kelurahanFilter}
               onChange={(e) => setKelurahanFilter(e.target.value)}
-              disabled={kelurahanList.length === 0}
+              disabled={kelurahanList.length === 0 || kelurahanLoading}
+              aria-label="Filter kelurahan"
+              aria-busy={kelurahanLoading}
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none disabled:opacity-50"
             >
               <option value="">Semua Kelurahan</option>
@@ -585,7 +618,6 @@ export default function AdminPendaftarPage() {
               ))}
             </select>
           </div>
-        </div>
         </div>
       </div>
 
