@@ -1,0 +1,567 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  User,
+  MapPin,
+  Phone,
+  Mail,
+  Calendar,
+  School,
+  Heart,
+  Home,
+  FileText,
+  CreditCard,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  Edit,
+  Save,
+  X,
+  Users,
+  Briefcase,
+  DollarSign,
+} from "lucide-react";
+import Link from "next/link";
+
+interface PendaftarDetail {
+  id: string;
+  nomor_pendaftaran: string;
+  nik: string;
+  nama_lengkap: string;
+  jenis_kelamin: string;
+  jenjang: string;
+  tempat_lahir: string | null;
+  tanggal_lahir: string | null;
+  alamat: string | null;
+  rt: string | null;
+  rw: string | null;
+  kelurahan: string | null;
+  kecamatan: string | null;
+  kabupaten: string | null;
+  provinsi: string | null;
+  kode_pos: string | null;
+  no_hp: string | null;
+  email: string | null;
+  asal_sekolah: string | null;
+  nisn: string | null;
+  golongan_darah: string | null;
+  anak_ke: number | null;
+  jumlah_saudara: number | null;
+  hobi: string | null;
+  cita_cita: string | null;
+  status_proses: string;
+  created_at: string;
+  updated_at: string;
+  tahun_ajaran: {
+    nama: string;
+    biaya_pendaftaran: string;
+  } | null;
+  orang_tua: {
+    nama_ayah: string | null;
+    pekerjaan_ayah: string | null;
+    penghasilan_ayah: string | null;
+    nama_ibu: string | null;
+    pekerjaan_ibu: string | null;
+    penghasilan_ibu: string | null;
+    no_hp_ayah: string | null;
+    no_hp_ibu: string | null;
+  } | null;
+  dokumen: Array<{
+    id: string;
+    jenis_dokumen: string;
+    status_verifikasi: string;
+    file_url: string | null;
+  }>;
+  pembayaran: Array<{
+    id: string;
+    jumlah: string;
+    metode_pembayaran: string;
+    status_pembayaran: string;
+    tanggal_pembayaran: string | null;
+  }>;
+}
+
+export default function PendaftarDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [pendaftar, setPendaftar] = useState<PendaftarDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editingStatus, setEditingStatus] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
+  const [savingStatus, setSavingStatus] = useState(false);
+
+  useEffect(() => {
+    fetchPendaftarDetail();
+  }, [params.id]);
+
+  const fetchPendaftarDetail = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/admin/pendaftar/${params.id}`);
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const result = await response.json();
+      setPendaftar(result.data);
+      setNewStatus(result.data.status_proses);
+    } catch (error) {
+      console.error("Error fetching pendaftar:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateStatus = async () => {
+    try {
+      setSavingStatus(true);
+      const response = await fetch(`/api/admin/pendaftar/${params.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status_proses: newStatus }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update");
+
+      await fetchPendaftarDetail();
+      setEditingStatus(false);
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Gagal mengubah status");
+    } finally {
+      setSavingStatus(false);
+    }
+  };
+
+  const formatStatus = (status: string) => {
+    const statusMap: Record<string, { label: string; color: string }> = {
+      draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
+      awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
+      paid: { label: "Sudah Bayar", color: "bg-blue-100 text-blue-700" },
+      data_completed: { label: "Data Lengkap", color: "bg-teal-100 text-teal-700" },
+      docs_uploaded: { label: "Dokumen Terupload", color: "bg-indigo-100 text-indigo-700" },
+      docs_verified: { label: "Dokumen Terverifikasi", color: "bg-green-100 text-green-700" },
+      scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
+      tested: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
+      announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
+      accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
+      rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
+      enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-700" },
+    };
+    return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
+  };
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "-";
+    return new Date(dateString).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const formatRupiah = (amount: string) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(parseFloat(amount));
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-stone-600">Memuat detail pendaftar...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!pendaftar) {
+    return (
+      <div className="text-center py-20">
+        <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+        <p className="text-stone-600 text-lg font-medium">
+          Pendaftar tidak ditemukan
+        </p>
+        <Link
+          href="/dashboard/admin/pendaftar"
+          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Kembali ke Daftar
+        </Link>
+      </div>
+    );
+  }
+
+  const statusInfo = formatStatus(pendaftar.status_proses);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard/admin/pendaftar"
+              className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </Link>
+            <div>
+              <h2 className="text-2xl font-black text-stone-900">
+                Detail Pendaftar
+              </h2>
+              <p className="text-stone-600">
+                {pendaftar.nomor_pendaftaran}
+              </p>
+            </div>
+          </div>
+
+          {/* Status Update Section */}
+          <div className="flex items-center gap-3">
+            {editingStatus ? (
+              <>
+                <select
+                  value={newStatus}
+                  onChange={(e) => setNewStatus(e.target.value)}
+                  className="px-4 py-2 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  disabled={savingStatus}
+                >
+                  <option value="draft">Draft</option>
+                  <option value="awaiting_payment">Menunggu Pembayaran</option>
+                  <option value="paid">Sudah Bayar</option>
+                  <option value="data_completed">Data Lengkap</option>
+                  <option value="docs_uploaded">Dokumen Terupload</option>
+                  <option value="docs_verified">Dokumen Terverifikasi</option>
+                  <option value="scheduled">Terjadwal Ujian</option>
+                  <option value="tested">Sudah Ujian</option>
+                  <option value="announced">Diumumkan</option>
+                  <option value="accepted">Diterima</option>
+                  <option value="rejected">Ditolak</option>
+                  <option value="enrolled">Terdaftar</option>
+                </select>
+                <button
+                  onClick={handleUpdateStatus}
+                  disabled={savingStatus}
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                >
+                  {savingStatus ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5 inline mr-2" />
+                      Simpan
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => {
+                    setEditingStatus(false);
+                    setNewStatus(pendaftar.status_proses);
+                  }}
+                  disabled={savingStatus}
+                  className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg font-medium transition-colors"
+                >
+                  <X className="w-5 h-5 inline mr-2" />
+                  Batal
+                </button>
+              </>
+            ) : (
+              <>
+                <span className={`px-4 py-2 rounded-lg text-sm font-bold ${statusInfo.color}`}>
+                  {statusInfo.label}
+                </span>
+                <button
+                  onClick={() => setEditingStatus(true)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  <Edit className="w-5 h-5 inline mr-2" />
+                  Ubah Status
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Info - 2 columns */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Data Pribadi */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <User className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Data Pribadi</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoItem label="Nama Lengkap" value={pendaftar.nama_lengkap} />
+              <InfoItem label="NIK" value={pendaftar.nik} />
+              <InfoItem
+                label="Jenis Kelamin"
+                value={pendaftar.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+              />
+              <InfoItem label="Jenjang" value={pendaftar.jenjang} />
+              <InfoItem label="Tempat Lahir" value={pendaftar.tempat_lahir} />
+              <InfoItem label="Tanggal Lahir" value={formatDate(pendaftar.tanggal_lahir)} />
+              <InfoItem label="Golongan Darah" value={pendaftar.golongan_darah} />
+              <InfoItem label="NISN" value={pendaftar.nisn} />
+              <InfoItem label="Anak Ke" value={pendaftar.anak_ke?.toString()} />
+              <InfoItem label="Jumlah Saudara" value={pendaftar.jumlah_saudara?.toString()} />
+              <InfoItem label="Hobi" value={pendaftar.hobi} />
+              <InfoItem label="Cita-cita" value={pendaftar.cita_cita} />
+            </div>
+          </div>
+
+          {/* Kontak & Alamat */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <MapPin className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Kontak & Alamat</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoItem label="No. HP" value={pendaftar.no_hp} icon={<Phone className="w-4 h-4" />} />
+              <InfoItem label="Email" value={pendaftar.email} icon={<Mail className="w-4 h-4" />} />
+              <div className="md:col-span-2">
+                <InfoItem label="Alamat Lengkap" value={pendaftar.alamat} />
+              </div>
+              <InfoItem label="RT/RW" value={`${pendaftar.rt || "-"}/${pendaftar.rw || "-"}`} />
+              <InfoItem label="Kelurahan" value={pendaftar.kelurahan} />
+              <InfoItem label="Kecamatan" value={pendaftar.kecamatan} />
+              <InfoItem label="Kabupaten" value={pendaftar.kabupaten} />
+              <InfoItem label="Provinsi" value={pendaftar.provinsi} />
+              <InfoItem label="Kode Pos" value={pendaftar.kode_pos} />
+            </div>
+          </div>
+
+          {/* Asal Sekolah */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-purple-100 rounded-lg">
+                <School className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Asal Sekolah</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoItem label="Nama Sekolah" value={pendaftar.asal_sekolah} />
+              <InfoItem label="Tahun Lulus" value={pendaftar.tahun_lulus?.toString()} />
+              <div className="md:col-span-2">
+                <InfoItem label="Alamat Sekolah" value={pendaftar.alamat_sekolah} />
+              </div>
+            </div>
+          </div>
+
+          {/* Data Orang Tua */}
+          {pendaftar.orang_tua && (
+            <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-amber-100 rounded-lg">
+                  <Users className="w-6 h-6 text-amber-600" />
+                </div>
+                <h3 className="text-lg font-bold text-stone-900">Data Orang Tua/Wali</h3>
+              </div>
+
+              <div className="space-y-6">
+                {/* Data Ayah */}
+                <div>
+                  <h4 className="font-bold text-stone-700 mb-3 flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    Data Ayah
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <InfoItem label="Nama Ayah" value={pendaftar.orang_tua.nama_ayah} />
+                    <InfoItem label="No. HP Ayah" value={pendaftar.orang_tua.no_hp_ayah} />
+                    <InfoItem label="Pekerjaan" value={pendaftar.orang_tua.pekerjaan_ayah} />
+                    <InfoItem label="Penghasilan" value={pendaftar.orang_tua.penghasilan_ayah} />
+                  </div>
+                </div>
+
+                {/* Data Ibu */}
+                <div>
+                  <h4 className="font-bold text-stone-700 mb-3 flex items-center gap-2">
+                    <User className="w-4 h-4" />
+                    Data Ibu
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <InfoItem label="Nama Ibu" value={pendaftar.orang_tua.nama_ibu} />
+                    <InfoItem label="No. HP Ibu" value={pendaftar.orang_tua.no_hp_ibu} />
+                    <InfoItem label="Pekerjaan" value={pendaftar.orang_tua.pekerjaan_ibu} />
+                    <InfoItem label="Penghasilan" value={pendaftar.orang_tua.penghasilan_ibu} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Sidebar - 1 column */}
+        <div className="space-y-6">
+          {/* Tahun Ajaran */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-indigo-100 rounded-lg">
+                <Calendar className="w-6 h-6 text-indigo-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Tahun Ajaran</h3>
+            </div>
+            <div className="space-y-3">
+              <InfoItem
+                label="Periode"
+                value={pendaftar.tahun_ajaran?.nama || "-"}
+              />
+              <InfoItem
+                label="Biaya Pendaftaran"
+                value={
+                  pendaftar.tahun_ajaran
+                    ? formatRupiah(pendaftar.tahun_ajaran.biaya_pendaftaran)
+                    : "-"
+                }
+              />
+            </div>
+          </div>
+
+          {/* Status Dokumen */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-teal-100 rounded-lg">
+                <FileText className="w-6 h-6 text-teal-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Dokumen</h3>
+            </div>
+            {pendaftar.dokumen.length === 0 ? (
+              <p className="text-sm text-stone-500">Belum ada dokumen terupload</p>
+            ) : (
+              <div className="space-y-2">
+                {pendaftar.dokumen.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="flex items-center justify-between p-3 bg-stone-50 rounded-lg"
+                  >
+                    <span className="text-sm font-medium text-stone-700">
+                      {doc.jenis_dokumen}
+                    </span>
+                    <span
+                      className={`px-2 py-1 rounded text-xs font-bold ${
+                        doc.status_verifikasi === "verified"
+                          ? "bg-green-100 text-green-700"
+                          : doc.status_verifikasi === "rejected"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-amber-100 text-amber-700"
+                      }`}
+                    >
+                      {doc.status_verifikasi === "verified"
+                        ? "Terverifikasi"
+                        : doc.status_verifikasi === "rejected"
+                        ? "Ditolak"
+                        : "Pending"}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Status Pembayaran */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-emerald-100 rounded-lg">
+                <CreditCard className="w-6 h-6 text-emerald-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Pembayaran</h3>
+            </div>
+            {pendaftar.pembayaran.length === 0 ? (
+              <p className="text-sm text-stone-500">Belum ada pembayaran</p>
+            ) : (
+              <div className="space-y-3">
+                {pendaftar.pembayaran.map((payment) => (
+                  <div key={payment.id} className="p-3 bg-stone-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-bold text-stone-900">
+                        {formatRupiah(payment.jumlah)}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-bold ${
+                          payment.status_pembayaran === "verified"
+                            ? "bg-green-100 text-green-700"
+                            : payment.status_pembayaran === "rejected"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-amber-100 text-amber-700"
+                        }`}
+                      >
+                        {payment.status_pembayaran === "verified"
+                          ? "Terverifikasi"
+                          : payment.status_pembayaran === "rejected"
+                          ? "Ditolak"
+                          : "Pending"}
+                      </span>
+                    </div>
+                    <div className="text-xs text-stone-600">
+                      <div>Metode: {payment.metode_pembayaran}</div>
+                      <div>
+                        Tanggal: {formatDate(payment.tanggal_pembayaran)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Timestamps */}
+          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-stone-100 rounded-lg">
+                <Calendar className="w-6 h-6 text-stone-600" />
+              </div>
+              <h3 className="text-lg font-bold text-stone-900">Timeline</h3>
+            </div>
+            <div className="space-y-3">
+              <InfoItem
+                label="Tanggal Daftar"
+                value={formatDate(pendaftar.created_at)}
+                icon={<Calendar className="w-4 h-4" />}
+              />
+              <InfoItem
+                label="Update Terakhir"
+                value={formatDate(pendaftar.updated_at)}
+                icon={<Calendar className="w-4 h-4" />}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Helper component for info items
+function InfoItem({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string | null | undefined;
+  icon?: React.ReactNode;
+}) {
+  return (
+    <div>
+      <p className="text-xs text-stone-500 mb-1">{label}</p>
+      <div className="flex items-center gap-2">
+        {icon && <span className="text-stone-400">{icon}</span>}
+        <p className="font-medium text-stone-900">{value || "-"}</p>
+      </div>
+    </div>
+  );
+}

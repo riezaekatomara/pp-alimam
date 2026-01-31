@@ -5,26 +5,23 @@ import {
   Calendar,
   Clock,
   MapPin,
-  User,
+  Users,
   FileText,
-  AlertCircle,
   Loader2,
-  CheckCircle,
-  Download,
 } from "lucide-react";
 
-interface JadwalUjian {
+interface Jadwal {
   id: string;
   jenis_ujian: string;
   tanggal_ujian: string;
   waktu_mulai: string;
   waktu_selesai: string | null;
   lokasi: string | null;
-  keterangan: string | null;
+  jumlah_peserta: number;
 }
 
-export default function UndanganSeleksiTab() {
-  const [jadwal, setJadwal] = useState<JadwalUjian[]>([]);
+export default function JadwalPengujiPage() {
+  const [jadwal, setJadwal] = useState<Jadwal[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,8 +31,7 @@ export default function UndanganSeleksiTab() {
   const fetchJadwal = async () => {
     try {
       setLoading(true);
-      // This API needs to be created
-      const response = await fetch("/api/pendaftar/jadwal-ujian");
+      const response = await fetch("/api/penguji/jadwal");
       if (response.ok) {
         const result = await response.json();
         setJadwal(result.data || []);
@@ -57,14 +53,20 @@ export default function UndanganSeleksiTab() {
   };
 
   const formatTime = (timeString: string) => {
-    return timeString.substring(0, 5); // HH:MM
+    return timeString.substring(0, 5);
+  };
+
+  const isToday = (dateString: string) => {
+    const today = new Date().toISOString().split("T")[0];
+    const checkDate = dateString.split("T")[0];
+    return today === checkDate;
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-teal-600 mx-auto mb-4" />
+          <Loader2 className="w-12 h-12 animate-spin text-violet-600 mx-auto mb-4" />
           <p className="text-stone-600">Memuat jadwal ujian...</p>
         </div>
       </div>
@@ -74,25 +76,34 @@ export default function UndanganSeleksiTab() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-black mb-2">Undangan Seleksi</h1>
-        <p className="text-purple-100">
-          Jadwal ujian seleksi calon santri baru
-        </p>
+      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-violet-100">
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl">
+            <Calendar className="w-8 h-8 text-white" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-stone-900">
+              Jadwal Ujian Saya
+            </h2>
+            <p className="text-stone-600">
+              Total: {jadwal.length} jadwal ujian
+            </p>
+          </div>
+        </div>
       </div>
 
       {jadwal.length === 0 ? (
         <div className="bg-white rounded-xl p-12 border-2 border-stone-200 shadow-sm">
           <div className="text-center">
-            <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Calendar className="w-10 h-10 text-amber-600" />
+            <div className="w-20 h-20 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Calendar className="w-10 h-10 text-violet-600" />
             </div>
             <h3 className="text-xl font-bold text-stone-900 mb-3">
-              Belum Ada Jadwal Ujian
+              Belum Ada Jadwal
             </h3>
             <p className="text-stone-600 max-w-md mx-auto">
-              Jadwal ujian Anda akan muncul di sini setelah dokumen Anda
-              diverifikasi oleh panitia. Mohon tunggu konfirmasi lebih lanjut.
+              Anda belum ditugaskan untuk ujian apapun. Jadwal akan muncul di
+              sini setelah panitia menugaskan Anda.
             </p>
           </div>
         </div>
@@ -101,28 +112,39 @@ export default function UndanganSeleksiTab() {
           {jadwal.map((item) => (
             <div
               key={item.id}
-              className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-100 hover:border-purple-300 transition-colors"
+              className={`bg-white rounded-xl shadow-lg p-6 border-2 transition-all ${
+                isToday(item.tanggal_ujian)
+                  ? "border-green-300 bg-green-50"
+                  : "border-violet-100 hover:border-violet-300"
+              }`}
             >
+              {isToday(item.tanggal_ujian) && (
+                <div className="mb-4 inline-flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded-full text-sm font-bold">
+                  <Clock className="w-4 h-4" />
+                  Hari Ini
+                </div>
+              )}
+
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-purple-100 rounded-xl">
-                    <FileText className="w-6 h-6 text-purple-600" />
+                  <div className="p-3 bg-violet-100 rounded-xl">
+                    <FileText className="w-6 h-6 text-violet-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-stone-900">
                       {item.jenis_ujian}
                     </h3>
-                    <span className="text-sm text-green-600 font-medium flex items-center gap-1 mt-1">
-                      <CheckCircle className="w-4 h-4" />
-                      Terjadwal
-                    </span>
+                    <div className="flex items-center gap-2 mt-1 text-sm text-stone-600">
+                      <Users className="w-4 h-4" />
+                      <span>{item.jumlah_peserta} peserta</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-purple-600" />
+                  <Calendar className="w-5 h-5 text-violet-600" />
                   <div>
                     <p className="text-xs text-stone-500">Tanggal</p>
                     <p className="font-bold text-stone-900">
@@ -132,7 +154,7 @@ export default function UndanganSeleksiTab() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-purple-600" />
+                  <Clock className="w-5 h-5 text-violet-600" />
                   <div>
                     <p className="text-xs text-stone-500">Waktu</p>
                     <p className="font-bold text-stone-900">
@@ -145,20 +167,12 @@ export default function UndanganSeleksiTab() {
                 </div>
 
                 {item.lokasi && (
-                  <div className="flex items-center gap-3 md:col-span-2">
-                    <MapPin className="w-5 h-5 text-purple-600" />
+                  <div className="flex items-center gap-3">
+                    <MapPin className="w-5 h-5 text-violet-600" />
                     <div>
                       <p className="text-xs text-stone-500">Lokasi</p>
                       <p className="font-bold text-stone-900">{item.lokasi}</p>
                     </div>
-                  </div>
-                )}
-
-                {item.keterangan && (
-                  <div className="md:col-span-2 mt-2 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-sm text-blue-900">
-                      <strong>Keterangan:</strong> {item.keterangan}
-                    </p>
                   </div>
                 )}
               </div>
@@ -166,29 +180,6 @@ export default function UndanganSeleksiTab() {
           ))}
         </div>
       )}
-
-      {/* Info Box */}
-      <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-6">
-        <div className="flex gap-4">
-          <div className="flex-shrink-0">
-            <div className="p-2 bg-amber-200 rounded-lg">
-              <AlertCircle className="w-6 h-6 text-amber-700" />
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold text-amber-900 mb-2">
-              Persiapan Ujian
-            </h4>
-            <ul className="text-sm text-amber-800 space-y-1">
-              <li>• Hadir 30 menit sebelum ujian dimulai</li>
-              <li>• Bawa kartu ujian dan identitas diri (KTP/Kartu Pelajar)</li>
-              <li>• Kenakan pakaian yang rapi dan sopan</li>
-              <li>• Bawa alat tulis (pulpen, pensil, penghapus)</li>
-              <li>• Jaga kesehatan dan istirahat yang cukup</li>
-            </ul>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

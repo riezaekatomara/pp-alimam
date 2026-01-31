@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:locations": "node scripts/test-locations.js",
     "lint": "biome check",
     "format": "biome format --write"
   },

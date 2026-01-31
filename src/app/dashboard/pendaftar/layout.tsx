@@ -16,6 +16,8 @@ import {
   Home,
   Lock,
   Loader2,
+  Download,
+  Upload,
 } from "lucide-react";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -40,7 +42,7 @@ export default function DashboardLayout({
   const formatStatusForDisplay = (status: StatusProses): string => {
     return status
       .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   };
 
@@ -53,8 +55,7 @@ export default function DashboardLayout({
     
     const tabRequirements: Partial<Record<TabName, StatusProses>> = {
       'kelengkapan-berkas': 'paid',
-      'jadwal-ujian': 'docs_verified',
-      'hasil-ujian': 'tested',
+      'undangan-seleksi': 'docs_verified',
       'pengumuman': 'announced',
       'daftar-ulang': 'accepted'
     };
@@ -125,56 +126,77 @@ export default function DashboardLayout({
   }, []);
 
   const menuItems = [
-    {
-      name: "Data Pribadi",
-      href: "/dashboard/pendaftar",
-      tabName: "data-pribadi" as TabName,
-      icon: User,
-      active: pathname === "/dashboard/pendaftar",
-    },
-    {
-      name: "Pembayaran Pendaftaran",
-      href: "/dashboard/pendaftar/pembayaran-pendaftaran",
-      tabName: "pembayaran-pendaftaran" as TabName,
-      icon: CreditCard,
-      active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
-    },
-    {
-      name: "Kelengkapan Berkas",
-      href: "/dashboard/pendaftar/kelengkapan-berkas",
-      tabName: "kelengkapan-berkas" as TabName,
-      icon: FileCheck,
-      active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
-    },
-    {
-      name: "Jadwal Ujian",
-      href: "/dashboard/pendaftar/jadwal-ujian",
-      tabName: "jadwal-ujian" as TabName,
-      icon: Calendar,
-      active: pathname === "/dashboard/pendaftar/jadwal-ujian",
-    },
-    {
-      name: "Hasil Ujian",
-      href: "/dashboard/pendaftar/hasil-ujian",
-      tabName: "hasil-ujian" as TabName,
-      icon: Trophy,
-      active: pathname === "/dashboard/pendaftar/hasil-ujian",
-    },
-    {
-      name: "Pengumuman",
-      href: "/dashboard/pendaftar/pengumuman",
-      tabName: "pengumuman" as TabName,
-      icon: CheckCircle,
-      active: pathname === "/dashboard/pendaftar/pengumuman",
-    },
-    {
-      name: "Daftar Ulang",
-      href: "/dashboard/pendaftar/daftar-ulang",
-      tabName: "daftar-ulang" as TabName,
-      icon: Settings,
-      active: pathname === "/dashboard/pendaftar/daftar-ulang",
-    },
-  ];
+  {
+    name: "Data Pribadi",
+    href: "/dashboard/pendaftar",
+    tabName: "data-pribadi" as TabName,
+    icon: User,
+    active: pathname === "/dashboard/pendaftar",
+  },
+  {
+    name: "Pembayaran Pendaftaran",
+    href: "/dashboard/pendaftar/pembayaran-pendaftaran",
+    tabName: "pembayaran-pendaftaran" as TabName,
+    icon: CreditCard,
+    active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
+  },
+  {
+    name: "Status Pembayaran",
+    href: "/dashboard/pendaftar/status-pembayaran",
+    tabName: "status-pembayaran" as TabName,
+    icon: CreditCard, // atau icon lain
+    active: pathname === "/dashboard/pendaftar/status-pembayaran",
+  },
+  {
+    name: "Kelengkapan Berkas",
+    href: "/dashboard/pendaftar/kelengkapan-berkas",
+    tabName: "kelengkapan-berkas" as TabName,
+    icon: FileCheck,
+    active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
+  },
+  {
+    name: "Upload Berkas",
+    href: "/dashboard/pendaftar/upload-berkas",
+    tabName: "upload-berkas" as TabName,
+    icon: Upload, // perlu import Upload dari lucide
+    active: pathname === "/dashboard/pendaftar/upload-berkas",
+  },
+  {
+    name: "Download Berkas",
+    href: "/dashboard/pendaftar/download-berkas",
+    tabName: "download-berkas" as TabName,
+    icon: Download, // perlu import Download
+    active: pathname === "/dashboard/pendaftar/download-berkas",
+  },
+  {
+    name: "Undangan Seleksi",
+    href: "/dashboard/pendaftar/undangan-seleksi",
+    tabName: "undangan-seleksi" as TabName, // ⬅️ INI YANG PERUBAHAN
+    icon: Calendar,
+    active: pathname === "/dashboard/pendaftar/undangan-seleksi",
+  },
+  {
+    name: "Pengumuman",
+    href: "/dashboard/pendaftar/pengumuman",
+    tabName: "pengumuman" as TabName,
+    icon: CheckCircle,
+    active: pathname === "/dashboard/pendaftar/pengumuman",
+  },
+  {
+    name: "Daftar Ulang",
+    href: "/dashboard/pendaftar/daftar-ulang",
+    tabName: "daftar-ulang" as TabName,
+    icon: Settings,
+    active: pathname === "/dashboard/pendaftar/daftar-ulang",
+  },
+  {
+    name: "Profil",
+    href: "/dashboard/pendaftar/profil",
+    tabName: "profil" as TabName,
+    icon: User, // atau UserCircle
+    active: pathname === "/dashboard/pendaftar/profil",
+  },
+];
 
   // Function untuk cek apakah tab bisa diakses
   const isTabAccessible = (tabName: TabName) => {
