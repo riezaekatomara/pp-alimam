@@ -133,7 +133,7 @@ export async function GET(req: NextRequest) {
         item.no_hp || "",
         item.email || "",
         item.status_proses || "",
-        item.tahun_ajaran?.nama || "",
+        (Array.isArray(item.tahun_ajaran) ? (item.tahun_ajaran as any)[0]?.nama : (item.tahun_ajaran as any)?.nama) || "",
         item.created_at
           ? new Date(item.created_at).toLocaleDateString("id-ID")
           : "",

@@ -46,6 +46,8 @@ interface PendaftarDetail {
   no_hp: string | null;
   email: string | null;
   asal_sekolah: string | null;
+  tahun_lulus: number | null;
+  alamat_sekolah: string | null;
   nisn: string | null;
   golongan_darah: string | null;
   anak_ke: number | null;
@@ -452,19 +454,18 @@ export default function PendaftarDetailPage() {
                       {doc.jenis_dokumen}
                     </span>
                     <span
-                      className={`px-2 py-1 rounded text-xs font-bold ${
-                        doc.status_verifikasi === "verified"
-                          ? "bg-green-100 text-green-700"
-                          : doc.status_verifikasi === "rejected"
+                      className={`px-2 py-1 rounded text-xs font-bold ${doc.status_verifikasi === "verified"
+                        ? "bg-green-100 text-green-700"
+                        : doc.status_verifikasi === "rejected"
                           ? "bg-red-100 text-red-700"
                           : "bg-amber-100 text-amber-700"
-                      }`}
+                        }`}
                     >
                       {doc.status_verifikasi === "verified"
                         ? "Terverifikasi"
                         : doc.status_verifikasi === "rejected"
-                        ? "Ditolak"
-                        : "Pending"}
+                          ? "Ditolak"
+                          : "Pending"}
                     </span>
                   </div>
                 ))}
@@ -491,19 +492,18 @@ export default function PendaftarDetailPage() {
                         {formatRupiah(payment.jumlah)}
                       </span>
                       <span
-                        className={`px-2 py-1 rounded text-xs font-bold ${
-                          payment.status_pembayaran === "verified"
-                            ? "bg-green-100 text-green-700"
-                            : payment.status_pembayaran === "rejected"
+                        className={`px-2 py-1 rounded text-xs font-bold ${payment.status_pembayaran === "verified"
+                          ? "bg-green-100 text-green-700"
+                          : payment.status_pembayaran === "rejected"
                             ? "bg-red-100 text-red-700"
                             : "bg-amber-100 text-amber-700"
-                        }`}
+                          }`}
                       >
                         {payment.status_pembayaran === "verified"
                           ? "Terverifikasi"
                           : payment.status_pembayaran === "rejected"
-                          ? "Ditolak"
-                          : "Pending"}
+                            ? "Ditolak"
+                            : "Pending"}
                       </span>
                     </div>
                     <div className="text-xs text-stone-600">

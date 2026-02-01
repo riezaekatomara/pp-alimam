@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 interface ScrollAnimationProps {
@@ -22,7 +22,7 @@ export default function ScrollAnimation({
 }: ScrollAnimationProps) {
     const shouldReduceMotion = useReducedMotion();
 
-    const getVariants = () => {
+    const getVariants = (): Variants => {
         if (shouldReduceMotion) {
             return {
                 hidden: { opacity: 0 },
@@ -40,7 +40,7 @@ export default function ScrollAnimation({
                 transition: {
                     duration,
                     delay,
-                    ease: [0.25, 0.1, 0.25, 1], // Cubic bezier for "premium" feel
+                    ease: [0.25, 0.1, 0.25, 1] as any, // Cubic bezier for "premium" feel
                 },
             },
         };

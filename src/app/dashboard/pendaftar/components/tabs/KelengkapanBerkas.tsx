@@ -16,7 +16,6 @@ import {
   FileCheck,
   Loader2,
   Download,
-  Tabs,
 } from "lucide-react";
 
 // ============================================
@@ -198,17 +197,16 @@ function DokumenCard({
 
   return (
     <div
-      className={`bg-white rounded-xl border-2 transition-all duration-300 overflow-hidden ${
-        isDragging
+      className={`bg-white rounded-xl border-2 transition-all duration-300 overflow-hidden ${isDragging
           ? "border-teal-500 bg-teal-50 shadow-lg scale-[1.02]"
           : dokumen.status === "verified"
-          ? "border-green-200"
-          : dokumen.status === "rejected"
-          ? "border-red-200"
-          : dokumen.status === "uploaded"
-          ? "border-blue-200"
-          : "border-stone-200 hover:border-teal-300"
-      }`}
+            ? "border-green-200"
+            : dokumen.status === "rejected"
+              ? "border-red-200"
+              : dokumen.status === "uploaded"
+                ? "border-blue-200"
+                : "border-stone-200 hover:border-teal-300"
+        }`}
     >
       <div
         className="p-4 cursor-pointer"
@@ -299,13 +297,13 @@ function DokumenCard({
                     {formatFileSize(dokumen.file_size || 0)} &bull;{" "}
                     {dokumen.uploaded_at
                       ? new Date(dokumen.uploaded_at).toLocaleDateString(
-                          "id-ID",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )
                       : "-"}
                   </p>
                 </div>
@@ -335,11 +333,10 @@ function DokumenCard({
           )}
 
           <div
-            className={`mt-4 border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${
-              isDragging
+            className={`mt-4 border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${isDragging
                 ? "border-teal-500 bg-teal-50"
                 : "border-stone-300 hover:border-teal-400 hover:bg-stone-50"
-            } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
+              } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -577,11 +574,10 @@ export default function KelengkapanBerkasTab() {
     <div className="space-y-6">
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${
-            toast.type === "success"
+          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${toast.type === "success"
               ? "bg-green-500 text-white"
               : "bg-red-500 text-white"
-          }`}
+            }`}
         >
           {toast.type === "success" ? (
             <CheckCircle className="w-5 h-5" />
@@ -613,11 +609,10 @@ export default function KelengkapanBerkasTab() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as TabType)}
-            className={`px-4 py-3 font-medium transition-all ${
-              activeTab === tab.id
+            className={`px-4 py-3 font-medium transition-all ${activeTab === tab.id
                 ? "text-teal-600 border-b-2 border-teal-600"
                 : "text-stone-600 hover:text-stone-800"
-            }`}
+              }`}
           >
             {tab.label}
           </button>
@@ -895,13 +890,13 @@ export default function KelengkapanBerkasTab() {
             {dokumenList.filter(
               (d) => d.status !== "pending" && d.file_path
             ).length === 0 && (
-              <div className="text-center py-8 bg-stone-50 rounded-xl border-2 border-stone-200">
-                <FileText className="w-12 h-12 text-stone-400 mx-auto mb-3" />
-                <p className="text-stone-600">
-                  Belum ada dokumen yang dapat didownload
-                </p>
-              </div>
-            )}
+                <div className="text-center py-8 bg-stone-50 rounded-xl border-2 border-stone-200">
+                  <FileText className="w-12 h-12 text-stone-400 mx-auto mb-3" />
+                  <p className="text-stone-600">
+                    Belum ada dokumen yang dapat didownload
+                  </p>
+                </div>
+              )}
           </div>
         </div>
       )}
