@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Phone, ChevronDown, Sparkles, Clock } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Sparkles, Clock, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +12,13 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState(""); // ✅ NEW: Track active section
   const pathname = usePathname();
   const router = useRouter();
+  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Detect scroll for navbar background
   useEffect(() => {
@@ -106,11 +114,10 @@ export default function Navbar() {
   const navLinks = [
     { href: "/", label: "Beranda", icon: "fa-home", type: "link" as const },
     {
-      href: "#about",
+      href: "/tentang",
       label: "Tentang",
       icon: "fa-info-circle",
-      type: "scroll" as const,
-      sectionId: "about",
+      type: "link" as const,
     },
     {
       href: "/kegiatan",
@@ -125,31 +132,38 @@ export default function Navbar() {
       type: "link" as const,
     },
     {
+      href: "/agenda",
+      label: "Kalender",
+      icon: "fa-calendar-alt",
+      type: "link" as const,
+    },
+    {
       href: "/berita",
       label: "Berita",
       icon: "fa-newspaper",
       type: "link" as const,
     },
     {
-      href: "#kontak",
+      href: "/kontak",
       label: "Kontak",
       icon: "fa-phone",
-      type: "scroll" as const,
-      sectionId: "kontak",
+      type: "link" as const,
     },
   ];
 
   const jenjangLinks = [
-    { href: "/mts", label: "MTs Al-Imam", icon: "fa-school" },
-    { href: "/ma", label: "MA Al-Imam", icon: "fa-university" },
-    { href: "/il", label: "I'dad Lughowi", icon: "fa-book-quran" },
+    { href: "/program#mts", label: "MTs Al-Imam", icon: "fa-school" },
+    { href: "/program#il", label: "I'dad Lughowi", icon: "fa-book-quran" },
+    { href: "/program#ma", label: "MA Al-Imam", icon: "fa-university" },
   ];
 
   // ✅ FIXED: isActive with scroll spy logic
+  // ✅ FIXED: isActive with scroll spy logic
   const isActive = (href: string, sectionId?: string) => {
-    // Homepage link - active only when at top (no section active)
+    // Homepage link (Beranda) - active whenever we are on homepage
+    // User requested: "any section on homepage... button beranda remains highlighted"
     if (href === "/") {
-      return pathname === "/" && activeSection === "";
+      return pathname === "/";
     }
 
     // Scroll links (Tentang, Kontak) - active when that section is in view
@@ -165,11 +179,10 @@ export default function Navbar() {
     <>
       {/* Header */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-[var(--color-neutral-50)]/98 backdrop-blur-xl shadow-lg border-b border-[var(--color-cream-200)]"
-            : "bg-white/90 backdrop-blur-md shadow-sm"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-[var(--color-neutral-50)]/98 backdrop-blur-xl shadow-lg border-b border-[var(--color-cream-200)]"
+          : "bg-white/90 backdrop-blur-md shadow-sm"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 md:h-18 lg:h-20">
@@ -208,52 +221,29 @@ export default function Navbar() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-2">
-              {navLinks.slice(0, 2).map((link) => {
-                if (link.type === "scroll") {
-                  return (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
-                      className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
-                        isActive(link.href, link.sectionId)
-                          ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
-                          : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
-                      }`}
-                    >
-                      <i
-                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href, link.sectionId) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
-                      />
-                      {link.label}
-                    </a>
-                  );
-                }
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${
-                      isActive(link.href)
-                        ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
-                        : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+              {navLinks.slice(0, 2).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${isActive(link.href)
+                    ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                    : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
                     }`}
-                  >
-                    <i
-                      className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
-                    />
-                    {link.label}
-                  </Link>
-                );
-              })}
+                >
+                  <i
+                    className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                  />
+                  {link.label}
+                </Link>
+              ))}
 
               {/* Jenjang Dropdown */}
               <div className="relative group">
                 <button
-                  className={`flex items-center gap-1.5 px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-teal ${
-                    jenjangLinks.some((j) => isActive(j.href))
-                      ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
-                      : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
-                  }`}
+                  className={`flex items-center gap-1.5 px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-teal ${jenjangLinks.some((j) => isActive(j.href))
+                    ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                    : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+                    }`}
                 >
                   <i className="fas fa-graduation-cap mr-2 text-xs text-[var(--color-teal-500)]" />
                   Jenjang
@@ -264,11 +254,10 @@ export default function Navbar() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 hover:shadow-inner hover:shadow-teal ${
-                        isActive(link.href)
-                          ? "bg-gradient-to-r from-[var(--color-cream-200)] to-[var(--color-teal-50)] text-[var(--color-brown-700)]"
-                          : "text-[var(--color-text-600)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-600)]"
-                      } ${idx !== jenjangLinks.length - 1 ? "border-b border-[var(--color-cream-200)]" : ""}`}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-300 hover:shadow-inner hover:shadow-teal ${isActive(link.href)
+                        ? "bg-gradient-to-r from-[var(--color-cream-200)] to-[var(--color-teal-50)] text-[var(--color-brown-700)]"
+                        : "text-[var(--color-text-600)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-600)]"
+                        } ${idx !== jenjangLinks.length - 1 ? "border-b border-[var(--color-cream-200)]" : ""}`}
                     >
                       <i
                         className={`fas ${link.icon} w-4 text-center text-[var(--color-teal-500)]`}
@@ -279,43 +268,21 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {navLinks.slice(2).map((link) => {
-                if (link.type === "scroll") {
-                  return (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
-                      className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown cursor-pointer ${
-                        isActive(link.href, link.sectionId)
-                          ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
-                          : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
-                      }`}
-                    >
-                      <i
-                        className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href, link.sectionId) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
-                      />
-                      {link.label}
-                    </a>
-                  );
-                }
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${
-                      isActive(link.href)
-                        ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
-                        : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
+              {navLinks.slice(2).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative px-4 py-2.5 font-medium text-sm transition-all duration-300 rounded-lg hover:shadow-md hover:shadow-brown ${isActive(link.href)
+                    ? "text-[var(--color-brown-700)] bg-[var(--color-cream-200)] shadow-md shadow-brown font-semibold"
+                    : "text-[var(--color-text-600)] hover:text-[var(--color-brown-700)] hover:bg-[var(--color-cream-200)]"
                     }`}
-                  >
-                    <i
-                      className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
-                    />
-                    {link.label}
-                  </Link>
-                );
-              })}
+                >
+                  <i
+                    className={`fas ${link.icon} mr-2 text-xs ${isActive(link.href) ? "text-[var(--color-brown-700)]" : "text-[var(--color-text-500)]"}`}
+                  />
+                  {link.label}
+                </Link>
+              ))}
             </nav>
 
             {/* Desktop CTA */}
@@ -342,6 +309,21 @@ export default function Navbar() {
                 <i className="fas fa-lock text-xs" />
                 Login
               </Link>
+
+              {/* Theme Toggle Button - Desktop */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="p-2.5 rounded-xl text-[var(--color-text-600)] hover:bg-[var(--color-cream-200)] hover:text-[var(--color-brown-700)] transition-all duration-300"
+                  aria-label="Toggle theme"
+                >
+                  {theme === "dark" ? (
+                    <Sun className="w-5 h-5 text-[var(--color-gold-400)] text-gradient-gold" />
+                  ) : (
+                    <Moon className="w-5 h-5" />
+                  )}
+                </button>
+              )}
             </div>
 
             {/* Mobile Toggle Button */}
@@ -379,50 +361,23 @@ export default function Navbar() {
             <div className="px-3 sm:px-4 py-4 sm:py-6 space-y-1">
               {/* Main Links */}
               {navLinks.map((link) => {
-                const linkIsActive = isActive(link.href, link.sectionId);
-
-                if (link.type === "scroll") {
-                  return (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      onClick={(e) => handleSmoothScroll(e, link.sectionId!)}
-                      className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] cursor-pointer ${
-                        linkIsActive
-                          ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
-                          : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
-                      }`}
-                      style={{ minHeight: "44px" }}
-                    >
-                      <i
-                        className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
-                          linkIsActive
-                            ? "text-[var(--color-brown-700)]"
-                            : "text-[var(--color-teal-500)]"
-                        }`}
-                      />
-                      {link.label}
-                    </a>
-                  );
-                }
+                const linkIsActive = isActive(link.href);
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${
-                      linkIsActive
-                        ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
-                        : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
-                    }`}
+                    className={`flex items-center gap-3 py-3.5 sm:py-4 px-4 sm:px-5 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${linkIsActive
+                      ? "bg-[var(--color-cream-200)] text-[var(--color-brown-700)] shadow-md"
+                      : "text-[var(--color-text-600)] active:bg-[var(--color-cream-100)]"
+                      }`}
                     style={{ minHeight: "44px" }}
                   >
                     <i
-                      className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${
-                        linkIsActive
-                          ? "text-[var(--color-brown-700)]"
-                          : "text-[var(--color-teal-500)]"
-                      }`}
+                      className={`fas ${link.icon} w-5 text-center text-sm sm:text-base ${linkIsActive
+                        ? "text-[var(--color-brown-700)]"
+                        : "text-[var(--color-teal-500)]"
+                        }`}
                     />
                     {link.label}
                   </Link>
@@ -439,11 +394,10 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-3 py-3 sm:py-3.5 px-5 sm:px-6 ml-3 sm:ml-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${
-                      isActive(link.href)
-                        ? "bg-[var(--color-teal-50)] text-[var(--color-teal-700)]"
-                        : "text-[var(--color-text-600)] active:bg-[var(--color-teal-50)]"
-                    }`}
+                    className={`flex items-center gap-3 py-3 sm:py-3.5 px-5 sm:px-6 ml-3 sm:ml-4 rounded-xl text-sm sm:text-base font-medium transition-all duration-200 active:scale-[0.98] ${isActive(link.href)
+                      ? "bg-[var(--color-teal-50)] text-[var(--color-teal-700)]"
+                      : "text-[var(--color-text-600)] active:bg-[var(--color-teal-50)]"
+                      }`}
                     style={{ minHeight: "44px" }}
                   >
                     <i

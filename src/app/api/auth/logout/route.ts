@@ -7,6 +7,7 @@ export async function POST() {
   });
 
   // Clear auth session cookie
+  response.cookies.delete("app_session");
   response.cookies.delete("auth_session");
 
   return response;

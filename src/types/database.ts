@@ -80,7 +80,7 @@ export interface Pendaftar {
 // ============================================
 
 export type StatusPembayaran = "pending" | "verified" | "rejected" | "expired";
-export type MetodePembayaran = "midtrans" | "transfer_manual";
+export type MetodePembayaran = "midtrans" | "manual";
 
 export interface Pembayaran {
   id: string;

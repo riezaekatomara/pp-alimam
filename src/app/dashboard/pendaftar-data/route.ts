@@ -5,17 +5,18 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const authSession = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
-    if (!authSession) {
+    if (!sessionCookie) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
         { status: 401 },
       );
     }
 
-    const session = JSON.parse(authSession.value);
-    const pendaftarId = session.pendaftar_id || session.user_id;
+    const session = JSON.parse(sessionCookie.value);
+    // Untuk pendaftar: id = pendaftar_id
+    const pendaftarId = session.role === "pendaftar" ? session.id : (session.pendaftar_id || session.user_id);
 
     if (!pendaftarId) {
       return NextResponse.json(

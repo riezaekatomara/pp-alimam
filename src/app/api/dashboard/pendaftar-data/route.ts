@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     // 1. Ambil session dari cookie
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
         orang_tua (*),
         dokumen (*)
       `)
-      .eq("id", session.pendaftar_id)
+      .eq("id", session.id)
       .single();
 
     if (error || !pendaftar) {

@@ -1,14 +1,37 @@
 // Create an admin user in Supabase (requires service role key)
 // Usage:
-// SUPABASE_URL="https://xyz.supabase.co" SUPABASE_SERVICE_ROLE_KEY="..." node scripts/create-admin.js email@example.com P@ssw0rd "Full Name" "+62812..."
+// node scripts/create-admin.js email@example.com P@ssw0rd "Full Name" "+62812..."
+
+// Load .env.local
+try {
+  const fs = require("fs");
+  const path = require("path");
+  const envPath = path.resolve(process.cwd(), ".env.local");
+  if (fs.existsSync(envPath)) {
+    fs.readFileSync(envPath, "utf8")
+      .split("\n")
+      .forEach((line) => {
+        const trimmed = line.trim();
+        if (trimmed && !trimmed.startsWith("#")) {
+          const eq = trimmed.indexOf("=");
+          if (eq > 0) {
+            const key = trimmed.slice(0, eq).trim();
+            const val = trimmed.slice(eq + 1).trim().replace(/^["']|["']$/g, "");
+            if (key) process.env[key] = val;
+          }
+        }
+      });
+  }
+} catch (_) { }
 
 const { createClient } = require('@supabase/supabase-js');
 
 async function main() {
-  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
   if (!SUPABASE_URL || !SERVICE_KEY) {
-    console.error('Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY env vars');
+    console.error('❌ Error: Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local');
     process.exit(1);
   }
 
@@ -32,12 +55,12 @@ async function main() {
     const user = userData.user || userData;
     console.log('Created user id:', user.id);
 
-    // Insert profile with admin role
+    // Upsert profile with admin role (handles case where trigger already created profile)
     const { data: profile, error: profileErr } = await supabase
       .from('profiles')
-      .insert([{ id: user.id, role: 'admin', full_name: fullName || 'Admin', phone: phone || '' }]);
+      .upsert([{ id: user.id, role: 'admin', full_name: fullName || 'Admin', phone: phone || '' }]);
     if (profileErr) throw profileErr;
-    console.log('Inserted profile:', profile);
+    console.log('Upserted profile:', profile);
     console.log('Done. You can now login with', email);
   } catch (err) {
     console.error('Error creating admin:', err);

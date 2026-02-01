@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Validasi session
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
     const { data: pendaftar, error: pendaftarError } = await supabaseAdmin
       .from("pendaftar")
       .select("nomor_pendaftaran")
-      .eq("id", session.pendaftar_id)
+      .eq("id", session.id)
       .single();
 
     if (pendaftarError || !pendaftar) {
@@ -211,7 +211,7 @@ export async function POST(request: NextRequest) {
     const { data: existingDokumen } = await supabaseAdmin
       .from("dokumen")
       .select("id")
-      .eq("pendaftar_id", session.pendaftar_id)
+      .eq("pendaftar_id", session.id)
       .eq("jenis_dokumen", jenisDokumen)
       .single();
 
@@ -245,7 +245,7 @@ export async function POST(request: NextRequest) {
       const { error: insertError } = await supabaseAdmin
         .from("dokumen")
         .insert({
-          pendaftar_id: session.pendaftar_id,
+          pendaftar_id: session.id,
           jenis_dokumen: jenisDokumen,
           file_name: fileName,
           file_path: filePath,

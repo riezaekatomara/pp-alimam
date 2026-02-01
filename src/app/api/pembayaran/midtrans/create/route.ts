@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Validasi session
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
           tanggal_tutup_pendaftaran
         )
       `)
-      .eq("id", session.pendaftar_id)
+      .eq("id", session.id)
       .single();
 
     if (pendaftarError || !pendaftar) {

@@ -7,6 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // FONT CONFIGURATIONS
@@ -38,9 +39,9 @@ const amiri = Amiri({
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ||
-      (process.env.NODE_ENV === "production"
-        ? "https://www.alimamalislami.sch.id"
-        : "http://localhost:3000"),
+    (process.env.NODE_ENV === "production"
+      ? "https://www.alimamalislami.sch.id"
+      : "http://localhost:3000"),
   ),
 
   title: {
@@ -142,7 +143,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth">
+    <html lang="id" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -160,9 +161,17 @@ export default function RootLayout({
       </head>
       <body
         className={`${plusJakartaSans.variable} ${poppins.variable} ${amiri.variable} font-sans antialiased bg-[var(--color-cream-50)] text-[var(--color-text-900)] overflow-x-hidden`}
+        suppressHydrationWarning
       >
         <LayoutWrapper>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </LayoutWrapper>
       </body>
     </html>

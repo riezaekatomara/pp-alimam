@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   try {
     // 1. Validasi session
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
           tanggal_tutup_pendaftaran
         )
       `)
-      .eq("id", session.pendaftar_id)
+      .eq("id", session.id)
       .single();
 
     if (pendaftarError || !pendaftar) {
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
     const { data: existingPayment } = await supabaseAdmin
       .from("pembayaran")
       .select("id, status_pembayaran")
-      .eq("pendaftar_id", session.pendaftar_id)
+      .eq("pendaftar_id", session.id)
       .eq("status_pembayaran", "verified")
       .maybeSingle();
 
@@ -145,9 +145,9 @@ export async function POST(request: NextRequest) {
     const { data: pendingPayment } = await supabaseAdmin
       .from("pembayaran")
       .select("id")
-      .eq("pendaftar_id", session.pendaftar_id)
+      .eq("pendaftar_id", session.id)
       .eq("status_pembayaran", "pending")
-      .eq("metode_pembayaran", "transfer_manual")
+      .eq("metode_pembayaran", "manual")
       .maybeSingle();
 
     // 9. Generate nama file yang unik
@@ -191,9 +191,9 @@ export async function POST(request: NextRequest) {
 
     // 12. Simpan atau update record pembayaran
     const paymentData = {
-      pendaftar_id: session.pendaftar_id,
+      pendaftar_id: session.id,
       tahun_ajaran_id: pendaftar.tahun_ajaran_id,
-      metode_pembayaran: "transfer_manual",
+      metode_pembayaran: "manual",
       jumlah: Number(tahunAjaran.biaya_pendaftaran),
       bukti_transfer_path: filePath,
       bukti_transfer_filename: file.name,
@@ -250,7 +250,7 @@ export async function POST(request: NextRequest) {
           status_pendaftaran: "payment_verification",
           updated_at: new Date().toISOString(),
         })
-        .eq("id", session.pendaftar_id);
+        .eq("id", session.id);
     }
 
     // 14. Return sukses

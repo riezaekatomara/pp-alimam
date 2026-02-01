@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     // 1. Validasi session
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     const { data: dokumen, error: dokumenError } = await supabaseAdmin
       .from("dokumen")
       .select("file_path, file_type")
-      .eq("pendaftar_id", session.pendaftar_id)
+      .eq("pendaftar_id", session.id)
       .eq("jenis_dokumen", jenisDokumen)
       .single();
 

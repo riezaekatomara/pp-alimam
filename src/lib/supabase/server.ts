@@ -2,9 +2,9 @@
 // Path: lib/supabase/server.ts
 // For SERVER COMPONENTS & API ROUTES only!
 
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { createServerClient as createServerClientFromSSR } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { createClient } from "@supabase/supabase-js";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 // ============================================
 // 1️⃣ SERVER CLIENT (untuk Server Components)
@@ -12,7 +12,7 @@ import { createClient } from "@supabase/supabase-js";
 export async function createServerSupabaseClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClientFromSSR(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -35,9 +35,14 @@ export async function createServerSupabaseClient() {
 }
 
 // ============================================
-// 2️⃣ ADMIN CLIENT (untuk API Routes)
+// 2️⃣ ALIAS createClient untuk backward compatibility
 // ============================================
-export const supabaseAdmin = createClient(
+export const createClient = createServerSupabaseClient;
+
+// ============================================
+// 3️⃣ ADMIN CLIENT (untuk API Routes yang butuh bypass RLS)
+// ============================================
+export const supabaseAdmin = createSupabaseClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
   {

@@ -1,6 +1,9 @@
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/components/home/HeroSection";
+import StatsSection from "@/components/home/StatsSection";
+import ScrollAnimation from "@/components/ui/ScrollAnimation";
 import AboutSection from "@/components/home/AboutSection";
+import ProgramSection from "@/components/home/ProgramSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
 import GallerySection from "@/components/home/GallerySection";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
@@ -13,12 +16,38 @@ export default function HomePage() {
     <>
       <main>
         <HeroSection />
-        <AboutSection />
-        <FeaturesSection />
-        <GallerySection />
-        <TestimonialsSection />
-        <CalendarSection />
-        <ContactSection />
+
+        <ScrollAnimation delay={0.2} direction="up">
+          <StatsSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1} direction="up">
+          <AboutSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <ProgramSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <FeaturesSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <GallerySection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <TestimonialsSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <CalendarSection />
+        </ScrollAnimation>
+
+        <ScrollAnimation delay={0.1}>
+          <ContactSection />
+        </ScrollAnimation>
       </main>
     </>
   );

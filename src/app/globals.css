@@ -152,9 +152,58 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DARK MODE OVERRIDES (Premium Dark)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.dark {
+  /* Backgrounds: Deep, rich darks (not pure black) */
+  --color-cream-50: #1a1614;      /* Deep Coffee Background */
+  --color-cream-100: #241e1b;
+  --color-cream-200: #2d2622;
+  --color-cream-300: #3a322d;
+  --color-cream-500: #5d5248;
+
+  /* Browns: Shift to lighter/warmer for contrast against dark bg */
+  --color-brown-50: #2a221d;
+  --color-brown-100: #3d3229;
+  --color-brown-500: #bcaaa4;
+  --color-brown-700: #d7ccc8;     /* Lighter brown for dark mode text */
+  --color-brown-800: #ece0dc;
+  --color-brown-900: #ffffff;     /* White for primary headings */
+
+  /* Golds: More glowing/luminous */
+  --color-gold-50: #2d2610;
+  --color-gold-100: #423612;
+  --color-gold-200: #5c4b14;
+  --color-gold-500: #fbbf24;      /* Brighter gold for dark mode */
+  --color-gold-600: #fcd34d;
+  --color-gold-700: #fde68a;
+
+  /* Teals: Deep emerald/night green */
+  --color-teal-50: #0a1f1d;
+  --color-teal-100: #112d2b;
+  --color-teal-200: #134e4a;
+  --color-teal-500: #2dd4bf;      /* Brighter teal for accents */
+  --color-teal-600: #5eead4;
+  --color-teal-700: #99f6e4;
+
+  /* Text: Inverted for readability */
+  --color-text-50: #1c1917;
+  --color-text-600: #d6d3d1;      /* Light gray for body text */
+  --color-text-700: #e7e5e4;
+  --color-text-800: #f5f5f4;
+  --color-text-900: #ffffff;
+
+  /* Shadows: Adjusted for dark depth */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    2. BASE LAYER - Global Styles + MOBILE OPTIMIZATIONS
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer base {
+
   /* HTML & Body Reset */
   *,
   ::before,
@@ -178,8 +227,7 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-brown-50)] 
-           text-[var(--color-text-800)] font-sans antialiased;
+    @apply bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-brown-50)] text-[var(--color-text-800)] font-sans antialiased;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -196,6 +244,7 @@
 
   /* ✅ NEW: Prevent zoom on input focus (iOS) - PENTING! */
   @media (max-width: 768px) {
+
     input[type="text"],
     input[type="email"],
     input[type="tel"],
@@ -204,7 +253,8 @@
     input[type="date"],
     select,
     textarea {
-      font-size: 16px !important; /* Prevents auto-zoom on iOS */
+      font-size: 16px !important;
+      /* Prevents auto-zoom on iOS */
     }
   }
 
@@ -231,18 +281,23 @@
   h1 {
     @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
   }
+
   h2 {
     @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
   }
+
   h3 {
     @apply text-xl sm:text-2xl md:text-3xl lg:text-4xl;
   }
+
   h4 {
     @apply text-lg sm:text-xl md:text-2xl lg:text-3xl;
   }
+
   h5 {
     @apply text-base sm:text-lg md:text-xl lg:text-2xl;
   }
+
   h6 {
     @apply text-sm sm:text-base md:text-lg lg:text-xl;
   }
@@ -270,12 +325,14 @@
    3. ANIMATIONS - Premium Islamic Effects
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer utilities {
+
   /* Fade Animations */
   @keyframes fadeInUp {
     from {
       opacity: 0;
       transform: translateY(2rem);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -287,6 +344,7 @@
       opacity: 0;
       transform: translateY(-2rem);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -298,6 +356,7 @@
       opacity: 0;
       transform: translateX(-2rem);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -309,6 +368,7 @@
       opacity: 0;
       transform: translateX(2rem);
     }
+
     to {
       opacity: 1;
       transform: translateX(0);
@@ -316,20 +376,24 @@
   }
 
   @keyframes float {
+
     0%,
     100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-1rem);
     }
   }
 
   @keyframes pulse-glow {
+
     0%,
     100% {
       box-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
     }
+
     50% {
       box-shadow: 0 0 40px rgba(218, 165, 32, 0.6);
     }
@@ -339,18 +403,23 @@
   .animate-fadeInUp {
     animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
   .animate-fadeInDown {
     animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
   .animate-fadeInLeft {
     animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
   .animate-fadeInRight {
     animation: fadeInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
+
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
+
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
   }
@@ -359,18 +428,23 @@
   .delay-100 {
     animation-delay: 100ms;
   }
+
   .delay-200 {
     animation-delay: 200ms;
   }
+
   .delay-300 {
     animation-delay: 300ms;
   }
+
   .delay-500 {
     animation-delay: 500ms;
   }
+
   .delay-700 {
     animation-delay: 700ms;
   }
+
   .delay-1000 {
     animation-delay: 1000ms;
   }
@@ -402,60 +476,48 @@
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer utilities {
   .text-gradient-brown {
-    background: linear-gradient(
-      135deg,
-      var(--color-brown-700),
-      var(--color-brown-500)
-    );
+    background: linear-gradient(135deg,
+        var(--color-brown-700),
+        var(--color-brown-500));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-gold {
-    background: linear-gradient(
-      135deg,
-      var(--color-gold-500),
-      var(--color-gold-600)
-    );
+    background: linear-gradient(135deg,
+        var(--color-gold-500),
+        var(--color-gold-600));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-teal {
-    background: linear-gradient(
-      135deg,
-      var(--color-teal-500),
-      var(--color-teal-400)
-    );
+    background: linear-gradient(135deg,
+        var(--color-teal-500),
+        var(--color-teal-400));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .bg-gradient-gold {
-    background: linear-gradient(
-      135deg,
-      var(--color-gold-500),
-      var(--color-gold-600)
-    );
+    background: linear-gradient(135deg,
+        var(--color-gold-500),
+        var(--color-gold-600));
   }
 
   .bg-gradient-brown {
-    background: linear-gradient(
-      135deg,
-      var(--color-brown-700),
-      var(--color-brown-500)
-    );
+    background: linear-gradient(135deg,
+        var(--color-brown-700),
+        var(--color-brown-500));
   }
 
   .bg-gradient-teal {
-    background: linear-gradient(
-      135deg,
-      var(--color-teal-500),
-      var(--color-teal-600)
-    );
+    background: linear-gradient(135deg,
+        var(--color-teal-500),
+        var(--color-teal-600));
   }
 
   .shadow-gold {
@@ -475,6 +537,7 @@
    5. SCROLLBAR & RESPONSIVE
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @layer base {
+
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 12px;
@@ -497,6 +560,7 @@
 
   /* Reduced Motion */
   @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -527,17 +591,158 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg bg-gradient-to-r 
-           from-[var(--color-brown-700)] to-[var(--color-teal-700)] text-white 
-           shadow-xl sm:shadow-2xl hover:shadow-gold hover:-translate-y-1 transition-all duration-300 
-           hover:from-[var(--color-brown-800)] hover:to-[var(--color-teal-800)] active:scale-95;
+    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-teal-700)] text-white shadow-xl sm:shadow-2xl hover:shadow-gold hover:-translate-y-1 transition-all duration-300 hover:from-[var(--color-brown-800)] hover:to-[var(--color-teal-800)] active:scale-95;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg 
-           border-2 border-[var(--color-gold-500)] text-[var(--color-gold-700)] 
-           bg-[var(--color-gold-50)] hover:bg-[var(--color-gold-100)] 
-           hover:shadow-gold hover:-translate-y-1 transition-all duration-300 active:scale-95;
+    @apply inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-bold text-base sm:text-lg border-2 border-[var(--color-gold-500)] text-[var(--color-gold-700)] bg-[var(--color-gold-50)] hover:bg-[var(--color-gold-100)] hover:shadow-gold hover:-translate-y-1 transition-all duration-300 active:scale-95;
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     MODERN UI COMPONENTS (Ulul Albaab Style)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  /* Modern Card Styles */
+  /* Modern Card Styles */
+  .card-modern,
+  .testimonial-card {
+    @apply bg-white rounded-2xl shadow-lg border border-[var(--color-cream-200)] hover:shadow-xl transition-all duration-300;
+  }
+
+  .card-modern-sm {
+    @apply bg-white rounded-xl shadow-md border border-[var(--color-cream-100)] hover:shadow-lg transition-all duration-300;
+  }
+
+  /* Clean Badge Styles */
+  .badge-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-brown-700)] text-white text-sm font-semibold;
+  }
+
+  .badge-outline {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-[var(--color-brown-600)] text-[var(--color-brown-700)] text-sm font-semibold bg-white/80 backdrop-blur-sm;
+  }
+
+  .badge-accent {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-gold-500)] text-white text-sm font-semibold;
+  }
+
+  .badge-teal {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-teal-500)] text-white text-sm font-semibold;
+  }
+
+  /* Floating Info Card */
+  .info-card-floating {
+    @apply bg-white rounded-2xl shadow-2xl border-2 border-[var(--color-cream-200)] p-6 space-y-4;
+  }
+
+  /* Section Title Styles */
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-brown-900)];
+  }
+
+  .section-subtitle {
+    @apply text-base md:text-lg text-[var(--color-text-600)] max-w-2xl;
+  }
+
+  /* Stat Card */
+  .stat-card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl p-6 text-center border border-white/50 shadow-lg;
+  }
+
+  /* Step Indicator */
+  .step-number {
+    @apply w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300;
+  }
+
+  .step-number-active {
+    @apply bg-[var(--color-brown-700)] text-white shadow-lg;
+  }
+
+  .step-number-inactive {
+    @apply bg-[var(--color-cream-200)] text-[var(--color-text-500)];
+  }
+
+  .step-number-completed {
+    @apply bg-[var(--color-teal-500)] text-white;
+  }
+
+  /* Form Input Modern */
+  .form-input-modern,
+  .form-input-with-icon {
+    @apply w-full px-4 py-3 rounded-xl border-2 border-[var(--color-cream-300)] bg-white text-[var(--color-text-800)] placeholder-[var(--color-text-400)] focus:border-[var(--color-brown-500)] focus:ring-4 focus:ring-[var(--color-brown-100)] focus:outline-none transition-all duration-200;
+  }
+
+  .form-input-with-icon {
+    @apply pl-12;
+  }
+
+  /* Pricing Card/Sidebar */
+  .pricing-card {
+    @apply bg-gradient-to-br from-[var(--color-brown-700)] to-[var(--color-brown-900)] text-white rounded-2xl p-6 shadow-xl;
+  }
+
+  /* Full-width Gradient Sections */
+  .section-gradient-brown {
+    @apply bg-gradient-to-r from-[var(--color-brown-700)] via-[var(--color-brown-600)] to-[var(--color-brown-800)] py-16 md:py-20;
+  }
+
+  .section-gradient-teal {
+    @apply bg-gradient-to-r from-[var(--color-teal-600)] via-[var(--color-teal-500)] to-[var(--color-teal-700)] py-16 md:py-20;
+  }
+
+  /* Feature Card Icon Box */
+  .icon-box,
+  .icon-box-brown,
+  .icon-box-teal,
+  .icon-box-gold {
+    @apply w-14 h-14 rounded-2xl flex items-center justify-center;
+  }
+
+  .icon-box-brown {
+    @apply bg-[var(--color-brown-100)];
+  }
+
+  .icon-box-teal {
+    @apply bg-[var(--color-teal-100)];
+  }
+
+  .icon-box-gold {
+    @apply bg-[var(--color-gold-100)];
+  }
+
+  /* Program Card */
+  .program-card,
+  .program-card-brown,
+  .program-card-teal,
+  .program-card-gold {
+    @apply rounded-2xl p-6 md:p-8 text-white shadow-xl transition-all duration-300 hover:-translate-y-1;
+  }
+
+  .program-card-brown {
+    @apply bg-gradient-to-br from-[var(--color-brown-600)] to-[var(--color-brown-800)];
+  }
+
+  .program-card-teal {
+    @apply bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-700)];
+  }
+
+  .program-card-gold {
+    @apply bg-gradient-to-br from-[var(--color-gold-500)] to-[var(--color-gold-700)];
+  }
+
+  /* Testimonial Card */
+  /* Testimonial Card */
+  .testimonial-card {
+    @apply p-6;
+  }
+
+  /* List with Checkmarks */
+  .check-list {
+    @apply space-y-2;
+  }
+
+  .check-list-item {
+    @apply flex items-center gap-3 text-sm;
   }
 }
 
@@ -549,26 +754,33 @@
   .xs\:block {
     display: block;
   }
+
   .xs\:hidden {
     display: none;
   }
+
   .xs\:text-sm {
     font-size: 0.875rem;
   }
+
   .xs\:text-base {
     font-size: 1rem;
   }
 }
+
 @media (max-width: 479px) {
   .xs\:block {
     display: none;
   }
+
   .xs\:hidden {
     display: block;
   }
+
   .xs\:text-sm {
     font-size: 0.75rem;
   }
+
   .xs\:text-base {
     font-size: 0.875rem;
   }

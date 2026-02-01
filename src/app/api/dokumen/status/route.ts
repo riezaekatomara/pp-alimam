@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
   try {
     // 1. Validasi session
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     const { data: dokumenList, error } = await supabaseAdmin
       .from("dokumen")
       .select("*")
-      .eq("pendaftar_id", session.pendaftar_id);
+      .eq("pendaftar_id", session.id);
 
     if (error) {
       console.error("Error fetching dokumen:", error);

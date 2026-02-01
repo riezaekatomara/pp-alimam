@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 // GET: List dokumen yang perlu diverifikasi
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createServerClient();
+    const supabase = await createServerSupabaseClient();
 
     // Check if user is admin
     const {
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
 // PATCH: Verify or reject dokumen
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = await createServerClient();
+    const supabase = await createServerSupabaseClient();
 
     // Check if user is admin
     const {

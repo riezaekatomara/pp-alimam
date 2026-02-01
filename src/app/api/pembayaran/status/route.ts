@@ -8,9 +8,9 @@ import { supabaseAdmin } from "@/lib/supabase/server";
  */
 export async function GET(request: NextRequest) {
   try {
-    // 1. Validasi session
+    // 1. Validasi session (pendaftar pakai app_session cookie)
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("auth_session");
+    const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
       return NextResponse.json(
@@ -36,6 +36,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // pendaftar_id = session.id (untuk role pendaftar, id adalah pendaftar.id)
+    const pendaftarId = session.id;
+
     // 2. Ambil data pendaftar beserta tahun ajaran
     const { data: pendaftar, error: pendaftarError } = await supabaseAdmin
       .from("pendaftar")
@@ -52,7 +55,7 @@ export async function GET(request: NextRequest) {
           tanggal_tutup_pendaftaran
         )
       `)
-      .eq("id", session.pendaftar_id)
+      .eq("id", pendaftarId)
       .single();
 
     if (pendaftarError || !pendaftar) {
@@ -67,7 +70,7 @@ export async function GET(request: NextRequest) {
     const { data: pembayaran, error: pembayaranError } = await supabaseAdmin
       .from("pembayaran")
       .select("*")
-      .eq("pendaftar_id", session.pendaftar_id)
+      .eq("pendaftar_id", pendaftarId)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();

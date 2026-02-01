@@ -16,7 +16,9 @@ export async function GET(request: NextRequest) {
     try {
       const session = JSON.parse(sessionCookie.value);
       console.log(`✅ [API /session] Session found - Role: ${session.role}`);
-      return NextResponse.json({ session });
+      // Untuk pendaftar: id = pendaftar_id (supaya layout & API bisa pakai pendaftar_id)
+      const pendaftar_id = session.role === "pendaftar" ? session.id : undefined;
+      return NextResponse.json({ session, pendaftar_id });
     } catch (e) {
       console.log("❌ [API /session] Failed to parse session cookie");
       return NextResponse.json(

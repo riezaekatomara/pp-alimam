@@ -20,6 +20,8 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import ScrollAnimation from "@/components/ui/ScrollAnimation";
+import { Container } from "@/components/layout/Container";
 
 export default function PPDBPage() {
   const requirements = [
@@ -190,102 +192,79 @@ export default function PPDBPage() {
   return (
     <main className="pt-3 sm:pt-4 md:pt-5">
       {/* Hero Section - BROWN DOMINANT */}
-      <section className="bg-gradient-to-br from-[var(--color-brown-50)] via-[var(--color-cream-100)] to-[var(--color-gold-50)] py-10 xs:py-12 sm:py-16 md:py-20 relative overflow-hidden">
-        <div className="hidden sm:block absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-brown-200)] rounded-full blur-3xl opacity-30" />
-        <div className="hidden sm:block absolute bottom-10 left-10 w-64 h-64 sm:w-96 sm:h-96 bg-[var(--color-gold-200)] rounded-full blur-3xl opacity-30" />
+      <section className="bg-gradient-to-br from-[var(--color-brown-50)] via-[var(--color-cream-100)] to-[var(--color-gold-50)] dark:from-[var(--color-brown-950)] dark:via-[var(--color-brown-900)] dark:to-[var(--color-brown-950)] py-10 xs:py-12 sm:py-16 md:py-20 relative overflow-hidden transition-colors duration-500">
+        <div className="hidden sm:block absolute top-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-brown-200)] dark:bg-[var(--color-brown-800)] rounded-full blur-3xl opacity-30" />
+        <div className="hidden sm:block absolute bottom-10 left-10 w-64 h-64 sm:w-96 sm:h-96 bg-[var(--color-gold-200)] dark:bg-[var(--color-gold-800)] rounded-full blur-3xl opacity-30" />
 
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-900)] text-white px-4 xs:px-5 sm:px-6 py-2.5 xs:py-3 sm:py-3 rounded-full text-xs xs:text-sm sm:text-sm font-black mb-4 sm:mb-6 shadow-2xl animate-pulse border-2 border-white/50">
-              <Zap className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span>HANYA 50 KURSI TERSISA UNTUK 2026/2027!</span>
+        <Container className="relative z-10">
+          <ScrollAnimation className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-[var(--color-brown-100)] dark:bg-[var(--color-brown-800)] text-[var(--color-brown-800)] dark:text-[var(--color-brown-100)] px-4 xs:px-5 sm:px-6 py-2 rounded-full text-xs xs:text-sm sm:text-sm font-bold mb-4 sm:mb-6 border border-[var(--color-brown-200)] dark:border-[var(--color-brown-700)]">
+              <Calendar className="w-4 h-4 flex-shrink-0" />
+              <span>Pendaftaran Tahun Ajaran 2026/2027 Telah Dibuka</span>
             </div>
 
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-tight px-2 sm:px-0">
-              <span className="block text-[var(--color-brown-900)] mb-1 sm:mb-2">
-                Jangan Sampai Menyesal
-              </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] via-[var(--color-brown-700)] to-[var(--color-brown-900)]">
-                Karena Kehabisan Kuota!
+            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 leading-tight px-2 sm:px-0 text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)]">
+              Membangun Generasi <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] via-[var(--color-brown-700)] to-[var(--color-brown-900)] dark:from-[var(--color-gold-300)] dark:via-[var(--color-gold-400)] dark:to-[var(--color-gold-500)]">
+                Qur'ani & Berakhlak Mulia
               </span>
             </h1>
 
-            <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-[var(--color-brown-800)] mb-3 sm:mb-4 leading-tight font-bold px-2 sm:px-0">
-              Tahun Lalu 500+ Orang Tua Daftar, 350 Harus Ditolak Karena Penuh
+            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] mb-8 sm:mb-10 leading-relaxed max-w-2xl mx-auto px-4 sm:px-0">
+              Bergabunglah bersama keluarga besar Pondok Pesantren Al-Imam.
+              Mewujudkan pendidikan Islam yang komprehensif, memadukan ilmu syar'i
+              dengan kompetensi akademis untuk masa depan buah hati Anda.
             </p>
 
-            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto px-4 sm:px-0">
-              Anda sudah tahu kualitas Al-Imam. Anda sudah yakin ini tempat
-              terbaik untuk anak.
-              <span className="font-black text-[var(--color-brown-900)]">
-                {" "}
-                Satu-satunya yang menghalangi adalah KUOTA TERBATAS.
-              </span>
-            </p>
-
-            <div className="grid grid-cols-3 gap-2 xs:gap-3 sm:gap-4 mb-6 sm:mb-8 max-w-2xl mx-auto px-4 sm:px-0">
-              {urgencyStats.map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 xs:p-4 sm:p-4 shadow-xl border-2 border-[var(--color-brown-200)]"
-                >
-                  <stat.icon className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 text-[var(--color-brown-600)] mx-auto mb-1.5 sm:mb-2" />
-                  <p className="text-xl xs:text-2xl sm:text-3xl font-black text-[var(--color-brown-900)] mb-0.5 sm:mb-1">
-                    {stat.value}
-                  </p>
-                  <p className="text-[10px] xs:text-xs sm:text-xs font-bold text-[var(--color-brown-700)] leading-tight">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+              <div className="flex items-center gap-2 text-[var(--color-brown-800)] dark:text-[var(--color-cream-100)] bg-white/50 dark:bg-white/10 px-4 py-2 rounded-lg border border-[var(--color-brown-100)] dark:border-white/10">
+                <Users className="w-5 h-5 text-[var(--color-brown-600)] dark:text-[var(--color-gold-400)]" />
+                <span className="text-sm font-semibold">Tersedia Kuota Terbatas</span>
+              </div>
+              <div className="flex items-center gap-2 text-[var(--color-brown-800)] dark:text-[var(--color-cream-100)] bg-white/50 dark:bg-white/10 px-4 py-2 rounded-lg border border-[var(--color-brown-100)] dark:border-white/10">
+                <Calendar className="w-5 h-5 text-[var(--color-brown-600)] dark:text-[var(--color-gold-400)]" />
+                <span className="text-sm font-semibold">Gelombang 1: Jan - Mar 2026</span>
+              </div>
             </div>
 
             <a
               href="/daftar"
-              className="inline-flex items-center justify-center gap-2 sm:gap-3 shadow-2xl hover:shadow-[0_25px_50px_rgba(0,0,0,0.3)] text-white font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-12 py-4 xs:py-5 sm:py-7 rounded-xl sm:rounded-2xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 bg-gradient-to-r from-[var(--color-brown-700)] via-[var(--color-brown-800)] to-[var(--color-brown-900)] hover:from-[var(--color-brown-800)] hover:via-[var(--color-brown-900)] hover:to-black group mb-3 sm:mb-4 w-full sm:w-auto active:scale-95"
+              className="inline-flex items-center justify-center gap-2 sm:gap-3 shadow-xl hover:shadow-2xl text-white font-bold text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-12 py-4 xs:py-5 rounded-xl transition-all duration-300 hover:-translate-y-1 bg-[var(--color-brown-800)] hover:bg-[var(--color-brown-900)] dark:bg-[var(--color-gold-600)] dark:hover:bg-[var(--color-gold-700)] group w-full sm:w-auto"
             >
-              <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-              <span>DAFTAR SEKARANG & AMANKAN KUOTA!</span>
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-2 transition-transform flex-shrink-0" />
+              <Sparkles className="w-5 h-5 flex-shrink-0" />
+              <span>Daftar Sekarang</span>
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform flex-shrink-0" />
             </a>
 
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] px-4 sm:px-0">
-              <Clock className="w-3 h-3 sm:w-4 sm:h-4 inline mr-1 text-[var(--color-brown-900)]" />
-              Proses pendaftaran hanya{" "}
-              <span className="font-black text-[var(--color-brown-900)]">
-                10 menit
-              </span>
-              . Gratis konsultasi!
+            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-600)] dark:text-[var(--color-cream-300)] mt-4 px-4 sm:px-0">
+              Butuh bantuan pendaftaran? <a href="/kontak" className="font-bold underline hover:text-[var(--color-brown-800)] dark:hover:text-[var(--color-gold-400)]">Hubungi Panitia</a>
             </p>
-          </div>
-        </div>
+          </ScrollAnimation>
+        </Container>
       </section>
 
       {/* Testimonial - TEAL ACCENT */}
-      <section className="bg-white py-10 xs:py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
+      <section className="bg-white dark:bg-[var(--color-brown-950)] py-10 xs:py-12 sm:py-16 md:py-20 transition-colors duration-500">
+        <Container>
+          <ScrollAnimation className="text-center mb-8 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] text-white px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl mb-3 sm:mb-4">
               <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              BUKTI NYATA DARI ORANG TUA YANG SUDAH DAFTAR
+              KATA MEREKA
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
-              Mereka Sudah{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)]">
-                Merasakan Keputusan Terbaik
-              </span>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
+              Pengalaman Wali Santri
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] max-w-2xl mx-auto px-4 sm:px-0">
-              Jangan sampai Anda menyesal seperti ratusan orang tua tahun lalu
-              yang terlambat daftar!
+            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] max-w-2xl mx-auto px-4 sm:px-0">
+              Apa yang mereka rasakan setelah mempercayakan pendidikan putra-putrinya di Al-Imam?
             </p>
-          </div>
+          </ScrollAnimation>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-5 sm:gap-6 mb-8 sm:mb-10">
             {testimonials.map((item, idx) => (
-              <div
+              <ScrollAnimation
                 key={idx}
-                className="bg-gradient-to-br from-[var(--color-teal-50)] to-[var(--color-cream-100)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-teal-200)] shadow-lg hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300"
+                delay={idx * 0.1}
+                className="bg-gradient-to-br from-[var(--color-teal-50)] to-[var(--color-cream-100)] dark:from-[var(--color-teal-900)] dark:to-[var(--color-brown-900)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-teal-200)] dark:border-[var(--color-teal-800)] shadow-lg hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300"
               >
                 <div className="flex gap-0.5 mb-2 sm:mb-3">
                   {[...Array(item.rating)].map((_, i) => (
@@ -295,122 +274,112 @@ export default function PPDBPage() {
                     />
                   ))}
                 </div>
-                <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] italic mb-3 sm:mb-4 leading-relaxed">
+                <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] italic mb-3 sm:mb-4 leading-relaxed">
                   "{item.quote}"
                 </p>
-                <div className="flex items-center gap-2 sm:gap-3 pt-2 sm:pt-3 border-t border-[var(--color-teal-200)]">
+                <div className="flex items-center gap-2 sm:gap-3 pt-2 sm:pt-3 border-t border-[var(--color-teal-200)] dark:border-[var(--color-teal-800)]">
                   <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[var(--color-teal-600)] rounded-full flex items-center justify-center text-white font-bold flex-shrink-0 text-sm sm:text-base">
                     {item.name.charAt(0)}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-bold text-xs xs:text-sm sm:text-sm text-[var(--color-brown-900)] truncate">
+                    <p className="font-bold text-xs xs:text-sm sm:text-sm text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] truncate">
                       {item.name}
                     </p>
-                    <p className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-brown-600)] truncate">
+                    <p className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-brown-600)] dark:text-[var(--color-cream-300)] truncate">
                       {item.role}
                     </p>
                   </div>
                 </div>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-[var(--color-brown-100)] to-[var(--color-gold-50)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-brown-200)] text-center">
-            <p className="text-base xs:text-lg sm:text-lg font-black text-[var(--color-brown-900)] flex items-center justify-center gap-2 flex-wrap">
+          <ScrollAnimation
+            direction="up"
+            delay={0.3}
+            className="bg-gradient-to-r from-[var(--color-brown-100)] to-[var(--color-gold-50)] dark:from-[var(--color-brown-900)] dark:to-[var(--color-gold-900)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-brown-200)] dark:border-[var(--color-brown-700)] text-center"
+          >
+            <p className="text-base xs:text-lg sm:text-lg font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] flex items-center justify-center gap-2 flex-wrap">
               <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
               <span>
-                95% orang tua yang sudah daftar mengatakan: "Keputusan terbaik
-                dalam hidup saya!"
+                Bergabunglah bersama ratusan orang tua yang telah memilih kami.
               </span>
             </p>
-          </div>
-        </div>
+          </ScrollAnimation>
+        </Container>
       </section>
 
       {/* Benefits */}
-      <section className="bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-brown-50)] py-10 xs:py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
+      <section className="bg-gradient-to-br from-[var(--color-cream-50)] to-[var(--color-brown-50)] dark:from-[var(--color-brown-950)] dark:to-[var(--color-brown-900)] py-10 xs:py-12 sm:py-16 md:py-20 transition-colors duration-500">
+        <Container>
+          <ScrollAnimation className="text-center mb-8 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-gold-600)] to-[var(--color-gold-700)] text-white px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl mb-3 sm:mb-4">
               <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              INVESTASI TERBAIK UNTUK MASA DEPAN ANAK
+              KEUNGGULAN KAMI
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
-              Ini Yang Akan{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] to-[var(--color-brown-800)]">
-                Anak Anda Dapatkan
-              </span>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
+              Pendidikan yang Mengutamakan Kualitas
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] max-w-2xl mx-auto px-4 sm:px-0">
-              Bukan janji kosong. Ini{" "}
-              <span className="font-black text-[var(--color-brown-900)]">
-                hasil nyata
-              </span>{" "}
-              yang sudah dibuktikan ribuan alumni!
+            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] max-w-2xl mx-auto px-4 sm:px-0">
+              Kami memadukan kurikulum nasional dengan pendidikan kepesantrenan untuk membentuk karakter santri yang unggul.
             </p>
-          </div>
+          </ScrollAnimation>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-5 sm:gap-6">
             {benefits.map((benefit, idx) => (
-              <div
+              <ScrollAnimation
                 key={idx}
-                className="bg-white border-2 border-[var(--color-brown-200)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 group"
+                delay={idx * 0.1}
+                className="bg-white dark:bg-[var(--color-brown-900)] border-2 border-[var(--color-brown-200)] dark:border-[var(--color-brown-700)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 group"
               >
                 <div className="flex flex-col items-center text-center">
-                  <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 xs:mb-3.5 sm:mb-4 bg-gradient-to-br from-[var(--color-brown-600)] to-[var(--color-brown-700)] shadow-lg group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center mb-3 xs:mb-3.5 sm:mb-4 bg-gradient-to-br from-[var(--color-brown-600)] to-[var(--color-brown-700)] dark:from-[var(--color-gold-600)] dark:to-[var(--color-gold-700)] shadow-lg group-hover:scale-110 transition-transform">
                     <benefit.icon className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 text-white" />
                   </div>
-                  <h3 className="font-black text-sm xs:text-base sm:text-lg text-[var(--color-brown-900)] mb-1.5 sm:mb-2 leading-tight">
+                  <h3 className="font-black text-sm xs:text-base sm:text-lg text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-1.5 sm:mb-2 leading-tight">
                     {benefit.title}
                   </h3>
-                  <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] mb-2 sm:mb-3 leading-relaxed">
+                  <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-300)] mb-2 sm:mb-3 leading-relaxed">
                     {benefit.description}
                   </p>
-                  <div className="pt-2 sm:pt-3 border-t-2 border-[var(--color-brown-200)] w-full">
-                    <p className="text-[10px] xs:text-xs sm:text-xs font-bold text-[var(--color-brown-800)] flex items-center justify-center gap-1">
+                  <div className="pt-2 sm:pt-3 border-t-2 border-[var(--color-brown-200)] dark:border-[var(--color-brown-800)] w-full">
+                    <p className="text-[10px] xs:text-xs sm:text-xs font-bold text-[var(--color-brown-800)] dark:text-[var(--color-gold-400)] flex items-center justify-center gap-1">
                       <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       <span>{benefit.proof}</span>
                     </p>
                   </div>
                 </div>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Timeline */}
-      <section className="bg-white py-10 xs:py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
+      <section className="bg-white dark:bg-[var(--color-brown-950)] py-10 xs:py-12 sm:py-16 md:py-20 transition-colors duration-500">
+        <Container>
+          <ScrollAnimation className="text-center mb-8 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] text-white px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl mb-3 sm:mb-4">
               <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              PROSES MUDAH & TRANSPARAN
+              ALUR PENDAFTARAN
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
-              4 Langkah Mudah{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] to-[var(--color-brown-800)]">
-                Menuju Masa Depan Cemerlang
-              </span>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
+              Tahapan Seleksi Masuk
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] max-w-2xl mx-auto px-4 sm:px-0">
-              Tidak ribet, tidak bertele-tele.{" "}
-              <span className="font-black text-[var(--color-brown-900)]">
-                Hanya 10 menit
-              </span>{" "}
-              untuk mengamankan masa depan anak!
+            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] max-w-2xl mx-auto px-4 sm:px-0">
+              Berikut adalah tahapan yang perlu dilalui oleh calon santri baru.
             </p>
-          </div>
+          </ScrollAnimation>
 
           <div className="max-w-4xl mx-auto space-y-4 xs:space-y-5 sm:space-y-6">
             {timeline.map((item, idx) => (
-              <div
+              <ScrollAnimation
                 key={idx}
-                className={`relative flex flex-col sm:flex-row items-start gap-4 xs:gap-5 sm:gap-6 p-4 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 ${
-                  item.status === "active"
-                    ? "bg-gradient-to-r from-[var(--color-teal-50)] to-[var(--color-cream-100)] border-[var(--color-teal-400)] shadow-2xl"
-                    : "bg-white border-[var(--color-brown-200)] hover:shadow-lg"
-                }`}
+                delay={idx * 0.1}
+                className={`relative flex flex-col sm:flex-row items-start gap-4 xs:gap-5 sm:gap-6 p-4 xs:p-5 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 ${item.status === "active"
+                  ? "bg-gradient-to-r from-[var(--color-teal-50)] to-[var(--color-cream-100)] dark:from-[var(--color-teal-900)] dark:to-[var(--color-brown-900)] border-[var(--color-teal-400)] dark:border-[var(--color-teal-600)] shadow-2xl"
+                  : "bg-white dark:bg-[var(--color-brown-900)] border-[var(--color-brown-200)] dark:border-[var(--color-brown-700)] hover:shadow-lg"
+                  }`}
               >
                 <div
                   className={`w-14 h-14 xs:w-16 xs:h-16 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg bg-gradient-to-br ${item.color}`}
@@ -420,93 +389,84 @@ export default function PPDBPage() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-3 mb-2">
-                    <h3 className="font-black text-base xs:text-lg sm:text-xl text-[var(--color-brown-900)]">
+                    <h3 className="font-black text-base xs:text-lg sm:text-xl text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)]">
                       {item.phase}
                     </h3>
                     {item.status === "active" && (
                       <span className="px-2.5 xs:px-3 py-1 bg-[var(--color-teal-600)] text-white text-[10px] xs:text-xs font-bold rounded-full animate-pulse inline-block w-fit">
-                        SEDANG BERLANGSUNG
+                        SEDANG DIBUKA
                       </span>
                     )}
                   </div>
-                  <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] mb-2">
+                  <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] mb-2">
                     {item.description}
                   </p>
-                  <p className="text-xs xs:text-sm sm:text-sm font-bold text-[var(--color-brown-800)] mb-2 sm:mb-3 flex items-center gap-1">
+                  <p className="text-xs xs:text-sm sm:text-sm font-bold text-[var(--color-brown-800)] dark:text-[var(--color-gold-400)] mb-2 sm:mb-3 flex items-center gap-1">
                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                     <span>{item.date}</span>
                   </p>
-                  <div className="bg-white/80 rounded-lg p-2.5 xs:p-3 sm:p-3 border border-[var(--color-teal-200)]">
-                    <p className="text-xs xs:text-sm sm:text-sm font-bold text-[var(--color-teal-800)] flex items-start gap-1.5 sm:gap-2">
+                  <div className="bg-white/80 dark:bg-black/20 rounded-lg p-2.5 xs:p-3 sm:p-3 border border-[var(--color-teal-200)] dark:border-[var(--color-teal-800)]">
+                    <p className="text-xs xs:text-sm sm:text-sm font-bold text-[var(--color-teal-800)] dark:text-[var(--color-teal-300)] flex items-start gap-1.5 sm:gap-2">
                       <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 mt-0.5" />
                       <span>{item.benefit}</span>
                     </p>
                   </div>
                 </div>
 
-                <div className="hidden md:block text-5xl sm:text-6xl font-black text-[var(--color-brown-200)]">
+                <div className="hidden md:block text-5xl sm:text-6xl font-black text-[var(--color-brown-200)] dark:text-[var(--color-brown-800)]">
                   {idx + 1}
                 </div>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
 
           <div className="mt-8 sm:mt-10 text-center px-4 sm:px-0">
-            <p className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-brown-700)] mb-3 sm:mb-4">
-              Semakin cepat daftar, semakin besar peluang dapat{" "}
-              <span className="text-[var(--color-brown-900)]">
-                beasiswa & diskon!
-              </span>
+            <p className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] mb-3 sm:mb-4">
+              Silakan mendaftar sebelum <span className="text-[var(--color-brown-900)] dark:text-white">31 Maret 2026</span>
             </p>
             <a
               href="/daftar"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-10 py-4 xs:py-5 sm:py-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 w-full sm:w-auto active:scale-95"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] dark:from-[var(--color-gold-600)] dark:to-[var(--color-gold-700)] dark:hover:from-[var(--color-gold-700)] dark:hover:to-[var(--color-gold-800)] text-white font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-10 py-4 xs:py-5 sm:py-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 w-full sm:w-auto active:scale-95"
             >
               <Target className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span>Mulai Proses Pendaftaran Sekarang!</span>
+              <span>Daftar Sekarang</span>
             </a>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Requirements Section - BROWN & TEAL */}
-      <section className="bg-gradient-to-br from-[var(--color-teal-50)] to-[var(--color-cream-100)] py-10 xs:py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
+      <section className="bg-gradient-to-br from-[var(--color-teal-50)] to-[var(--color-cream-100)] dark:from-[var(--color-brown-950)] dark:to-[var(--color-brown-900)] py-10 xs:py-12 sm:py-16 md:py-20 transition-colors duration-500">
+        <Container>
+          <ScrollAnimation className="text-center mb-8 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] text-white px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl mb-3 sm:mb-4">
               <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              PERSYARATAN MUDAH & STANDAR
+              PERSYARATAN
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
-              Tidak Ada Syarat{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)]">
-                Yang Menyulitkan!
-              </span>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
+              Berkas Pendaftaran
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] max-w-2xl mx-auto px-4 sm:px-0">
-              Dokumen standar yang{" "}
-              <span className="font-black text-[var(--color-brown-900)]">
-                sudah pasti Anda miliki
-              </span>
-              . Tidak ada syarat aneh-aneh!
+            <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] max-w-2xl mx-auto px-4 sm:px-0">
+              Mohon persiapkan dokumen-dokumen berikut untuk kelengkapan administrasi.
             </p>
-          </div>
+          </ScrollAnimation>
 
           <div className="grid lg:grid-cols-2 gap-6 xs:gap-7 sm:gap-8 max-w-6xl mx-auto">
             {requirements.map((req, idx) => (
-              <div
+              <ScrollAnimation
                 key={idx}
-                className="bg-white border-2 border-[var(--color-teal-200)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300"
+                delay={idx * 0.1}
+                className="bg-white dark:bg-[var(--color-brown-900)] border-2 border-[var(--color-teal-200)] dark:border-[var(--color-brown-700)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-8 shadow-lg hover:shadow-2xl hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300"
               >
                 <div className="flex items-center gap-3 xs:gap-3.5 sm:gap-4 mb-5 xs:mb-5.5 sm:mb-6">
-                  <div className="w-12 h-12 xs:w-13 xs:h-13 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-600)] shadow-lg flex-shrink-0">
+                  <div className="w-12 h-12 xs:w-13 xs:h-13 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center bg-gradient-to-br from-[var(--color-teal-500)] to-[var(--color-teal-600)] dark:from-[var(--color-teal-600)] dark:to-[var(--color-teal-700)] shadow-lg flex-shrink-0">
                     <req.icon className="w-6 h-6 xs:w-6.5 xs:h-6.5 sm:w-7 sm:h-7 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-black text-base xs:text-lg sm:text-xl text-[var(--color-brown-900)] leading-tight">
+                    <h3 className="font-black text-base xs:text-lg sm:text-xl text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] leading-tight">
                       {req.title}
                     </h3>
-                    <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] leading-tight">
+                    <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-300)] leading-tight">
                       {req.subtitle}
                     </p>
                   </div>
@@ -514,87 +474,82 @@ export default function PPDBPage() {
                 <ul className="space-y-2.5 xs:space-y-3 sm:space-y-3">
                   {req.items.map((item, itemIdx) => (
                     <li key={itemIdx} className="group">
-                      <div className="flex items-start gap-2.5 xs:gap-3 sm:gap-3 p-2.5 xs:p-3 sm:p-3 rounded-lg sm:rounded-xl hover:bg-[var(--color-teal-50)] transition-all">
-                        <CheckCircle className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 mt-0.5 flex-shrink-0 text-[var(--color-teal-600)]" />
+                      <div className="flex items-start gap-2.5 xs:gap-3 sm:gap-3 p-2.5 xs:p-3 sm:p-3 rounded-lg sm:rounded-xl hover:bg-[var(--color-teal-50)] dark:hover:bg-[var(--color-teal-900)]/30 transition-all">
+                        <CheckCircle className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 mt-0.5 flex-shrink-0 text-[var(--color-teal-600)] dark:text-[var(--color-teal-400)]" />
                         <div className="flex-1 min-w-0">
-                          <span className="text-xs xs:text-sm sm:text-sm font-semibold text-[var(--color-brown-800)] block mb-1 leading-tight">
+                          <span className="text-xs xs:text-sm sm:text-sm font-semibold text-[var(--color-brown-800)] dark:text-[var(--color-cream-100)] block mb-1 leading-tight">
                             {item.text}
-                          </span>
-                          <span className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-teal-700)] font-medium flex items-center gap-1">
-                            <Sparkles className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0" />
-                            <span>{item.benefit}</span>
                           </span>
                         </div>
                       </div>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
 
-          <div className="mt-8 sm:mt-10 bg-white rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-teal-200)] max-w-3xl mx-auto text-center shadow-lg">
-            <Shield className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 text-[var(--color-teal-600)] mx-auto mb-2.5 sm:mb-3" />
-            <p className="text-base xs:text-lg sm:text-lg font-black text-[var(--color-brown-900)] mb-1.5 sm:mb-2 px-2 sm:px-0">
-              Kesulitan Menyiapkan Dokumen? Tenang!
+          <ScrollAnimation
+            direction="up"
+            delay={0.2}
+            className="mt-8 sm:mt-10 bg-white dark:bg-[var(--color-brown-900)] rounded-xl sm:rounded-2xl p-5 xs:p-6 sm:p-6 border-2 border-[var(--color-teal-200)] dark:border-[var(--color-brown-700)] max-w-3xl mx-auto text-center shadow-lg"
+          >
+            <Shield className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 text-[var(--color-teal-600)] dark:text-[var(--color-teal-500)] mx-auto mb-2.5 sm:mb-3" />
+            <p className="text-base xs:text-lg sm:text-lg font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-1.5 sm:mb-2 px-2 sm:px-0">
+              Butuh Informasi Lebih Lanjut?
             </p>
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] px-4 sm:px-0">
-              Tim kami siap membantu Anda{" "}
-              <span className="font-bold text-[var(--color-teal-700)]">
-                GRATIS
-              </span>{" "}
-              via WhatsApp/Telepon. Kami guide step-by-step sampai selesai!
+            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] px-4 sm:px-0">
+              Silakan hubungi panitia PPDB jika Anda memiliki pertanyaan mengenai persyaratan dokumen.
             </p>
-          </div>
-        </div>
+          </ScrollAnimation>
+        </Container>
       </section>
 
       {/* FAQ Section - BROWN THEME */}
-      <section className="bg-white py-10 xs:py-12 sm:py-16 md:py-20">
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12">
+      <section className="bg-white dark:bg-[var(--color-brown-950)] py-10 xs:py-12 sm:py-16 md:py-20 transition-colors duration-500">
+        <Container>
+          <ScrollAnimation className="text-center mb-8 sm:mb-12">
             <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] text-white px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl mb-3 sm:mb-4">
               <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              PERTANYAAN YANG SERING DITANYAKAN
+              FAQ
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
-              Masih Ragu?{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] to-[var(--color-brown-800)]">
-                Kami Jawab Semua!
-              </span>
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-4xl font-black text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-3 sm:mb-4 px-4 sm:px-0 leading-tight">
+              Pertanyaan Umum
             </h2>
-          </div>
+          </ScrollAnimation>
 
           <div className="max-w-3xl mx-auto space-y-3 xs:space-y-4 sm:space-y-4">
             {faqs.map((faq, idx) => (
-              <div
+              <ScrollAnimation
                 key={idx}
-                className="bg-gradient-to-br from-[var(--color-brown-50)] to-[var(--color-cream-100)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 border-2 border-[var(--color-brown-200)] hover:shadow-xl transition-all"
+                delay={idx * 0.1}
+                className="bg-gradient-to-br from-[var(--color-brown-50)] to-[var(--color-cream-100)] dark:from-[var(--color-brown-900)] dark:to-[var(--color-brown-800)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 border-2 border-[var(--color-brown-200)] dark:border-[var(--color-brown-700)] hover:shadow-xl transition-all"
               >
-                <h3 className="font-black text-sm xs:text-base sm:text-lg text-[var(--color-brown-900)] mb-2.5 xs:mb-3 sm:mb-3 flex items-start gap-2.5 xs:gap-3 sm:gap-3 leading-tight">
-                  <AlertCircle className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-brown-700)] flex-shrink-0 mt-0.5" />
+                <h3 className="font-black text-sm xs:text-base sm:text-lg text-[var(--color-brown-900)] dark:text-[var(--color-cream-100)] mb-2.5 xs:mb-3 sm:mb-3 flex items-start gap-2.5 xs:gap-3 sm:gap-3 leading-tight">
+                  <AlertCircle className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-[var(--color-brown-700)] dark:text-[var(--color-gold-400)] flex-shrink-0 mt-0.5" />
                   <span>{faq.q}</span>
                 </h3>
-                <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] leading-relaxed pl-7 xs:pl-8 sm:pl-9">
+                <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] leading-relaxed pl-7 xs:pl-8 sm:pl-9">
                   {faq.a}
                 </p>
-              </div>
+              </ScrollAnimation>
             ))}
           </div>
 
-          <div className="mt-8 sm:mt-10 text-center px-4 sm:px-0">
-            <p className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-brown-700)] mb-3 sm:mb-4">
-              Masih ada pertanyaan lain?
-            </p>
+          <ScrollAnimation
+            direction="up"
+            delay={0.2}
+            className="mt-8 sm:mt-10 text-center px-4 sm:px-0"
+          >
             <a
               href="/kontak"
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] hover:from-[var(--color-teal-700)] hover:to-[var(--color-teal-800)] text-white font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-10 py-4 xs:py-5 sm:py-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto active:scale-95"
             >
               <Phone className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span>Hubungi Kami Sekarang - Gratis!</span>
+              <span>Hubungi Kami</span>
             </a>
-          </div>
-        </div>
+          </ScrollAnimation>
+        </Container>
       </section>
 
       {/* Final CTA - BROWN DOMINANT */}
@@ -604,46 +559,37 @@ export default function PPDBPage() {
           <div className="absolute bottom-10 right-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-teal-500)] rounded-full blur-3xl" />
         </div>
 
-        <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
+        <Container className="relative z-10">
+          <ScrollAnimation className="text-center">
             <div className="inline-flex items-center gap-1.5 sm:gap-2.5 bg-white/25 backdrop-blur-md text-white px-4 xs:px-5 sm:px-5 py-2.5 xs:py-3 sm:py-3 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-2xl mb-4 sm:mb-6 border-2 border-white/40">
               <Heart className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-              <span>KEPUTUSAN YANG AKAN MENGUBAH HIDUP ANAK ANDA</span>
+              <span>MARI BERGABUNG BERSAMA KAMI</span>
             </div>
 
             <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto px-4 sm:px-0">
-              Bayangkan 4 Tahun Lagi...
-              <br />
+              Mencetak Generasi <br />
               <span className="text-[var(--color-gold-300)]">
-                Anak Anda Sudah Hafal 30 Juz!
+                Rabbani & Berprestasi
               </span>
             </h2>
 
-            <p className="text-lg xs:text-xl sm:text-2xl md:text-3xl text-white/95 max-w-3xl mx-auto mb-3 sm:mb-4 font-black leading-tight px-4 sm:px-0">
-              Sementara Teman Sebayanya Masih Bingung Cari Jati Diri
-            </p>
-
             <p className="text-sm xs:text-base sm:text-lg text-white/85 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4 sm:px-0">
-              Ini bukan mimpi.{" "}
-              <span className="font-black text-[var(--color-gold-300)]">
-                Ini sudah terjadi pada 500+ santri kami.
-              </span>{" "}
-              Pertanyaannya: Apakah anak Anda akan jadi salah satunya?
+              Bersama-sama kita wujudkan cita-cita mulia, mendidik generasi muda yang hafal Al-Qur'an dan unggul dalam ilmu pengetahuan.
             </p>
 
             <div className="grid grid-cols-2 lg:flex lg:flex-wrap justify-center gap-2.5 xs:gap-3 sm:gap-4 lg:gap-6 mb-8 sm:mb-10 text-white/90 text-xs xs:text-sm sm:text-sm px-4 sm:px-0">
               <div className="flex items-center gap-1.5 sm:gap-2 bg-white/20 backdrop-blur-sm px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl border-2 border-white/30">
                 <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-300)] flex-shrink-0" />
                 <span className="whitespace-nowrap">
-                  <span className="font-black text-white">29 tahun</span>{" "}
-                  terpercaya
+                  <span className="font-black text-white">29 Tahun</span>{" "}
+                  Pengalaman
                 </span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2 bg-white/20 backdrop-blur-sm px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl border-2 border-white/30">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-300)] flex-shrink-0" />
                 <span className="whitespace-nowrap">
-                  <span className="font-black text-white">500+ santri</span>{" "}
-                  aktif
+                  <span className="font-black text-white">500+ Santri</span>{" "}
+                  Aktif
                 </span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2 bg-white/20 backdrop-blur-sm px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl border-2 border-white/30">
@@ -652,21 +598,15 @@ export default function PPDBPage() {
                   <span className="font-black text-white">Akreditasi A</span>
                 </span>
               </div>
-              <div className="flex items-center gap-1.5 sm:gap-2 bg-white/20 backdrop-blur-sm px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2.5 rounded-lg sm:rounded-xl border-2 border-white/30">
-                <Star className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-gold-300)] flex-shrink-0" />
-                <span className="whitespace-nowrap">
-                  <span className="font-black text-white">4.9/5</span> rating
-                </span>
-              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-5 justify-center mb-8 sm:mb-10 px-4 sm:px-0">
+            <div className="flex flex-col sm:flex-row gap-3 xs:gap-4 sm:gap-5 justify-center mb-0 sm:mb-0 px-4 sm:px-0">
               <a
                 href="/daftar"
                 className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-white text-[var(--color-brown-900)] hover:bg-[var(--color-gold-100)] shadow-2xl font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-12 py-4 xs:py-5 sm:py-7 rounded-xl sm:rounded-2xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_25px_50px_rgba(0,0,0,0.3)] group w-full sm:w-auto active:scale-95"
               >
                 <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-                <span>DAFTAR SEKARANG - KUOTA TERBATAS!</span>
+                <span>Daftar Sekarang</span>
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-2 transition-transform flex-shrink-0" />
               </a>
 
@@ -675,24 +615,11 @@ export default function PPDBPage() {
                 className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-transparent border-2 sm:border-3 border-white text-white hover:bg-white hover:text-[var(--color-brown-900)] font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-12 py-4 xs:py-5 sm:py-7 rounded-xl sm:rounded-2xl transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_25px_50px_rgba(0,0,0,0.3)] w-full sm:w-auto active:scale-95"
               >
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
-                <span>Konsultasi Gratis Dulu</span>
+                <span>Konsultasi</span>
               </a>
             </div>
-
-            <div className="inline-flex items-start sm:items-center gap-2 sm:gap-3 bg-gradient-to-r from-[var(--color-gold-600)] to-[var(--color-gold-700)] text-white px-4 xs:px-5 sm:px-6 py-3 xs:py-3.5 sm:py-4 rounded-xl sm:rounded-2xl shadow-2xl animate-pulse border-2 border-white/30 mx-4 sm:mx-0">
-              <Zap className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 text-white mt-0.5 sm:mt-0" />
-              <div className="text-left">
-                <p className="text-xs xs:text-sm sm:text-sm font-black tracking-wide text-white leading-tight">
-                  PERHATIAN: Pendaftaran Ditutup 31 Maret 2026!
-                </p>
-                <p className="text-[10px] xs:text-xs sm:text-xs font-semibold text-white leading-tight">
-                  Setelah itu, Anda harus tunggu 1 tahun lagi. Jangan sampai
-                  menyesal!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+          </ScrollAnimation>
+        </Container>
       </section>
     </main>
   );

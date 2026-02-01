@@ -244,10 +244,10 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
         paymentStatus === "pending"
           ? "current"
           : paymentStatus === "verified"
-          ? "completed"
-          : paymentStatus === "rejected"
-          ? "current"
-          : "upcoming",
+            ? "completed"
+            : paymentStatus === "rejected"
+              ? "current"
+              : "upcoming",
     },
     {
       id: 3,
@@ -263,13 +263,12 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
         <div key={step.id} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
-                step.status === "completed"
+              className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${step.status === "completed"
                   ? "bg-green-500 border-green-500 text-white"
                   : step.status === "current"
-                  ? "bg-[var(--color-gold-500)] border-[var(--color-gold-500)] text-white animate-pulse"
-                  : "bg-stone-100 border-stone-300 text-stone-400"
-              }`}
+                    ? "bg-[var(--color-gold-500)] border-[var(--color-gold-500)] text-white animate-pulse"
+                    : "bg-stone-100 border-stone-300 text-stone-400"
+                }`}
             >
               {step.status === "completed" ? (
                 <CheckCircle className="w-5 h-5" />
@@ -279,13 +278,12 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
             </div>
             <div className="mt-2 text-center">
               <p
-                className={`text-xs font-bold ${
-                  step.status === "completed"
+                className={`text-xs font-bold ${step.status === "completed"
                     ? "text-green-700"
                     : step.status === "current"
-                    ? "text-[var(--color-gold-700)]"
-                    : "text-stone-400"
-                }`}
+                      ? "text-[var(--color-gold-700)]"
+                      : "text-stone-400"
+                  }`}
               >
                 {step.title}
               </p>
@@ -296,12 +294,11 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
           </div>
           {index < steps.length - 1 && (
             <div
-              className={`flex-1 h-1 mx-2 rounded ${
-                steps[index + 1].status === "completed" ||
-                steps[index + 1].status === "current"
+              className={`flex-1 h-1 mx-2 rounded ${steps[index + 1].status === "completed" ||
+                  steps[index + 1].status === "current"
                   ? "bg-green-300"
                   : "bg-stone-200"
-              }`}
+                }`}
             />
           )}
         </div>
@@ -396,13 +393,12 @@ function UploadArea({
 
       {/* Upload area */}
       <div
-        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${
-          isDragging
+        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${isDragging
             ? "border-[var(--color-teal-500)] bg-[var(--color-teal-50)]"
             : isRejected
-            ? "border-red-300 bg-red-50 hover:border-red-400"
-            : "border-stone-300 hover:border-[var(--color-teal-400)] hover:bg-stone-50"
-        } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
+              ? "border-red-300 bg-red-50 hover:border-red-400"
+              : "border-stone-300 hover:border-[var(--color-teal-400)] hover:bg-stone-50"
+          } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -420,32 +416,29 @@ function UploadArea({
             <Loader2 className="w-12 h-12 text-[var(--color-teal-500)] animate-spin" />
           ) : (
             <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center ${
-                isRejected
+              className={`w-16 h-16 rounded-full flex items-center justify-center ${isRejected
                   ? "bg-red-100"
                   : "bg-[var(--color-teal-100)]"
-              }`}
+                }`}
             >
               <Upload
-                className={`w-8 h-8 ${
-                  isRejected
+                className={`w-8 h-8 ${isRejected
                     ? "text-red-600"
                     : "text-[var(--color-teal-600)]"
-                }`}
+                  }`}
               />
             </div>
           )}
           <div>
             <p
-              className={`font-bold ${
-                isRejected ? "text-red-700" : "text-stone-700"
-              }`}
+              className={`font-bold ${isRejected ? "text-red-700" : "text-stone-700"
+                }`}
             >
               {isRejected
                 ? "Upload Ulang Bukti Transfer"
                 : currentFile
-                ? "Ganti Bukti Transfer"
-                : "Klik atau Seret File ke Sini"}
+                  ? "Ganti Bukti Transfer"
+                  : "Klik atau Seret File ke Sini"}
             </p>
             <p className="text-sm text-stone-500 mt-1">
               Format: JPG, PNG, atau PDF (Maks. 2MB)
@@ -680,13 +673,12 @@ export default function StatusPembayaranTab() {
       {/* Toast Notification */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${
-            toast.type === "success"
+          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${toast.type === "success"
               ? "bg-green-500 text-white"
               : toast.type === "error"
-              ? "bg-red-500 text-white"
-              : "bg-blue-500 text-white"
-          }`}
+                ? "bg-red-500 text-white"
+                : "bg-blue-500 text-white"
+            }`}
         >
           {toast.type === "success" ? (
             <CheckCircle className="w-5 h-5" />
@@ -712,7 +704,7 @@ export default function StatusPembayaranTab() {
                 STEP 1
               </span>
             </div>
-            <h1 className="text-2xl font-black">Pembayaran Pendaftaran</h1>
+            <h1 className="text-2xl font-black text-white">Pembayaran Pendaftaran</h1>
             <p className="text-[var(--color-cream-200)]">
               Lakukan pembayaran untuk melanjutkan proses pendaftaran
             </p>
@@ -836,27 +828,24 @@ export default function StatusPembayaranTab() {
                   activePaymentMethod === "midtrans" ? null : "midtrans"
                 )
               }
-              className={`p-5 rounded-xl border-2 text-left transition-all ${
-                activePaymentMethod === "midtrans"
+              className={`p-5 rounded-xl border-2 text-left transition-all ${activePaymentMethod === "midtrans"
                   ? "border-[var(--color-teal-500)] bg-[var(--color-teal-50)]"
                   : "border-stone-200 bg-white hover:border-[var(--color-teal-300)]"
-              }`}
+                }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      activePaymentMethod === "midtrans"
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${activePaymentMethod === "midtrans"
                         ? "bg-[var(--color-teal-500)]"
                         : "bg-[var(--color-teal-100)]"
-                    }`}
+                      }`}
                   >
                     <CreditCard
-                      className={`w-6 h-6 ${
-                        activePaymentMethod === "midtrans"
+                      className={`w-6 h-6 ${activePaymentMethod === "midtrans"
                           ? "text-white"
                           : "text-[var(--color-teal-600)]"
-                      }`}
+                        }`}
                     />
                   </div>
                   <div>
@@ -881,26 +870,23 @@ export default function StatusPembayaranTab() {
                   activePaymentMethod === "manual" ? null : "manual"
                 )
               }
-              className={`p-5 rounded-xl border-2 text-left transition-all ${
-                activePaymentMethod === "manual"
+              className={`p-5 rounded-xl border-2 text-left transition-all ${activePaymentMethod === "manual"
                   ? "border-[var(--color-gold-500)] bg-[var(--color-gold-50)]"
                   : "border-stone-200 bg-white hover:border-[var(--color-gold-300)]"
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                    activePaymentMethod === "manual"
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${activePaymentMethod === "manual"
                       ? "bg-[var(--color-gold-500)]"
                       : "bg-[var(--color-gold-100)]"
-                  }`}
+                    }`}
                 >
                   <Building2
-                    className={`w-6 h-6 ${
-                      activePaymentMethod === "manual"
+                    className={`w-6 h-6 ${activePaymentMethod === "manual"
                         ? "text-white"
                         : "text-[var(--color-gold-600)]"
-                    }`}
+                      }`}
                   />
                 </div>
                 <div>
@@ -1064,9 +1050,9 @@ export default function StatusPembayaranTab() {
                   currentFile={
                     data.pembayaran?.bukti_transfer_filename
                       ? {
-                          name: data.pembayaran.bukti_transfer_filename,
-                          path: data.pembayaran.bukti_transfer_path || "",
-                        }
+                        name: data.pembayaran.bukti_transfer_filename,
+                        path: data.pembayaran.bukti_transfer_path || "",
+                      }
                       : null
                   }
                   isRejected={isPaymentRejected}
