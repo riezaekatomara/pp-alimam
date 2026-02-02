@@ -54,7 +54,7 @@ function HeroTitle() {
 
 function HeroDescription() {
   return (
-    <p className="text-base sm:text-lg text-[var(--color-text-600)] leading-relaxed max-w-lg">
+    <p className="text-base sm:text-lg text-[var(--color-text-600)] leading-relaxed text-center lg:text-left">
       Membina generasi Qur'ani yang berakhlak mulia, berilmu luas, dan
       bermanfaat bagi umat dengan kurikulum terpadu Rabbani, Cendekia, dan
       Mandiri
@@ -192,17 +192,27 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* LEFT COLUMN - Text Content */}
           <ScrollAnimation direction="right" className="space-y-8">
-            <HeroBadge />
-            <HeroTitle />
-            <HeroDescription />
-            <HeroCTA />
-            <ContactInfo />
+            <div className="flex justify-center lg:justify-start">
+              <HeroBadge />
+            </div>
+            <div className="text-center lg:text-left">
+              <HeroTitle />
+            </div>
+            <div className="mx-auto lg:mx-0 max-w-lg">
+              <HeroDescription />
+            </div>
+            <div className="flex justify-center lg:justify-start">
+              <HeroCTA />
+            </div>
+            <div className="flex justify-center lg:justify-start">
+              <ContactInfo />
+            </div>
           </ScrollAnimation>
 
           {/* RIGHT COLUMN - Image + Info Card */}
           <div className="relative">
-            {/* Image - Hidden on mobile, shown on larger screens */}
-            <ScrollAnimation direction="left" delay={0.2} className="hidden md:block relative z-0">
+            {/* Image - Visible on all screens, layout optimized */}
+            <ScrollAnimation direction="left" delay={0.2} className="relative z-0 block w-full">
               <HeroImage />
             </ScrollAnimation>
 
