@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import ScrollAnimation from "@/components/ui/ScrollAnimation";
+// import ScrollAnimation from "@/components/ui/ScrollAnimation";
 import {
   Phone,
   Calendar,
@@ -191,7 +191,7 @@ export default function HeroSection() {
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* LEFT COLUMN - Text Content */}
-          <ScrollAnimation direction="right" className="space-y-8">
+          <div className="space-y-8">
             <div className="flex justify-center lg:justify-start">
               <HeroBadge />
             </div>
@@ -207,19 +207,19 @@ export default function HeroSection() {
             <div className="flex justify-center lg:justify-start">
               <ContactInfo />
             </div>
-          </ScrollAnimation>
+          </div>
 
           {/* RIGHT COLUMN - Image + Info Card */}
           <div className="relative">
             {/* Image - Visible on all screens, layout optimized */}
-            <ScrollAnimation direction="left" delay={0.2} className="relative z-0 block w-full">
+            <div className="relative z-0 block w-full">
               <HeroImage />
-            </ScrollAnimation>
+            </div>
 
             {/* Info Card - Landscape below image */}
-            <ScrollAnimation direction="up" delay={0.4} className="mt-6 md:mt-8 relative z-10 w-full">
+            <div className="mt-6 md:mt-8 relative z-10 w-full">
               <RegistrationInfoCard />
-            </ScrollAnimation>
+            </div>
           </div>
         </div>
       </Container>
