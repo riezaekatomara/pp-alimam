@@ -10,7 +10,8 @@ import {
     History,
     MapPin,
     Award,
-    BookOpen
+    BookOpen,
+    Compass
 } from "lucide-react";
 
 export default function TentangPage() {
@@ -55,11 +56,11 @@ export default function TentangPage() {
                             <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-900)]">
                                 Sejarah & Profil Singkat
                             </h2>
-                            <p className="text-[var(--color-text-600)] leading-relaxed">
-                                Pondok Pesantren Al-Imam Al-Islami didirikan pada tahun 1995 dengan semangat untuk menghadirkan pendidikan Islam berkualitas yang mengintegrasikan nilai-nilai kepesantrenan (Turats) dengan tuntutan zaman modern.
+                            <p className="text-[var(--color-text-600)] leading-relaxed text-justify">
+                                <strong>Pondok Pesantren Al-Imam Al-Islami</strong> merupakan salah satu pondok pesantren yang berlokasi di Cikembar Sukabumi Jawa Barat. Pondok Pesantren yang didirikan sekitar tahun 1995 oleh Al-Ustadz KH. Bukhori Muslim <em>Rahimahullah</em> ini senantiasa berkomitmen berkhidmah untuk umat dengan membuka beasiswa yatim atau dhuafa dengan kuota yang terbatas, biaya pendidikan yang terjangkau, menyediakan pendidikan yang berkualitas.
                             </p>
-                            <p className="text-[var(--color-text-600)] leading-relaxed">
-                                Berawal dari sebuah majelis ta'lim sederhana, kini Al-Imam telah berkembang menjadi lembaga pendidikan yang menaungi ratusan santri dari berbagai daerah di Indonesia, dengan jenjang pendidikan mulai dari MTs hingga MA.
+                            <p className="text-[var(--color-text-600)] leading-relaxed text-justify">
+                                Kurikulum berupa kurikulum pesantren basis kitab kuning dan kurikulum dari kementrian agama tingkat MTs dan MA. Pondok Pesantren Al-Imam Al-Islami akan senantiasa andil dalam mencetak generasi yang sholeh dan sholehah, berjiwa robbani, berilmu, beramal, dan berdakwah yang berfaham ahlu sunnah wal jama'ah ala fahmi salaful ummah.
                             </p>
                             <div className="grid grid-cols-2 gap-6 pt-4">
                                 <div className="flex items-start gap-4">
@@ -96,36 +97,57 @@ export default function TentangPage() {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
                         {/* Visi */}
                         <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-[var(--color-brown-100)] text-center">
                             <div className="w-16 h-16 mx-auto bg-[var(--color-brown-100)] rounded-2xl flex items-center justify-center mb-6 text-[var(--color-brown-700)]">
                                 <Target className="w-8 h-8" />
                             </div>
                             <h3 className="text-2xl font-bold text-[var(--color-text-900)] mb-4">Visi</h3>
-                            <p className="text-lg text-[var(--color-text-700)] font-medium leading-relaxed italic">
-                                "Terwujudnya Generasi Rabbani yang Cendekia, Mandiri, dan Berwawasan Global berlandaskan Al-Qur'an dan Sunnah."
+                            <p className="text-[var(--color-text-700)] font-medium leading-relaxed italic text-justify">
+                                "Menjadi lembaga pendidikan Islam unggulan dalam rangka mewujudkan generasi khairu ummah yang memiliki manhaj Al Qur'an dan As Sunnah sesuai pemahaman as-salaf ash-shalih."
                             </p>
                         </div>
 
                         {/* Misi */}
                         <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-[var(--color-brown-100)]">
-                            <div className="w-16 h-16 mx-auto md:mx-0 bg-[var(--color-teal-100)] rounded-2xl flex items-center justify-center mb-6 text-[var(--color-teal-700)]">
+                            <div className="w-16 h-16 mx-auto bg-[var(--color-teal-100)] rounded-2xl flex items-center justify-center mb-6 text-[var(--color-teal-700)]">
                                 <BookOpen className="w-8 h-8" />
                             </div>
-                            <h3 className="text-2xl font-bold text-[var(--color-text-900)] mb-4 text-center md:text-left">Misi</h3>
-                            <ul className="space-y-4">
+                            <h3 className="text-2xl font-bold text-[var(--color-text-900)] mb-4 text-center">Misi</h3>
+                            <ul className="space-y-3">
                                 {[
-                                    "Menyelenggarakan pendidikan Islam yang integratif.",
-                                    "Membangun lingkungan pesantren yang kondusif untuk pembentukan akhlak.",
-                                    "Mengembangkan potensi santri dalam bidang akademik dan non-akademik.",
-                                    "Membekali santri dengan keterampilan hidup (life skills) dan bahasa asing."
+                                    "Mencetak para penghafal Qur'an yang menguasai ilmu-ilmu syar'i.",
+                                    "Mencetak para pemimpin yang adil dan amanah untuk memimpin ummat di masa yang akan datang.",
+                                    "Mengkader da'i ilallah yang siap terjun di medan da'wah.",
+                                    "Mendidik santri yang menguasai Bahasa Arab dan Inggris secara aktif."
                                 ].map((item, idx) => (
                                     <li key={idx} className="flex gap-3">
                                         <div className="w-6 h-6 rounded-full bg-[var(--color-teal-500)] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                                             {idx + 1}
                                         </div>
-                                        <span className="text-[var(--color-text-700)]">{item}</span>
+                                        <span className="text-sm text-[var(--color-text-700)]">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Tujuan */}
+                        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-[var(--color-brown-100)]">
+                            <div className="w-16 h-16 mx-auto bg-[var(--color-gold-100)] rounded-2xl flex items-center justify-center mb-6 text-[var(--color-gold-700)]">
+                                <Compass className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-[var(--color-text-900)] mb-4 text-center">Tujuan</h3>
+                            <ul className="space-y-3">
+                                {[
+                                    "Menciptakan suasana tempat mencari ilmu yang nyaman serta tertib sehingga dapat lebih khusuk dalam praktek beribadah dan mencari ilmu.",
+                                    "Meningkatkan kualitas sumber daya manusia (SDM) sebagai tenaga pembimbing yang sangat penting dalam mencetak generasi yang berprestasi dan berakhlak baik."
+                                ].map((item, idx) => (
+                                    <li key={idx} className="flex gap-3">
+                                        <div className="w-6 h-6 rounded-full bg-[var(--color-gold-500)] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                                            {idx + 1}
+                                        </div>
+                                        <span className="text-sm text-[var(--color-text-700)]">{item}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -139,7 +161,7 @@ export default function TentangPage() {
                 <Container>
                     <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Bergabunglah Bersama Keluarga Besar Al-Imam</h2>
                     <p className="text-lg text-[var(--color-cream-200)] mb-10 max-w-2xl mx-auto">
-                        Mari persiapkan masa depan putra-putri Anda di lingkungan pendidikan terbaik. Pendaftaran tahun ajaran baru telah dibuka.
+                        Mari persiapkan masa depan putra Anda di lingkungan pendidikan terbaik. Pendaftaran tahun ajaran baru telah dibuka.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button size="lg" className="bg-[var(--color-gold-500)] text-white hover:bg-[var(--color-gold-600)]" asChild>

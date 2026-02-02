@@ -1,44 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 // GET: List dokumen yang perlu diverifikasi
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
+    // 1. Validasi session manual
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("app_session");
 
-    // Check if user is admin
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    let session;
+    try {
+      session = JSON.parse(sessionCookie.value);
+    } catch {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
 
-    if (!profile || profile.role !== "admin") {
+    // Check custom role
+    if (session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     // Get query params
     const searchParams = request.nextUrl.searchParams;
-    const status = searchParams.get("status") || "pending";
+    const statusParam = searchParams.get("status") || "pending";
 
-    // Fetch dokumen
-    const { data, error } = await supabase
+    // Fetch dokumen using Admin Client
+    let query = supabaseAdmin
       .from("dokumen")
       .select(
         `
         id,
         jenis_dokumen,
-        status_verifikasi,
+        is_verified,
         catatan,
-        file_url,
+        file_path,
         created_at,
         updated_at,
         pendaftar:pendaftar_id (
@@ -49,9 +49,16 @@ export async function GET(request: NextRequest) {
           no_hp
         )
       `
-      )
-      .eq("status_verifikasi", status)
-      .order("created_at", { ascending: false });
+      );
+
+    // Filter Logic
+    if (statusParam === "pending") {
+      query = query.eq("is_verified", false);
+    } else if (statusParam === "verified") {
+      query = query.eq("is_verified", true);
+    }
+
+    const { data, error } = await query.order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching dokumen:", error);
@@ -74,24 +81,23 @@ export async function GET(request: NextRequest) {
 // PATCH: Verify or reject dokumen
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
+    // 1. Validasi session manual
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("app_session");
 
-    // Check if user is admin
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    let session;
+    try {
+      session = JSON.parse(sessionCookie.value);
+    } catch {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
 
-    if (!profile || profile.role !== "admin") {
+    // Check custom role
+    if (session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -113,13 +119,15 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
+    const isVerified = status_verifikasi === "verified";
+
     // Update dokumen
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from("dokumen")
       .update({
-        status_verifikasi,
+        is_verified: isVerified,
         catatan,
-        verified_by: user.id,
+        verified_by: session.id,
         verified_at: new Date().toISOString(),
       })
       .eq("id", dokumen_id)

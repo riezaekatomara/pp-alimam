@@ -255,7 +255,7 @@ export default function PPDBPage() {
               Pengalaman Wali Santri
             </h2>
             <p className="text-sm xs:text-base sm:text-lg text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] max-w-2xl mx-auto px-4 sm:px-0">
-              Apa yang mereka rasakan setelah mempercayakan pendidikan putra-putrinya di Al-Imam?
+              Apa yang mereka rasakan setelah mempercayakan pendidikan putranya di Al-Imam?
             </p>
           </ScrollAnimation>
 

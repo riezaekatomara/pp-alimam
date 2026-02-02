@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-// Cache for provinces
+// Cache for 1 hour
 let provinsiCache: { data: any[]; timestamp: number } | null = null;
 const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
@@ -8,10 +8,9 @@ export async function GET() {
   try {
     // Check cache
     if (provinsiCache && Date.now() - provinsiCache.timestamp < CACHE_DURATION) {
-      return NextResponse.json({ data: provinsiCache.data });
+      return NextResponse.json({ success: true, data: provinsiCache.data });
     }
 
-    // Fetch from external API
     const response = await fetch(
       "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
       { next: { revalidate: 3600 } }
@@ -23,17 +22,20 @@ export async function GET() {
 
     const rawData = await response.json();
 
-    // Transform to just names, sorted alphabetically
-    const provinsis = rawData
-      .map((p: { id: string; name: string }) => p.name)
-      .sort((a: string, b: string) => a.localeCompare(b));
+    // Sort alphabetically by name
+    const data = rawData.sort((a: { name: string }, b: { name: string }) =>
+      a.name.localeCompare(b.name)
+    );
 
     // Cache the data
-    provinsiCache = { data: provinsis, timestamp: Date.now() };
+    provinsiCache = { data, timestamp: Date.now() };
 
-    return NextResponse.json({ data: provinsis });
+    return NextResponse.json({ success: true, data });
   } catch (error) {
     console.error("Error fetching provinsi:", error);
-    return NextResponse.json({ data: [] }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal mengambil data provinsi" },
+      { status: 500 }
+    );
   }
 }

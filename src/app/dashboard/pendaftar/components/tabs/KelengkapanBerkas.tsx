@@ -16,14 +16,17 @@ import {
   FileCheck,
   Loader2,
   Download,
+  User,
+  ClipboardList,
 } from "lucide-react";
+import DataLengkapForm from "./DataLengkapForm";
 
 // ============================================
 // TYPES
 // ============================================
 
 type DokumenStatus = "pending" | "uploaded" | "verified" | "rejected";
-type TabType = "data" | "upload" | "download";
+type TabType = "isi-data" | "data" | "upload" | "download";
 
 interface DokumenItem {
   key: string;
@@ -380,7 +383,7 @@ function DokumenCard({
 // ============================================
 
 export default function KelengkapanBerkasTab() {
-  const [activeTab, setActiveTab] = useState<TabType>("data");
+  const [activeTab, setActiveTab] = useState<TabType>("isi-data");
   const [dokumenList, setDokumenList] = useState<DokumenItem[]>([]);
   const [dokumenConfig, setDokumenConfig] = useState<
     Record<string, DokumenConfig>
@@ -416,7 +419,7 @@ export default function KelengkapanBerkasTab() {
       const [statusRes, configRes, dataRes] = await Promise.all([
         fetch("/api/dokumen/status"),
         fetch("/api/upload/dokumen"),
-        fetch("/api/dashboard/data"),
+        fetch("/api/dashboard/pendaftar-data"),
       ]);
 
       const statusData = await statusRes.json();
@@ -595,13 +598,19 @@ export default function KelengkapanBerkasTab() {
       )}
 
       <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl font-black">Kelengkapan Berkas</h1>
-        <p className="text-teal-100">Kelola dokumen dan berkas pendaftaran</p>
+        <div className="flex items-center gap-3">
+          <ClipboardList className="w-8 h-8" />
+          <div>
+            <h1 className="text-2xl font-black">Kelengkapan Data & Berkas</h1>
+            <p className="text-teal-100">Lengkapi data pendaftaran dan upload dokumen</p>
+          </div>
+        </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex gap-2 border-b-2 border-stone-200">
+      <div className="flex flex-wrap gap-2 border-b-2 border-stone-200 overflow-x-auto">
         {[
+          { id: "isi-data", label: "✏️ Isi Data Lengkap", icon: User },
           { id: "data", label: "📋 Lihat Data", icon: FileText },
           { id: "upload", label: "📄 Upload Berkas", icon: Upload },
           { id: "download", label: "💾 Download Berkas", icon: Download },
@@ -609,7 +618,7 @@ export default function KelengkapanBerkasTab() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as TabType)}
-            className={`px-4 py-3 font-medium transition-all ${activeTab === tab.id
+            className={`px-4 py-3 font-medium transition-all whitespace-nowrap ${activeTab === tab.id
                 ? "text-teal-600 border-b-2 border-teal-600"
                 : "text-stone-600 hover:text-stone-800"
               }`}
@@ -618,6 +627,11 @@ export default function KelengkapanBerkasTab() {
           </button>
         ))}
       </div>
+
+      {/* Tab: Isi Data Lengkap */}
+      {activeTab === "isi-data" && (
+        <DataLengkapForm />
+      )}
 
       {/* Tab: Lihat Data */}
       {activeTab === "data" && (

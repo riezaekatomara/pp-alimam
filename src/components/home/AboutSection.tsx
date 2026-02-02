@@ -76,7 +76,7 @@ export default function AboutSection() {
             </h3>
             <p className="text-[var(--color-text-600)] mb-6">
               Berbagai keunggulan yang menjadikan kami pilihan terbaik untuk
-              pendidikan putra-putri Anda
+              pendidikan putra Anda
             </p>
 
             <div className="space-y-4 mb-8">

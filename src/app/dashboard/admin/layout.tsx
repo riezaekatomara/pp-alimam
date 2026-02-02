@@ -18,6 +18,7 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -68,16 +69,22 @@ export default function AdminDashboardLayout({
       active: pathname.startsWith("/dashboard/admin/pendaftar"),
     },
     {
-      name: "Verifikasi Dokumen",
-      href: "/dashboard/admin/verifikasi-dokumen",
-      icon: FileCheck,
-      active: pathname === "/dashboard/admin/verifikasi-dokumen",
-    },
-    {
       name: "Verifikasi Pembayaran",
       href: "/dashboard/admin/verifikasi-pembayaran",
       icon: CreditCard,
       active: pathname === "/dashboard/admin/verifikasi-pembayaran",
+    },
+    {
+      name: "Data Lengkap",
+      href: "/dashboard/admin/pendaftar?filter=belum_isi_data",
+      icon: FileText,
+      active: pathname.includes("filter=belum_isi_data") || pathname.includes("filter=sudah_isi_data"),
+    },
+    {
+      name: "Verifikasi Dokumen",
+      href: "/dashboard/admin/verifikasi-dokumen",
+      icon: FileCheck,
+      active: pathname === "/dashboard/admin/verifikasi-dokumen",
     },
     {
       name: "Jadwal Ujian",

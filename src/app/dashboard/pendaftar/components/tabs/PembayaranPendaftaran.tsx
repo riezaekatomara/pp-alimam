@@ -26,6 +26,7 @@ import {
   MessageCircle,
   ArrowRight,
   Check,
+  Download,
 } from "lucide-react";
 
 // ============================================
@@ -801,6 +802,23 @@ export default function StatusPembayaranTab() {
                 ? formatDateTime(data.pembayaran.verified_at)
                 : "-"}
             </p>
+
+            {/* Download Kwitansi Button */}
+            <div className="mb-4">
+              <a
+                href="/api/pembayaran/kwitansi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <Download className="w-5 h-5" />
+                <span>Download Kwitansi Pembayaran</span>
+              </a>
+              <p className="text-xs text-green-600 mt-2">
+                Simpan kwitansi ini sebagai bukti pembayaran resmi
+              </p>
+            </div>
+
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-green-200">
               <Shield className="w-5 h-5 text-green-600" />
               <span className="text-sm text-green-800">

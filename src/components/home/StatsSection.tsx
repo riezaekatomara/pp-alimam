@@ -14,7 +14,7 @@ const STATS_DATA = [
     icon: Users,
     value: "500+",
     label: "Santri Aktif",
-    sublabel: "Putra & Putri",
+    sublabel: "Putra",
   },
   {
     icon: Award,

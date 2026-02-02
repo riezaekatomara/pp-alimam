@@ -269,9 +269,9 @@ export default function DataPendaftaranTab() {
           </div>
         </Link>
 
-        {/* Step 2: Data Pribadi */}
+        {/* Step 2: Isi Data Lengkap */}
         <Link
-          href="/dashboard/pendaftar"
+          href="/dashboard/pendaftar/kelengkapan-berkas"
           className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-teal-300 hover:shadow-lg transition-all duration-300"
         >
           <div className="flex flex-col gap-3">
@@ -285,7 +285,7 @@ export default function DataPendaftaranTab() {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h3 className="font-bold text-stone-900 mb-1">Data Pribadi</h3>
+                <h3 className="font-bold text-stone-900 mb-1">Isi Data Lengkap</h3>
                 <p className="text-sm text-stone-600">
                   Lengkapi data diri calon santri
                 </p>
@@ -330,7 +330,7 @@ export default function DataPendaftaranTab() {
         <div className="space-y-4">
           {[
             { label: "1. Pembayaran", progress: 0, color: "bg-amber-500" },
-            { label: "2. Data Pribadi", progress: 60, color: "bg-teal-500" },
+            { label: "2. Isi Data Lengkap", progress: 60, color: "bg-teal-500" },
             { label: "3. Upload Dokumen", progress: 0, color: "bg-green-500" },
             { label: "4. Verifikasi", progress: 0, color: "bg-purple-500" },
           ].map((item, index) => (

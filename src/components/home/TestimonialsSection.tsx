@@ -112,7 +112,7 @@ export default function TestimonialsSection() {
               <span className="font-bold text-[var(--color-brown-700)]">
                 500+ keluarga
               </span>{" "}
-              sudah mempercayakan pendidikan putra-putri mereka kepada kami.
+              sudah mempercayakan pendidikan putra mereka kepada kami.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button

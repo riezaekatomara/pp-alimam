@@ -183,6 +183,14 @@ model OrangTua {
   pekerjaan_wali          String?
   penghasilan_wali        String?
   no_hp_wali              String?
+  alamat_wali             String?
+  rt_wali                 String?
+  rw_wali                 String?
+  kelurahan_wali          String?
+  kecamatan_wali          String?
+  kabupaten_wali          String?
+  provinsi_wali           String?
+  kode_pos_wali           String?
   hubungan_wali           String?
   
   created_at              DateTime  @default(now()) @db.Timestamptz(6)

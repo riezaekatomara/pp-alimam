@@ -289,12 +289,16 @@ export default function VerifikasiPembayaranPage() {
       {/* Modal */}
       {showModal && selectedPembayaran && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6">
-            <h3 className="text-2xl font-bold text-stone-900 mb-4">
-              Verifikasi Pembayaran
-            </h3>
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+            {/* Header - Fixed */}
+            <div className="p-6 pb-4 border-b border-stone-200">
+              <h3 className="text-2xl font-bold text-stone-900">
+                Verifikasi Pembayaran
+              </h3>
+            </div>
 
-            <div className="space-y-4 mb-6">
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto p-6 py-4 space-y-4">
               <div className="p-4 bg-blue-50 rounded-lg">
                 <p className="font-bold text-stone-900">
                   {selectedPembayaran.pendaftar?.nama_lengkap}
@@ -310,8 +314,16 @@ export default function VerifikasiPembayaranPage() {
                   <img
                     src={selectedPembayaran.bukti_transfer_url}
                     alt="Bukti Transfer"
-                    className="w-full h-auto"
+                    className="w-full max-h-[40vh] object-contain bg-stone-100"
                   />
+                  <a
+                    href={selectedPembayaran.bukti_transfer_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center py-2 text-sm text-blue-600 hover:text-blue-700 bg-stone-50 border-t border-stone-200"
+                  >
+                    Klik untuk melihat ukuran penuh
+                  </a>
                 </div>
               )}
 
@@ -324,12 +336,13 @@ export default function VerifikasiPembayaranPage() {
                   onChange={(e) => setCatatan(e.target.value)}
                   placeholder="Tambahkan catatan jika perlu..."
                   className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
-                  rows={4}
+                  rows={3}
                 />
               </div>
             </div>
 
-            <div className="flex gap-3">
+            {/* Footer with Actions - Fixed */}
+            <div className="p-6 pt-4 border-t border-stone-200 flex gap-3">
               <button
                 onClick={() =>
                   handleVerify(selectedPembayaran.id, "verified")

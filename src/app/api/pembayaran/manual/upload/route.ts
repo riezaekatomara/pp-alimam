@@ -141,14 +141,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 8. Cek apakah ada pembayaran pending - jika ada, update saja
-    const { data: pendingPayment } = await supabaseAdmin
+    // 8. Cek apakah ada pembayaran pending atau rejected - jika ada, update saja
+    const { data: existingPendingPayment } = await supabaseAdmin
       .from("pembayaran")
-      .select("id")
+      .select("id, status_pembayaran")
       .eq("pendaftar_id", session.id)
-      .eq("status_pembayaran", "pending")
+      .in("status_pembayaran", ["pending", "rejected"])
       .eq("metode_pembayaran", "manual")
       .maybeSingle();
+
+    const pendingPayment = existingPendingPayment;
 
     // 9. Generate nama file yang unik
     const timestamp = Date.now();
@@ -239,11 +241,9 @@ export async function POST(request: NextRequest) {
       pembayaranId = insertedPayment.id;
     }
 
-    // 13. Update status pendaftar jika masih awaiting_payment atau draft
-    if (
-      pendaftar.status_pendaftaran === "draft" ||
-      pendaftar.status_pendaftaran === "waiting_payment"
-    ) {
+    // 13. Update status pendaftar jika masih draft, waiting_payment, atau rejected (re-upload setelah ditolak)
+    const allowedStatusForUpload = ["draft", "waiting_payment", "rejected"];
+    if (allowedStatusForUpload.includes(pendaftar.status_pendaftaran)) {
       await supabaseAdmin
         .from("pendaftar")
         .update({

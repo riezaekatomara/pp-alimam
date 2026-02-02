@@ -18,6 +18,7 @@ import {
   Loader2,
   Download,
   Upload,
+  ClipboardList,
 } from "lucide-react";
 import Link from "next/link";
 import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
@@ -40,10 +41,23 @@ export default function DashboardLayout({
 
   // Helper functions
   const formatStatusForDisplay = (status: StatusProses): string => {
-    return status
-      .split('_')
-      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    const statusLabels: Record<string, string> = {
+      'draft': 'Belum Bayar',
+      'payment_verification': 'Menunggu Verifikasi',
+      'verified': 'Lunas ✓',
+      'rejected': 'Pembayaran Ditolak',
+      'scheduled': 'Terjadwal Ujian',
+      'accepted': 'Diterima',
+      'awaiting_payment': 'Menunggu Pembayaran',
+      'paid': 'Lunas ✓',
+      'data_completed': 'Data Lengkap',
+      'docs_uploaded': 'Dokumen Diupload',
+      'docs_verified': 'Dokumen Terverifikasi',
+      'tested': 'Sudah Ujian',
+      'announced': 'Diumumkan',
+      'enrolled': 'Terdaftar',
+    };
+    return statusLabels[status] || status.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
   const calculateProgressToUnlock = (tabName: TabName, currentStatus: StatusProses): number => {
@@ -148,10 +162,10 @@ export default function DashboardLayout({
     active: pathname === "/dashboard/pendaftar/status-pembayaran",
   },
   {
-    name: "Kelengkapan Berkas",
+    name: "Isi Data Lengkap",
     href: "/dashboard/pendaftar/kelengkapan-berkas",
     tabName: "kelengkapan-berkas" as TabName,
-    icon: FileCheck,
+    icon: ClipboardList,
     active: pathname === "/dashboard/pendaftar/kelengkapan-berkas",
   },
   {

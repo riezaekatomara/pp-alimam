@@ -139,7 +139,7 @@ function RegistrationInfoCard() {
               Periode Pendaftaran
             </p>
             <p className="font-bold text-[var(--color-text-900)] text-sm">
-              1 Juni - 31 Maret 2026
+              9 Februari - 31 Juni 2026
             </p>
           </div>
         </div>

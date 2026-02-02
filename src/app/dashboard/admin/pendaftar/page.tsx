@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Users,
   Search,
@@ -19,8 +20,30 @@ import {
   Square,
   Download,
   Edit,
+  ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
+
+// Filter labels for dashboard categories
+const FILTER_LABELS: Record<string, string> = {
+  belum_bayar: "Belum Bayar",
+  menunggu_verifikasi_pembayaran: "Menunggu Verifikasi Pembayaran",
+  sudah_bayar: "Sudah Bayar",
+  pembayaran_ditolak: "Pembayaran Ditolak",
+  belum_isi_data: "Belum Isi Data Lengkap",
+  sudah_isi_data: "Sudah Isi Data Lengkap",
+  belum_upload_dokumen: "Belum Upload Dokumen",
+  menunggu_verifikasi_dokumen: "Menunggu Verifikasi Dokumen",
+  dokumen_terverifikasi: "Dokumen Terverifikasi",
+  dokumen_ditolak: "Dokumen Ditolak",
+  terjadwal_ujian: "Terjadwal Ujian & Wawancara",
+  belum_ujian: "Belum Ujian & Wawancara",
+  sudah_ujian: "Sudah Ujian & Wawancara",
+  hasil_ujian: "Hasil Ujian & Wawancara",
+  diterima: "Diterima",
+  belum_daftar_ulang: "Belum Daftar Ulang",
+  sudah_daftar_ulang: "Sudah Daftar Ulang",
+};
 
 interface Pendaftar {
   id: string;
@@ -32,7 +55,7 @@ interface Pendaftar {
   tanggal_lahir: string | null;
   no_hp: string | null;
   email: string | null;
-  status_proses: string;
+  status_pendaftaran: string;
   created_at: string;
   tahun_ajaran: {
     nama: string;
@@ -55,11 +78,14 @@ interface TahunAjaran {
 }
 
 export default function AdminPendaftarPage() {
+  const searchParams = useSearchParams();
+  const urlFilter = searchParams.get("filter") || "";
+
   const [pendaftar, setPendaftar] = useState<Pendaftar[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState(urlFilter);
   const [jenjangFilter, setJenjangFilter] = useState("");
   const [tahunAjaranFilter, setTahunAjaranFilter] = useState("");
   const [tahunAjaranList, setTahunAjaranList] = useState<TahunAjaran[]>([]);
@@ -68,6 +94,13 @@ export default function AdminPendaftarPage() {
   const [kabupatenFilter, setKabupatenFilter] = useState("");
   const [kecamatanFilter, setKecamatanFilter] = useState("");
   const [kelurahanFilter, setKelurahanFilter] = useState("");
+
+  // Update filter when URL changes
+  useEffect(() => {
+    if (urlFilter) {
+      setStatusFilter(urlFilter);
+    }
+  }, [urlFilter]);
 
   const [provinsiList, setProvinsiList] = useState<string[]>([]);
   const [kabupatenList, setKabupatenList] = useState<string[]>([]);
@@ -202,7 +235,7 @@ export default function AdminPendaftarPage() {
   }, [provinsiFilter]);
 
   useEffect(() => {
-    if (!kabupatenFilter) {
+    if (!kabupatenFilter || !provinsiFilter) {
       setKecamatanList([]);
       setKecamatanFilter("");
       setKelurahanList([]);
@@ -213,9 +246,11 @@ export default function AdminPendaftarPage() {
     const fetchKecamatan = async () => {
       try {
         setKecamatanLoading(true);
-        const response = await fetch(
-          `/api/admin/locations/kecamatan?kabupaten=${encodeURIComponent(kabupatenFilter)}`
-        );
+        const params = new URLSearchParams({
+          provinsi: provinsiFilter,
+          kabupaten: kabupatenFilter,
+        });
+        const response = await fetch(`/api/admin/locations/kecamatan?${params}`);
         if (response.ok) {
           const result = await response.json();
           setKecamatanList(result.data || []);
@@ -228,10 +263,10 @@ export default function AdminPendaftarPage() {
     };
     fetchKecamatan();
     setPagination((prev) => ({ ...prev, page: 1 }));
-  }, [kabupatenFilter]);
+  }, [kabupatenFilter, provinsiFilter]);
 
   useEffect(() => {
-    if (!kecamatanFilter) {
+    if (!kecamatanFilter || !kabupatenFilter || !provinsiFilter) {
       setKelurahanList([]);
       setKelurahanFilter("");
       return;
@@ -240,9 +275,12 @@ export default function AdminPendaftarPage() {
     const fetchKelurahan = async () => {
       try {
         setKelurahanLoading(true);
-        const response = await fetch(
-          `/api/admin/locations/kelurahan?kecamatan=${encodeURIComponent(kecamatanFilter)}`
-        );
+        const params = new URLSearchParams({
+          provinsi: provinsiFilter,
+          kabupaten: kabupatenFilter,
+          kecamatan: kecamatanFilter,
+        });
+        const response = await fetch(`/api/admin/locations/kelurahan?${params}`);
         if (response.ok) {
           const result = await response.json();
           setKelurahanList(result.data || []);
@@ -255,7 +293,7 @@ export default function AdminPendaftarPage() {
     };
     fetchKelurahan();
     setPagination((prev) => ({ ...prev, page: 1 }));
-  }, [kecamatanFilter]);
+  }, [kecamatanFilter, kabupatenFilter, provinsiFilter]);
 
   const handleSearch = () => {
     setSearch(searchInput);
@@ -296,7 +334,7 @@ export default function AdminPendaftarPage() {
       const response = await fetch("/api/admin/pendaftar/bulk-update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: selectedIds, status_proses: bulkStatus }),
+        body: JSON.stringify({ ids: selectedIds, status_pendaftaran: bulkStatus }),
       });
 
       if (!response.ok) throw new Error("Failed to update");
@@ -345,12 +383,18 @@ export default function AdminPendaftarPage() {
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
+      waiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
       awaiting_payment: { label: "Menunggu Pembayaran", color: "bg-amber-100 text-amber-700" },
+      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-orange-100 text-orange-700" },
+      payment_rejected: { label: "Pembayaran Ditolak", color: "bg-red-100 text-red-700" },
       paid: { label: "Sudah Bayar", color: "bg-blue-100 text-blue-700" },
       data_completed: { label: "Data Lengkap", color: "bg-teal-100 text-teal-700" },
       docs_uploaded: { label: "Dokumen Terupload", color: "bg-indigo-100 text-indigo-700" },
       docs_verified: { label: "Dokumen Terverifikasi", color: "bg-green-100 text-green-700" },
+      docs_rejected: { label: "Dokumen Ditolak", color: "bg-red-100 text-red-700" },
       scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
+      exam_scheduled: { label: "Terjadwal Ujian", color: "bg-purple-100 text-purple-700" },
+      exam_completed: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
       tested: { label: "Sudah Ujian", color: "bg-violet-100 text-violet-700" },
       announced: { label: "Diumumkan", color: "bg-cyan-100 text-cyan-700" },
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
@@ -375,8 +419,22 @@ export default function AdminPendaftarPage() {
     });
   };
 
+  // Get active filter label
+  const activeFilterLabel = FILTER_LABELS[statusFilter] || "";
+
   return (
     <div className="space-y-6">
+      {/* Back to Dashboard link when filtered */}
+      {urlFilter && (
+        <Link
+          href="/dashboard/admin"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Kembali ke Dashboard
+        </Link>
+      )}
+
       {/* Header */}
       <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
         <div className="flex items-center justify-between">
@@ -386,10 +444,11 @@ export default function AdminPendaftarPage() {
             </div>
             <div>
               <h2 className="text-2xl font-black text-stone-900">
-                Daftar Pendaftar
+                {activeFilterLabel || "Daftar Pendaftar"}
               </h2>
               <p className="text-stone-600">
                 Total: {pagination.total} pendaftar
+                {activeFilterLabel && " (difilter)"}
               </p>
             </div>
           </div>
@@ -459,18 +518,45 @@ export default function AdminPendaftarPage() {
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
             >
               <option value="">Semua Status</option>
-              <option value="draft">Draft</option>
-              <option value="awaiting_payment">Menunggu Pembayaran</option>
-              <option value="paid">Sudah Bayar</option>
-              <option value="data_completed">Data Lengkap</option>
-              <option value="docs_uploaded">Dokumen Terupload</option>
-              <option value="docs_verified">Dokumen Terverifikasi</option>
-              <option value="scheduled">Terjadwal Ujian</option>
-              <option value="tested">Sudah Ujian</option>
-              <option value="announced">Diumumkan</option>
-              <option value="accepted">Diterima</option>
-              <option value="rejected">Ditolak</option>
-              <option value="enrolled">Terdaftar</option>
+              <optgroup label="--- Pembayaran ---">
+                <option value="belum_bayar">Belum Bayar</option>
+                <option value="menunggu_verifikasi_pembayaran">Menunggu Verifikasi Pembayaran</option>
+                <option value="sudah_bayar">Sudah Bayar</option>
+                <option value="pembayaran_ditolak">Pembayaran Ditolak</option>
+              </optgroup>
+              <optgroup label="--- Data Lengkap ---">
+                <option value="belum_isi_data">Belum Isi Data Lengkap</option>
+                <option value="sudah_isi_data">Sudah Isi Data Lengkap</option>
+              </optgroup>
+              <optgroup label="--- Dokumen ---">
+                <option value="belum_upload_dokumen">Belum Upload Dokumen</option>
+                <option value="menunggu_verifikasi_dokumen">Menunggu Verifikasi Dokumen</option>
+                <option value="dokumen_terverifikasi">Dokumen Terverifikasi</option>
+                <option value="dokumen_ditolak">Dokumen Ditolak</option>
+              </optgroup>
+              <optgroup label="--- Ujian & Wawancara ---">
+                <option value="terjadwal_ujian">Terjadwal Ujian</option>
+                <option value="belum_ujian">Belum Ujian</option>
+                <option value="sudah_ujian">Sudah Ujian</option>
+                <option value="hasil_ujian">Hasil Ujian</option>
+              </optgroup>
+              <optgroup label="--- Penerimaan ---">
+                <option value="diterima">Diterima</option>
+                <option value="belum_daftar_ulang">Belum Daftar Ulang</option>
+                <option value="sudah_daftar_ulang">Sudah Daftar Ulang</option>
+              </optgroup>
+              <optgroup label="--- Status Individual ---">
+                <option value="draft">Draft</option>
+                <option value="payment_verification">Verifikasi Pembayaran</option>
+                <option value="paid">Sudah Bayar (paid)</option>
+                <option value="data_completed">Data Lengkap</option>
+                <option value="docs_uploaded">Dokumen Terupload</option>
+                <option value="docs_verified">Dokumen Terverifikasi</option>
+                <option value="scheduled">Terjadwal Ujian</option>
+                <option value="accepted">Diterima</option>
+                <option value="rejected">Ditolak</option>
+                <option value="enrolled">Terdaftar</option>
+              </optgroup>
             </select>
           </div>
         </div>
@@ -490,8 +576,9 @@ export default function AdminPendaftarPage() {
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
             >
               <option value="">Semua Jenjang</option>
-              <option value="SMP">SMP</option>
-              <option value="SMA">SMA</option>
+              <option value="MTs">MTs (Madrasah Tsanawiyah)</option>
+              <option value="IL">I'dadiyah Lughawiy</option>
+              <option value="MA">MA (Madrasah Aliyah)</option>
             </select>
           </div>
 
@@ -646,7 +733,7 @@ export default function AdminPendaftarPage() {
                 onChange={(e) => setBulkStatus(e.target.value)}
                 className="px-4 py-2 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"
               >
-                <option value="">Pilih status baru...</option>
+                <option value="" disabled={bulkStatus !== ""}>Pilih status baru...</option>
                 <option value="draft">Draft</option>
                 <option value="awaiting_payment">Menunggu Pembayaran</option>
                 <option value="paid">Sudah Bayar</option>
@@ -795,7 +882,7 @@ export default function AdminPendaftarPage() {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        {formatStatus(item.status_proses)}
+                        {formatStatus(item.status_pendaftaran)}
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-sm space-y-1">

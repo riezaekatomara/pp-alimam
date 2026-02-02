@@ -48,7 +48,7 @@ function FeatureCard({
   description: string;
   color: string;
   index: number;
-}) {
+  }) {
   const colorClasses = {
     brown: {
       iconBg: "bg-[var(--color-brown-100)]",

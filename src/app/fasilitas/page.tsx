@@ -896,7 +896,7 @@ export default function FasilitasPage() {
             </p>
 
             <p className="text-sm xs:text-base sm:text-lg text-white/85 max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed px-4 sm:px-0">
-              Bergabunglah bersama keluarga besar Pondok Pesantren Al-Imam Al-Islami dan persiapkan masa depan putra-putri Anda dengan bekal ilmu agama dan umum yang seimbang.
+              Bergabunglah bersama keluarga besar Pondok Pesantren Al-Imam Al-Islami dan persiapkan masa depan putra Anda dengan bekal ilmu agama dan umum yang seimbang.
             </p>
 
             {/* Trust Indicators - Responsive Grid */}

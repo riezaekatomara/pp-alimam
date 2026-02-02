@@ -19,32 +19,32 @@ const PROGRAMS = [
             "Kajian Kitab Kuning",
             "Bahasa Arab & Inggris",
         ],
-        quotaPutra: "32 Siswa",
-        quotaPutri: "30 Siswa",
+        quotaPutra: "30 Siswa",
+        quotaPutri: "-",
         bgClass: "program-card-brown",
     },
     {
         title: "I'dadiyah Lughawiy",
-        subtitle: "Program intensif bahasa Arab setara SMA dengan pembelajaran mendalam",
+        subtitle: "Program persiapan MA selama 1 tahun untuk memantapkan kemampuan bahasa Arab",
         features: [
-            "Intensive Arabic",
-            "Islamic Studies",
-            "Character Building",
+            "Intensif Bahasa Arab",
+            "Persiapan Masuk MA",
+            "Pemantapan Dasar Islam",
         ],
-        quotaPutra: "32 Siswa",
-        quotaPutri: "30 Siswa",
+        quotaPutra: "30 Siswa",
+        quotaPutri: "-",
         bgClass: "program-card-gold",
     },
     {
         title: "MA (Madrasah Aliyah)",
-        subtitle: "Jenjang pendidikan menengah atas dengan jurusan IPA & Keagamaan",
+        subtitle: "Jenjang pendidikan setara SMA dengan pembelajaran full bahasa Arab",
         features: [
-            "Sains & Teknologi",
+            "Kurikulum Berbahasa Arab",
             "Kajian Kitab Kuning",
-            "Leadership",
+            "Sains & Keagamaan",
         ],
-        quotaPutra: "32 Siswa",
-        quotaPutri: "30 Siswa",
+        quotaPutra: "30 Siswa",
+        quotaPutri: "-",
         bgClass: "program-card-teal",
     },
 ] as const;
@@ -119,7 +119,7 @@ export default function ProgramSection() {
                     </div>
                     <h2 className="section-title mb-3">Program Pendidikan</h2>
                     <p className="section-subtitle mx-auto">
-                        Dua program pendidikan berkualitas dengan kuota terbatas
+                        Tiga program pendidikan berkualitas dengan kuota terbatas
                     </p>
                 </div>
 

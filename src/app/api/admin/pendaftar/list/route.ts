@@ -1,30 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createServerSupabaseClient();
+    // 1. Validasi session manual
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("app_session");
 
-    // Check if user is admin
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user role from profiles
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    let session;
+    try {
+      session = JSON.parse(sessionCookie.value);
+    } catch {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
 
-    if (!profile || profile.role !== "admin") {
+    // Check custom role
+    if (session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
+    // Use Admin Client to bypass RLS
     // Get query params
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get("page") || "1");
@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * limit;
 
     // Build query
-    let query = supabase
+    let query = supabaseAdmin
       .from("pendaftar")
       .select(
         `
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
         tanggal_lahir,
         no_hp,
         email,
-        status_proses,
+        status_pendaftaran,
         created_at,
         tahun_ajaran:tahun_ajaran_id (
           nama
@@ -70,8 +70,43 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Handle filter categories from dashboard
     if (status) {
-      query = query.eq("status_proses", status);
+      // Map dashboard filter categories to actual status values
+      // NOTE: Database constraint only allows: draft, payment_verification, verified, rejected, scheduled, accepted
+      const filterMapping: Record<string, string[]> = {
+        // Pembayaran
+        belum_bayar: ["draft"],
+        menunggu_verifikasi_pembayaran: ["payment_verification"],
+        sudah_bayar: ["verified", "scheduled", "accepted"],
+        pembayaran_ditolak: ["rejected"],
+        // Data Lengkap
+        belum_isi_data: ["verified"],  // payment approved but data not complete
+        sudah_isi_data: ["scheduled", "accepted"],  // data completed, moved to next stage
+        // Dokumen (using existing valid statuses)
+        belum_upload_dokumen: ["verified"],
+        menunggu_verifikasi_dokumen: [],  // Not in current constraint
+        dokumen_terverifikasi: ["scheduled", "accepted"],
+        dokumen_ditolak: [],  // Not in current constraint
+        // Ujian
+        terjadwal_ujian: ["scheduled"],
+        belum_ujian: ["scheduled"],
+        sudah_ujian: ["accepted"],
+        hasil_ujian: ["accepted"],
+        // Penerimaan
+        diterima: ["accepted"],
+        belum_daftar_ulang: ["accepted"],
+        sudah_daftar_ulang: [],  // Not in current constraint
+      };
+
+      const statusValues = filterMapping[status];
+      if (statusValues && statusValues.length > 0) {
+        // Use IN filter for multiple status values
+        query = query.in("status_pendaftaran", statusValues);
+      } else {
+        // Single status value (legacy support)
+        query = query.eq("status_pendaftaran", status);
+      }
     }
 
     if (jenjang) {

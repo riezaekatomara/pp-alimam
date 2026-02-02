@@ -126,6 +126,7 @@ export async function POST(request: NextRequest) {
         .single();
 
       // Only update if still waiting for payment
+      // Database constraint only allows: draft, payment_verification, verified, rejected, scheduled, accepted
       if (
         pendaftar &&
         (pendaftar.status_pendaftaran === "draft" ||
@@ -135,12 +136,12 @@ export async function POST(request: NextRequest) {
         await supabaseAdmin
           .from("pendaftar")
           .update({
-            status_pendaftaran: "data_lengkap", // Payment verified, move to next step
+            status_pendaftaran: "verified", // Payment verified
             updated_at: new Date().toISOString(),
           })
           .eq("id", pembayaran.pendaftar_id);
 
-        console.log(`Pendaftar ${pembayaran.pendaftar_id} status updated to data_lengkap`);
+        console.log(`Pendaftar ${pembayaran.pendaftar_id} status updated to verified`);
       }
     }
 
