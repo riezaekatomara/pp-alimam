@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Phone, ChevronDown, Sparkles, Clock, Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Menu, X, Phone, ChevronDown, Sparkles, Clock, /* Moon, Sun */ } from "lucide-react";
+// import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +12,7 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState(""); // ✅ NEW: Track active section
   const pathname = usePathname();
   const router = useRouter();
-  const { setTheme, theme } = useTheme();
+  // const { setTheme, theme } = useTheme(); // ❌ DISABLED: Dark Mode
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch
@@ -310,20 +310,8 @@ export default function Navbar() {
                 Login
               </Link>
 
-              {/* Theme Toggle Button - Desktop */}
-              {mounted && (
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="p-2.5 rounded-xl text-[var(--color-text-600)] hover:bg-[var(--color-cream-200)] hover:text-[var(--color-brown-700)] transition-all duration-300"
-                  aria-label="Toggle theme"
-                >
-                  {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-[var(--color-gold-400)] text-gradient-gold" />
-                  ) : (
-                    <Moon className="w-5 h-5" />
-                  )}
-                </button>
-              )}
+              {/* ❌ REMOVED: Theme Toggle Button (Force Light Mode) */}
+
             </div>
 
             {/* Mobile Toggle Button */}

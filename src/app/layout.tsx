@@ -166,8 +166,9 @@ export default function RootLayout({
         <LayoutWrapper>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="light"
+            enableSystem={false}
+            forcedTheme="light"
             disableTransitionOnChange
           >
             {children}
