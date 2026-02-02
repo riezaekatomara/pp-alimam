@@ -202,7 +202,10 @@ export default function DaftarPage() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      sessionStorage.setItem("pendaftaran_form", JSON.stringify(formData));
+      const timeoutId = setTimeout(() => {
+        sessionStorage.setItem("pendaftaran_form", JSON.stringify(formData));
+      }, 500);
+      return () => clearTimeout(timeoutId);
     }
   }, [formData]);
 
@@ -546,7 +549,7 @@ export default function DaftarPage() {
                           : "text-[var(--color-brown-600)]"
                           }`}
                       />
-                      <p className="font-bold">{option.label}</p>
+                      <p className={`font-bold ${formData.jenjang === option.value ? "text-white" : ""}`}>{option.label}</p>
                       <p
                         className={`text-xs ${formData.jenjang === option.value
                           ? "text-white/70"
