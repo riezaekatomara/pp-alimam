@@ -154,49 +154,11 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    DARK MODE OVERRIDES (Premium Dark)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.dark {
-  /* Backgrounds: Deep, rich darks (not pure black) */
-  --color-cream-50: #1a1614;      /* Deep Coffee Background */
-  --color-cream-100: #241e1b;
-  --color-cream-200: #2d2622;
-  --color-cream-300: #3a322d;
-  --color-cream-500: #5d5248;
-
-  /* Browns: Shift to lighter/warmer for contrast against dark bg */
-  --color-brown-50: #2a221d;
-  --color-brown-100: #3d3229;
-  --color-brown-500: #bcaaa4;
-  --color-brown-700: #d7ccc8;     /* Lighter brown for dark mode text */
-  --color-brown-800: #ece0dc;
-  --color-brown-900: #ffffff;     /* White for primary headings */
-
-  /* Golds: More glowing/luminous */
-  --color-gold-50: #2d2610;
-  --color-gold-100: #423612;
-  --color-gold-200: #5c4b14;
-  --color-gold-500: #fbbf24;      /* Brighter gold for dark mode */
-  --color-gold-600: #fcd34d;
-  --color-gold-700: #fde68a;
-
-  /* Teals: Deep emerald/night green */
-  --color-teal-50: #0a1f1d;
-  --color-teal-100: #112d2b;
-  --color-teal-200: #134e4a;
-  --color-teal-500: #2dd4bf;      /* Brighter teal for accents */
-  --color-teal-600: #5eead4;
-  --color-teal-700: #99f6e4;
-
-  /* Text: Inverted for readability */
-  --color-text-50: #1c1917;
-  --color-text-600: #d6d3d1;      /* Light gray for body text */
-  --color-text-700: #e7e5e4;
-  --color-text-800: #f5f5f4;
-  --color-text-900: #ffffff;
-
-  /* Shadows: Adjusted for dark depth */
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DARK MODE DISABLED (Forced Light)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  color-scheme: light;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
