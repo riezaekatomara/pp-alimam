@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   School,
+  Droplets,
   Home,
   BookOpen,
   Wifi,
@@ -302,6 +303,49 @@ export default function FasilitasPage() {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Depot Air Minum */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                <div className="card-glass p-8 md:p-12 border-t-4 border-t-blue-500 hover:border-t-8 transition-all duration-300">
+                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-8">
+                    <Droplets className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-3xl font-black text-brown-900 mb-4">Depot Air Minum</h3>
+                  <p className="text-lg text-ink-600 mb-8 leading-relaxed">
+                    Fasilitas air minum isi ulang gratis dengan sistem filtrasi higienis. Menjamin kebutuhan hidrasi santri terpenuhi setiap saat tanpa biaya tambahan.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="flex items-start gap-4">
+                      <CheckCircle2 className="w-6 h-6 text-blue-500 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-brown-900">100% Gratis</h4>
+                        <p className="text-sm text-ink-500">Unlimited Refill</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <CheckCircle2 className="w-6 h-6 text-blue-500 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-brown-900">Higienis</h4>
+                        <p className="text-sm text-ink-500">Filtrasi RO UV</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="order-1 lg:order-2">
+                <div className="aspect-square rounded-[3rem] bg-blue-50 overflow-hidden shadow-clay-lg relative group">
+                  <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-colors z-10" />
+                  <Image
+                    src="/images/fasilitas-depot-galon-gratis.png"
+                    alt="Depot Air Minum Gratis"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
               </div>
             </div>
