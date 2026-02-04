@@ -33,7 +33,7 @@ function updateRateLimit(phone: string): void {
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
 );
 
 export async function POST(request: NextRequest) {
@@ -190,6 +190,9 @@ Kode verifikasi PPDB Ponpes Al-Imam Al-Islami Anda:
 
 Wassalamu'alaikum wr wb`;
     }
+
+    // Expose OTP for simulation/demo purposes (requested by user)
+    response.simulation_code = otp;
 
     // Debug info hanya di development
     if (process.env.NODE_ENV === "development") {

@@ -39,7 +39,7 @@ export default function DashboardPendaftarPage() {
           const statusData = await statusRes.json();
 
           setData({
-            nama: statusData.nama_lengkap || session.full_name || "Siswa",
+            nama: statusData.nama_lengkap || session.full_name || session.name || "Pendaftar",
             nomorPendaftaran: statusData.nomor_pendaftaran || "-",
             status: statusData.status_proses || "draft",
             lastUpdate: statusData.updated_at || new Date().toISOString()
@@ -102,13 +102,16 @@ export default function DashboardPendaftarPage() {
               </div>
 
               {nextStep && (
-                <div className="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-emerald-100 flex items-center gap-3">
+                <Link
+                  href={nextStep.href}
+                  className="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-emerald-100 flex items-center gap-3 hover:bg-emerald-50 transition-colors cursor-pointer group"
+                >
                   <div>
-                    <p className="text-xs font-bold text-stone-500">Langkah Selanjutnya:</p>
-                    <p className="font-bold text-lg text-emerald-950">{nextStep.action}</p>
+                    <p className="text-xs font-bold text-stone-500 group-hover:text-emerald-700 transition-colors">Langkah Selanjutnya:</p>
+                    <p className="font-bold text-lg text-emerald-950 group-hover:text-emerald-700 transition-colors underline decoration-emerald-500/30 underline-offset-4">{nextStep.action}</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-emerald-600" />
-                </div>
+                  <ArrowRight className="w-5 h-5 text-emerald-600 group-hover:translate-x-1 transition-transform" />
+                </Link>
               )}
             </div>
           </div>

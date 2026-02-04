@@ -116,15 +116,8 @@ export async function POST(request: NextRequest) {
       tanggal_tutup_pendaftaran: tahunAjaranData?.tanggal_tutup_pendaftaran || "",
     };
 
-    const deadline = new Date(tahunAjaran.tanggal_tutup_pendaftaran);
-    const now = new Date();
-
-    if (now > deadline) {
-      return NextResponse.json(
-        { success: false, error: "Maaf, batas waktu pembayaran telah berakhir" },
-        { status: 400 }
-      );
-    }
+    // NOTE: Jangan blokir upload bukti transfer berdasarkan deadline pendaftaran.
+    // Jika ingin menutup pembayaran, buat aturan khusus di admin/flow pendaftaran.
 
     // 7. Cek apakah sudah ada pembayaran yang verified
     const { data: existingPayment } = await supabaseAdmin

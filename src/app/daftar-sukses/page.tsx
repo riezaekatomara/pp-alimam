@@ -29,26 +29,12 @@ function DaftarSuksesContent() {
   const channel = searchParams.get("channel") || "whatsapp";
 
   const [copiedField, setCopiedField] = useState<"nomor" | "nik" | null>(null);
-  const [countdown, setCountdown] = useState(10);
-
   // Clear sessionStorage saat sukses (data tidak diperlukan lagi)
   useEffect(() => {
     if (typeof window !== "undefined") {
       sessionStorage.removeItem("pendaftaran_form");
     }
   }, []);
-
-  // Countdown untuk auto redirect
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else {
-      router.push("/login");
-    }
-  }, [countdown, router]);
 
   // Copy to clipboard
   const handleCopy = (text: string, field: "nomor" | "nik") => {
@@ -181,23 +167,18 @@ function DaftarSuksesContent() {
         </ul>
       </div>
 
-      {/* Auto Redirect Info */}
-      <div className="flex items-center justify-center gap-2 text-sm text-stone-600 mb-4">
-        <Loader2 className="w-4 h-4 animate-spin" />
-        <span>
-          Mengarahkan ke halaman login dalam{" "}
-          <strong className="text-teal-700">{countdown} detik</strong>
-        </span>
-      </div>
+
 
       {/* Login Button */}
-      <button
-        onClick={() => router.push("/login")}
-        className="w-full py-4 px-6 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-black text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-      >
-        <span>Login Sekarang</span>
-        <ArrowRight className="w-5 h-5" />
-      </button>
+      <div className="mt-8">
+        <button
+          onClick={() => router.push("/login")}
+          className="w-full py-4 px-6 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-black text-lg rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+        >
+          <span>Lanjut ke Halaman Login</span>
+          <ArrowRight className="w-5 h-5" />
+        </button>
+      </div>
 
       {/* Additional Info */}
       <div className="mt-6 text-center">

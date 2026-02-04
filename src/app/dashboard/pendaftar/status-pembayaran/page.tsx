@@ -1,5 +1,5 @@
-import PembayaranPendaftaranTab from "../components/tabs/PembayaranPendaftaran";
+import { redirect } from "next/navigation";
 
 export default function StatusPembayaranPage() {
-  return <PembayaranPendaftaranTab />;
+  redirect("/dashboard/pendaftar/pembayaran-pendaftaran");
 }

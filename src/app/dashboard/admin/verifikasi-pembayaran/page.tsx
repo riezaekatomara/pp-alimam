@@ -123,146 +123,155 @@ export default function VerifikasiPembayaranPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
+      <div className="bg-white rounded-[2rem] shadow-sm p-8 border border-stone-100">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl">
-              <CreditCard className="w-8 h-8 text-white" />
+          <div className="flex items-center gap-5">
+            <div className="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center border border-teal-100">
+              <CreditCard className="w-8 h-8 text-teal-600" />
             </div>
             <div>
-              <h2 className="text-2xl font-black text-stone-900">
+              <h2 className="text-3xl font-black text-stone-900 tracking-tight mb-1">
                 Verifikasi Pembayaran
               </h2>
-              <p className="text-stone-600">
-                Total: {pembayaran.length} pembayaran
+              <p className="text-stone-500 font-medium">
+                Kelola dan verifikasi bukti pembayaran pendaftar
               </p>
             </div>
           </div>
           <button
             onClick={fetchPembayaran}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-stone-50 border border-stone-200 text-stone-700 rounded-xl font-bold transition-all shadow-sm hover:shadow-md"
           >
             <RefreshCw className="w-4 h-4" />
-            Refresh
+            Refresh Data
           </button>
         </div>
-      </div>
 
-      {/* Filter */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-        <div className="flex items-center gap-4">
-          <Filter className="w-5 h-5 text-stone-600" />
-          <label className="text-sm font-medium text-stone-700">
-            Filter Status:
-          </label>
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
-          >
-            <option value="pending">Pending</option>
-            <option value="verified">Terverifikasi</option>
-            <option value="rejected">Ditolak</option>
-          </select>
+        {/* Stats / Filter Bar */}
+        <div className="mt-8 flex items-center gap-4 border-t border-stone-100 pt-6">
+          <div className="px-4 py-2 bg-stone-100 rounded-lg text-sm font-bold text-stone-600">
+            Total: {pembayaran.length}
+          </div>
+
+          <div className="h-8 w-px bg-stone-200 mx-2"></div>
+
+          <div className="flex items-center gap-3">
+            <Filter className="w-4 h-4 text-stone-400" />
+            <span className="text-sm font-bold text-stone-500">Filter:</span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setStatusFilter("pending")}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "pending" ? "bg-amber-100 text-amber-700 ring-2 ring-amber-500/20" : "hover:bg-stone-50 text-stone-500"}`}
+              >
+                Pending
+              </button>
+              <button
+                onClick={() => setStatusFilter("verified")}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "verified" ? "bg-emerald-100 text-emerald-700 ring-2 ring-emerald-500/20" : "hover:bg-stone-50 text-stone-500"}`}
+              >
+                Terverifikasi
+              </button>
+              <button
+                onClick={() => setStatusFilter("rejected")}
+                className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${statusFilter === "rejected" ? "bg-red-100 text-red-700 ring-2 ring-red-500/20" : "hover:bg-stone-50 text-stone-500"}`}
+              >
+                Ditolak
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* List */}
-      <div className="bg-white rounded-xl shadow-lg border-2 border-blue-100 overflow-hidden">
+      <div className="bg-white rounded-[2rem] shadow-sm border border-stone-100 overflow-hidden min-h-[400px]">
         {loading ? (
-          <div className="flex items-center justify-center py-20">
+          <div className="flex items-center justify-center h-[400px]">
             <div className="text-center">
-              <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-              <p className="text-stone-600">Memuat data pembayaran...</p>
+              <Loader2 className="w-10 h-10 animate-spin text-teal-600 mx-auto mb-4" />
+              <p className="text-stone-500 font-medium">Memuat data pembayaran...</p>
             </div>
           </div>
         ) : pembayaran.length === 0 ? (
-          <div className="text-center py-20">
-            <CreditCard className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-            <p className="text-stone-600 text-lg font-medium">
-              Tidak ada pembayaran{" "}
-              {statusFilter === "pending"
-                ? "yang perlu diverifikasi"
-                : statusFilter}
+          <div className="flex flex-col items-center justify-center h-[400px] text-center p-8">
+            <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mb-6">
+              <CreditCard className="w-10 h-10 text-stone-300" />
+            </div>
+            <h3 className="text-lg font-bold text-stone-900 mb-1">
+              Tidak ada pembayaran {statusFilter === "pending" ? "pending" : ""}
+            </h3>
+            <p className="text-stone-500 max-w-sm mx-auto">
+              Belum ada data pembayaran yang ditemukan untuk filter ini.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-stone-200">
+          <div className="divide-y divide-stone-100">
             {pembayaran.map((pay) => (
               <div
                 key={pay.id}
-                className="p-6 hover:bg-blue-50 transition-colors"
+                className="p-6 hover:bg-stone-50/50 transition-colors group"
               >
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                   <div className="flex-1">
-                    {/* Pendaftar Info */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <User className="w-5 h-5 text-blue-600" />
+                    {/* Header Row */}
+                    <div className="flex items-start gap-4 mb-3">
+                      <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center text-teal-700 font-bold text-lg shrink-0">
+                        {pay.pendaftar?.nama_lengkap?.charAt(0) || "?"}
                       </div>
                       <div>
-                        <Link
-                          href={`/dashboard/admin/pendaftar/${pay.pendaftar?.id}`}
-                          className="font-bold text-lg text-blue-600 hover:text-blue-700"
-                        >
-                          {pay.pendaftar?.nama_lengkap || "Unknown"}
-                        </Link>
-                        <div className="flex items-center gap-4 text-sm text-stone-600">
-                          <span className="font-mono">
+                        <h3 className="text-lg font-bold text-stone-900 group-hover:text-teal-700 transition-colors">
+                          {pay.pendaftar?.nama_lengkap || "Tanpa Nama"}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-3 text-sm mt-1">
+                          <span className="font-mono bg-stone-100 px-2 py-0.5 rounded text-stone-600 font-bold">
                             {pay.pendaftar?.nomor_pendaftaran}
                           </span>
-                          <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-bold">
-                            {pay.pendaftar?.jenjang}
+                          <span className="text-stone-400 text-xs">|</span>
+                          <span className="text-stone-500 flex items-center gap-1.5">
+                            <Phone className="w-3.5 h-3.5" />
+                            {pay.pendaftar?.no_hp || "-"}
                           </span>
-                          {pay.pendaftar?.no_hp && (
-                            <span className="flex items-center gap-1">
-                              <Phone className="w-3 h-3" />
-                              {pay.pendaftar.no_hp}
-                            </span>
-                          )}
                         </div>
                       </div>
                     </div>
 
-                    {/* Pembayaran Info */}
-                    <div className="ml-12 space-y-2">
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="w-4 h-4 text-green-600" />
-                        <span className="font-bold text-xl text-green-700">
-                          {formatRupiah(pay.jumlah)}
-                        </span>
+                    {/* Details Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-16 bg-stone-50/50 p-4 rounded-xl border border-stone-100">
+                      <div>
+                        <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Nominal Transfer</p>
+                        <p className="text-xl font-black text-emerald-600">{formatRupiah(pay.jumlah)}</p>
                       </div>
-
-                      <div className="flex items-center gap-4 text-sm text-stone-600">
-                        <span>
-                          <strong>Metode:</strong> {pay.metode_pembayaran}
-                        </span>
-                        {pay.tanggal_pembayaran && (
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-4 h-4" />
-                            {formatDate(pay.tanggal_pembayaran)}
-                          </span>
-                        )}
+                      <div>
+                        <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">Info Transfer</p>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-2 text-sm font-bold text-stone-700">
+                            <CreditCard className="w-3.5 h-3.5 text-stone-400" />
+                            {pay.catatan && pay.catatan.includes("Virtual Account") ? "Midtrans" : "Transfer Manual"}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-stone-500">
+                            <Calendar className="w-3.5 h-3.5" />
+                            {pay.tanggal_pembayaran ? formatDate(pay.tanggal_pembayaran) : formatDate(pay.created_at)}
+                          </div>
+                        </div>
                       </div>
-
                       {pay.catatan && (
-                        <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                          <p className="text-sm text-amber-900">
-                            <strong>Catatan:</strong> {pay.catatan}
+                        <div className="col-span-1 sm:col-span-2 pt-2 border-t border-stone-200/50 mt-1">
+                          <p className="text-xs text-stone-500">
+                            <strong className="text-stone-700">Catatan:</strong> {pay.catatan}
                           </p>
                         </div>
                       )}
                     </div>
+
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex flex-col gap-2">
+                  {/* Actions Column */}
+                  <div className="flex sm:flex-col gap-3 sm:w-48 shrink-0">
                     {pay.bukti_transfer_url && (
                       <a
                         href={pay.bukti_transfer_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 bg-white border-2 border-dashed border-stone-300 hover:border-teal-400 hover:bg-teal-50 text-stone-600 hover:text-teal-700 rounded-xl text-sm font-bold transition-all"
                       >
                         <Eye className="w-4 h-4" />
                         Lihat Bukti
@@ -272,11 +281,24 @@ export default function VerifikasiPembayaranPage() {
                     {statusFilter === "pending" && (
                       <button
                         onClick={() => openModal(pay)}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-teal-600/20 transition-all hover:-translate-y-0.5"
                       >
-                        <CreditCard className="w-4 h-4" />
+                        <CheckCircle className="w-4 h-4" />
                         Verifikasi
                       </button>
+                    )}
+
+                    {statusFilter === "verified" && (
+                      <div className="flex items-center justify-center gap-2 px-4 py-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-sm border border-emerald-100">
+                        <CheckCircle className="w-4 h-4" />
+                        Sudah Valid
+                      </div>
+                    )}
+                    {statusFilter === "rejected" && (
+                      <div className="flex items-center justify-center gap-2 px-4 py-3 bg-red-50 text-red-700 rounded-xl font-bold text-sm border border-red-100">
+                        <XCircle className="w-4 h-4" />
+                        Ditolak
+                      </div>
                     )}
                   </div>
                 </div>
@@ -288,74 +310,95 @@ export default function VerifikasiPembayaranPage() {
 
       {/* Modal */}
       {showModal && selectedPembayaran && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-[2rem] shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
             {/* Header - Fixed */}
-            <div className="p-6 pb-4 border-b border-stone-200">
-              <h3 className="text-2xl font-bold text-stone-900">
-                Verifikasi Pembayaran
-              </h3>
+            <div className="p-6 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">
+              <div>
+                <h3 className="text-xl font-black text-stone-900">
+                  Verifikasi Pembayaran
+                </h3>
+                <p className="text-sm text-stone-500 font-medium">{selectedPembayaran.pendaftar?.nama_lengkap}</p>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 flex items-center justify-center transition-colors"
+              >
+                <XCircle className="w-5 h-5 text-stone-500" />
+              </button>
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-6 py-4 space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg">
-                <p className="font-bold text-stone-900">
-                  {selectedPembayaran.pendaftar?.nama_lengkap}
-                </p>
-                <p className="text-sm text-stone-600">
-                  {selectedPembayaran.metode_pembayaran} -{" "}
-                  {formatRupiah(selectedPembayaran.jumlah)}
-                </p>
+            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+
+              <div className="flex gap-4 p-4 bg-teal-50 rounded-2xl border border-teal-100">
+                <div className="p-3 bg-white rounded-xl shadow-sm h-fit">
+                  <DollarSign className="w-6 h-6 text-teal-600" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-teal-600 uppercase tracking-widest mb-1">Konfirmasi Nominal</p>
+                  <p className="text-2xl font-black text-teal-900">{formatRupiah(selectedPembayaran.jumlah)}</p>
+                  <p className="text-sm text-teal-700 mt-1">Pastikan bukti transfer sesuai dengan nominal ini.</p>
+                </div>
               </div>
 
-              {selectedPembayaran.bukti_transfer_url && (
-                <div className="border-2 border-stone-200 rounded-lg overflow-hidden">
-                  <img
-                    src={selectedPembayaran.bukti_transfer_url}
-                    alt="Bukti Transfer"
-                    className="w-full max-h-[40vh] object-contain bg-stone-100"
-                  />
-                  <a
-                    href={selectedPembayaran.bukti_transfer_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-center py-2 text-sm text-blue-600 hover:text-blue-700 bg-stone-50 border-t border-stone-200"
-                  >
-                    Klik untuk melihat ukuran penuh
-                  </a>
+              {selectedPembayaran.bukti_transfer_url ? (
+                <div className="space-y-2">
+                  <p className="text-sm font-bold text-stone-700">Bukti Transfer:</p>
+                  <div className="border-2 border-stone-100 rounded-2xl overflow-hidden bg-stone-50 relative group">
+                    <img
+                      src={selectedPembayaran.bukti_transfer_url}
+                      alt="Bukti Transfer"
+                      className="w-full max-h-[400px] object-contain"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <a
+                        href={selectedPembayaran.bukti_transfer_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3 bg-white rounded-full font-bold text-stone-900 shadow-xl hover:scale-105 transition-transform flex items-center gap-2"
+                      >
+                        <Eye className="w-4 h-4" />
+                        Lihat Full Size
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-8 border-2 border-dashed border-stone-200 rounded-2xl text-center">
+                  <p className="text-stone-500 font-medium">Tidak ada bukti transfer yang diupload.</p>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-stone-700 mb-2">
-                  Catatan (Opsional)
+                <label className="block text-sm font-bold text-stone-700 mb-2">
+                  Catatan untuk Pendaftar (Opsional)
                 </label>
                 <textarea
                   value={catatan}
                   onChange={(e) => setCatatan(e.target.value)}
-                  placeholder="Tambahkan catatan jika perlu..."
-                  className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none resize-none"
+                  placeholder="Contoh: Bukti transfer buram, mohon upload ulang..."
+                  className="w-full px-4 py-3 border border-stone-200 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 focus:outline-none resize-none transition-all"
                   rows={3}
                 />
               </div>
             </div>
 
             {/* Footer with Actions - Fixed */}
-            <div className="p-6 pt-4 border-t border-stone-200 flex gap-3">
+            <div className="p-6 border-t border-stone-100 bg-stone-50/50 flex gap-3">
               <button
                 onClick={() =>
                   handleVerify(selectedPembayaran.id, "verified")
                 }
                 disabled={processing}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {processing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
                   <>
                     <CheckCircle className="w-5 h-5" />
-                    Terima
+                    Terima Pembayaran
                   </>
                 )}
               </button>
@@ -365,7 +408,7 @@ export default function VerifikasiPembayaranPage() {
                   handleVerify(selectedPembayaran.id, "rejected")
                 }
                 disabled={processing}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-rose-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {processing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -375,18 +418,6 @@ export default function VerifikasiPembayaranPage() {
                     Tolak
                   </>
                 )}
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  setSelectedPembayaran(null);
-                  setCatatan("");
-                }}
-                disabled={processing}
-                className="px-4 py-3 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg font-medium transition-colors disabled:opacity-50"
-              >
-                Batal
               </button>
             </div>
           </div>

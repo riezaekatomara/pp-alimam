@@ -102,7 +102,7 @@ export default function Footer() {
             <div className="bg-brown-900 rounded-2xl p-6 text-center text-white shadow-clay-lg relative overflow-hidden">
               <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10 mix-blend-overlay" />
               <div className="relative z-10">
-                <h4 className="font-bold text-lg mb-2">Pendaftaran Santri Baru</h4>
+                <h4 className="font-bold text-lg mb-2 text-white">Pendaftaran Santri Baru</h4>
                 <p className="text-brown-200 text-xs mb-6">10 Februari - 30 Mei 2026. Kuota terbatas: 32/jenjang.</p>
                 <Link href="/daftar" className="block w-full py-3 bg-white text-brown-900 font-bold rounded-xl hover:bg-surface-100 transition-colors">
                   Daftar Sekarang

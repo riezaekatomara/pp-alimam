@@ -176,29 +176,32 @@ function PricingSidebar() {
 export default function DaftarPage() {
   const router = useRouter();
 
-  const [formData, setFormData] = useState<FormData>(() => {
+  const [formData, setFormData] = useState<FormData>({
+    nik: "",
+    nama_lengkap: "",
+    tanggal_lahir: "",
+    no_hp: "",
+    jenis_kelamin: "",
+    jenjang: "",
+  });
+
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // Load saved data on mount
+  useEffect(() => {
     if (typeof window !== "undefined") {
       const savedData = sessionStorage.getItem("pendaftaran_form");
       if (savedData) {
         try {
-          return JSON.parse(savedData);
+          setFormData(JSON.parse(savedData));
         } catch (e) {
           console.error("Error parsing saved form data:", e);
         }
       }
     }
-    return {
-      nik: "",
-      nama_lengkap: "",
-      tanggal_lahir: "",
-      no_hp: "",
-      jenis_kelamin: "",
-      jenjang: "",
-    };
-  });
+  }, []);
 
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-
+  // Save data on change
   useEffect(() => {
     if (typeof window !== "undefined") {
       const timeoutId = setTimeout(() => {
@@ -249,6 +252,8 @@ export default function DaftarPage() {
     return Object.keys(errors).length === 0;
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -260,16 +265,47 @@ export default function DaftarPage() {
       return;
     }
 
-    const params = new URLSearchParams({
-      nik: formData.nik,
-      nama_lengkap: formData.nama_lengkap,
-      tanggal_lahir: formData.tanggal_lahir,
-      no_hp: formData.no_hp,
-      jenis_kelamin: formData.jenis_kelamin,
-      jenjang: formData.jenjang,
-    });
+    setIsLoading(true);
 
-    router.push(`/pilih-verifikasi?${params.toString()}`);
+    try {
+      // 1. Kirim OTP via WhatsApp
+      const response = await fetch("/api/register/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          otp_channel: "whatsapp", // Force WhatsApp
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Gagal mengirim OTP");
+      }
+
+      // 2. Redirect ke halaman verifikasi
+      const params = new URLSearchParams({
+        nik: formData.nik,
+        nama_lengkap: formData.nama_lengkap,
+        tanggal_lahir: formData.tanggal_lahir,
+        no_hp: formData.no_hp,
+        jenis_kelamin: formData.jenis_kelamin,
+        jenjang: formData.jenjang,
+        channel: "whatsapp",
+      });
+
+      // Pass simulation code if available (for demo)
+      if (data.simulation_code) {
+        params.append("sim_code", data.simulation_code);
+      }
+
+      router.push(`/verifikasi-otp?${params.toString()}`);
+    } catch (error: any) {
+      alert(error.message || "Terjadi kesalahan saat mengirim OTP");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -575,10 +611,20 @@ export default function DaftarPage() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-4 px-6 rounded-xl font-bold text-lg bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+                disabled={isLoading}
+                className="w-full py-4 px-6 rounded-xl font-bold text-lg bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <span>Lanjutkan ke Verifikasi</span>
-                <ArrowRight className="w-5 h-5" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Memproses...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Lanjutkan ke Verifikasi</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
               </button>
 
               {/* Help Section */}

@@ -101,12 +101,6 @@ export default function AdminDashboardLayout({
       icon: Trophy,
       active: pathname === "/dashboard/admin/pengumuman",
     },
-    {
-      name: "SMS Dashboard",
-      href: "/admin/sms-dashboard",
-      icon: AlertCircle,
-      active: pathname === "/admin/sms-dashboard",
-    },
   ];
 
   const NavLink = ({ item }: { item: (typeof menuItems)[0] }) => {

@@ -245,7 +245,7 @@ export default function DataPendaftaranTab() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Step 1: Pembayaran */}
         <Link
-          href="/dashboard/pendaftar/status-pembayaran"
+          href="/dashboard/pendaftar/pembayaran-pendaftaran"
           className="group bg-white rounded-xl p-6 border-2 border-stone-200 hover:border-amber-300 hover:shadow-lg transition-all duration-300"
         >
           <div className="flex flex-col gap-3">

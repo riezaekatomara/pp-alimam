@@ -8,7 +8,6 @@ import {
   AlertCircle,
   Clock,
   Smartphone,
-  MessageSquare,
   ArrowLeft,
   RefreshCw,
 } from "lucide-react";
@@ -24,14 +23,26 @@ function VerifikasiOTPContent() {
   const tanggal_lahir = searchParams.get("tanggal_lahir") || "";
   const jenis_kelamin = searchParams.get("jenis_kelamin") || "";
   const jenjang = searchParams.get("jenjang") || "";
-  const channel = (searchParams.get("channel") || "whatsapp") as
-    | "whatsapp"
-    | "sms";
+  const channel = "whatsapp";
 
   // OTP State
   const [otpCode, setOtpCode] = useState(["", "", "", "", "", ""]);
   const [otpError, setOtpError] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+
+  // Simulation Code Check
+  const sim_code = searchParams.get("sim_code");
+
+  // Auto-fill simulation code (optional, or just display)
+  useEffect(() => {
+    if (sim_code) {
+      console.log("Simulation Mode: OTP is", sim_code);
+      // Optional: Auto-fill for easier testing
+      // setOtpCode(sim_code.split(""));
+    }
+  }, [sim_code]);
+
+  // ... rest of state
   const [countdown, setCountdown] = useState(300); // 5 menit
   const [canResend, setCanResend] = useState(false);
 
@@ -129,47 +140,22 @@ function VerifikasiOTPContent() {
         throw new Error(data.error || "Verifikasi OTP gagal");
       }
 
-      // Complete registration
-      await handleCompleteRegistration(data.otp_id);
+      // Redirect to Success Page
+      const successParams = new URLSearchParams({
+        nomor_pendaftaran: data.data.nomor_pendaftaran,
+        nama_lengkap: data.data.nama_lengkap,
+        nik: data.data.nik,
+        jenjang: data.data.jenjang
+      });
+
+      router.push(`/daftar-sukses?${successParams.toString()}`);
     } catch (error: any) {
       setIsVerifying(false);
       setOtpError(error.message || "Terjadi kesalahan saat verifikasi OTP");
     }
   };
 
-  // Complete registration
-  const handleCompleteRegistration = async (otpId: string) => {
-    try {
-      const response = await fetch("/api/register/complete", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otp_id: otpId }),
-      });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Pendaftaran gagal");
-      }
-
-      // Redirect ke halaman success dengan data
-      const params = new URLSearchParams({
-        nomor_pendaftaran: data.data.nomor_pendaftaran,
-        nama_lengkap: data.data.nama_lengkap,
-        jenjang: data.data.jenjang,
-        jenis_kelamin: data.data.jenis_kelamin,
-        nik: data.data.nik,
-        channel: channel,
-      });
-
-      router.push(`/daftar-sukses?${params.toString()}`);
-    } catch (error: any) {
-      setIsVerifying(false);
-      setOtpError(
-        error.message || "Terjadi kesalahan saat menyelesaikan pendaftaran",
-      );
-    }
-  };
 
   // Resend OTP
   const handleResendOTP = async () => {
@@ -225,30 +211,32 @@ function VerifikasiOTPContent() {
       {/* Header */}
       <div className="text-center mb-6">
         <div
-          className={`w-20 h-20 ${
-            channel === "whatsapp" ? "bg-teal-100" : "bg-blue-100"
-          } rounded-full flex items-center justify-center mx-auto mb-4`}
+          className={`w-20 h-20 ${channel === "whatsapp" ? "bg-teal-100" : "bg-blue-100"
+            } rounded-full flex items-center justify-center mx-auto mb-4`}
         >
-          <div
-            className={`p-3 ${
-              channel === "whatsapp" ? "bg-teal-600" : "bg-blue-600"
-            } rounded-lg`}
-          >
-            {channel === "whatsapp" ? (
-              <Smartphone className="w-10 h-10 text-white" />
-            ) : (
-              <MessageSquare className="w-10 h-10 text-white" />
-            )}
+          {/* Icon WhatsApp only */}
+          <div className="p-3 bg-teal-600 rounded-lg">
+            <Smartphone className="w-10 h-10 text-white" />
           </div>
         </div>
 
         <h1 className="text-2xl font-black text-stone-900 mb-2">
-          Verifikasi via {channel === "whatsapp" ? "WhatsApp" : "SMS"}
+          Verifikasi via WhatsApp
         </h1>
         <p className="text-sm text-stone-600 mb-1">
           Kami telah mengirim kode 6 digit ke:
         </p>
         <p className="text-lg font-black text-teal-700">{no_hp}</p>
+
+        {/* Simulation Banner */}
+        {sim_code && (
+          <div className="mt-4 p-3 bg-blue-50 border-2 border-blue-200 rounded-xl animate-pulse">
+            <p className="text-xs font-bold text-blue-800 uppercase mb-1">Mode Simulasi</p>
+            <p className="text-sm text-blue-900">
+              Kode OTP Anda: <span className="font-mono text-xl font-black">{sim_code}</span>
+            </p>
+          </div>
+        )}
       </div>
 
       {/* OTP Input Fields */}
@@ -263,13 +251,12 @@ function VerifikasiOTPContent() {
             value={digit}
             onChange={(e) => handleOTPChange(index, e.target.value)}
             onKeyDown={(e) => handleOTPKeyDown(index, e)}
-            className={`w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:outline-none focus:ring-2 transition-all ${
-              otpError
-                ? "border-red-500 focus:ring-red-300"
-                : digit
-                  ? "border-teal-500 bg-teal-50"
-                  : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"
-            }`}
+            className={`w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:outline-none focus:ring-2 transition-all ${otpError
+              ? "border-red-500 focus:ring-red-300"
+              : digit
+                ? "border-teal-500 bg-teal-50"
+                : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"
+              }`}
             disabled={isVerifying}
             autoFocus={index === 0}
           />
@@ -319,11 +306,10 @@ function VerifikasiOTPContent() {
           <button
             onClick={handleVerifyOTP}
             disabled={isVerifying || otpCode.join("").length !== 6}
-            className={`w-full py-3 px-6 font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
-              channel === "whatsapp"
-                ? "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg"
-                : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg"
-            }`}
+            className={`w-full py-3 px-6 font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${channel === "whatsapp"
+              ? "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white shadow-lg"
+              : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg"
+              }`}
           >
             <CheckCircle2 className="w-5 h-5" />
             Verifikasi Kode
@@ -334,11 +320,10 @@ function VerifikasiOTPContent() {
         <button
           onClick={handleResendOTP}
           disabled={!canResend || isVerifying}
-          className={`w-full py-3 px-6 border-2 font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
-            channel === "whatsapp"
-              ? "border-teal-300 text-teal-700 hover:bg-teal-50"
-              : "border-blue-300 text-blue-700 hover:bg-blue-50"
-          }`}
+          className={`w-full py-3 px-6 border-2 font-bold rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${channel === "whatsapp"
+            ? "border-teal-300 text-teal-700 hover:bg-teal-50"
+            : "border-blue-300 text-blue-700 hover:bg-blue-50"
+            }`}
         >
           <RefreshCw
             className={`w-5 h-5 ${isVerifying ? "animate-spin" : ""}`}
@@ -351,22 +336,14 @@ function VerifikasiOTPContent() {
         {/* Back Button */}
         <button
           onClick={() => {
-            // Kembali ke pilih verifikasi dengan data yang sama
-            const params = new URLSearchParams({
-              nik,
-              nama_lengkap,
-              tanggal_lahir,
-              no_hp,
-              jenis_kelamin,
-              jenjang,
-            });
-            router.push(`/pilih-verifikasi?${params.toString()}`);
+            // Kembali ke form pendaftaran jika ingin ubah data
+            router.push(`/daftar`);
           }}
           disabled={isVerifying}
           className="w-full py-3 px-6 text-stone-600 font-semibold hover:text-stone-900 flex items-center justify-center gap-2 disabled:opacity-50"
         >
           <ArrowLeft className="w-4 h-4" />
-          Ganti Metode Verifikasi
+          Ubah Data / Nomor HP
         </button>
       </div>
 
@@ -375,8 +352,7 @@ function VerifikasiOTPContent() {
         <p className="text-sm text-amber-900 font-bold mb-2">Tips Verifikasi</p>
         <ul className="text-xs text-amber-800 space-y-1">
           <li>
-            - Pastikan nomor HP Anda aktif dan bisa menerima{" "}
-            {channel === "whatsapp" ? "pesan WhatsApp" : "SMS"}
+            - Pastikan nomor HP Anda aktif dan terdaftar di WhatsApp
           </li>
           <li>- Kode akan otomatis terverifikasi setelah 6 digit terisi</li>
           <li>- Periksa folder spam atau pesan masuk yang diblokir</li>

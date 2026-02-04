@@ -87,15 +87,7 @@ export async function POST(request: NextRequest) {
       tanggal_tutup_pendaftaran: tahunAjaranData?.tanggal_tutup_pendaftaran || "",
     };
 
-    const deadline = new Date(tahunAjaran.tanggal_tutup_pendaftaran);
-    const now = new Date();
-
-    if (now > deadline) {
-      return NextResponse.json(
-        { success: false, error: "Maaf, batas waktu pembayaran telah berakhir" },
-        { status: 400 }
-      );
-    }
+    // NOTE: Jangan blokir pembuatan transaksi berdasarkan deadline pendaftaran.
 
     // 5. Cek apakah sudah ada pembayaran yang verified
     const { data: existingPayment } = await supabaseAdmin
@@ -137,9 +129,9 @@ export async function POST(request: NextRequest) {
         phone: pendaftar.no_hp || "",
       },
       callbacks: {
-        finish: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/status-pembayaran?status=finish`,
-        error: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/status-pembayaran?status=error`,
-        pending: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/status-pembayaran?status=pending`,
+        finish: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=finish`,
+        error: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=error`,
+        pending: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/dashboard/pendaftar/pembayaran-pendaftaran?status=pending`,
       },
       expiry: {
         unit: "days",

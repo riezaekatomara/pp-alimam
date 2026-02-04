@@ -90,9 +90,10 @@ export async function GET(request: NextRequest) {
       tanggal_tutup_pendaftaran: tahunAjaranData?.tanggal_tutup_pendaftaran || "",
     };
 
+    // Deadline pembayaran: jangan mengunci user di sisi API.
+    // (Jika butuh penutupan pendaftaran, sebaiknya dikontrol dari flow pendaftaran/admin.)
     const deadline = new Date(tahunAjaran.tanggal_tutup_pendaftaran);
-    const now = new Date();
-    const isExpired = now > deadline;
+    const isExpired = false;
 
     // 5. Tentukan status pembayaran
     let paymentStatus: "unpaid" | "pending" | "verified" | "rejected" | "expired" = "unpaid";
@@ -107,9 +108,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    if (paymentStatus === "unpaid" && isExpired) {
-      paymentStatus = "expired";
-    }
+    // NOTE: Tidak mengubah status menjadi "expired" agar pendaftar tetap bisa membayar/upload bukti.
 
     // 6. Return response
     return NextResponse.json({

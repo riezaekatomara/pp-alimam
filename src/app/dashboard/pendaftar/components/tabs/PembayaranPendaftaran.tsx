@@ -427,7 +427,11 @@ function UploadArea({
 // MAIN COMPONENT
 // ============================================
 
-export default function PembayaranPendaftaranTab() {
+export default function PembayaranPendaftaranTab({
+  view = "payment",
+}: {
+  view?: "payment" | "status";
+}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PaymentStatusResponse | null>(null);
@@ -572,13 +576,25 @@ export default function PembayaranPendaftaranTab() {
 
   if (!data) return null;
 
-  const statusConfig = STATUS_CONFIG[data.status];
+  // Treat "expired" as "unpaid" for UI so user can tetap bayar
+  const effectiveStatus =
+    data.status === "expired" ? ("unpaid" as PaymentStatus) : data.status;
+
+  // Hard-set biaya pendaftaran sesuai ketentuan (Rp 200.000)
+  const biayaPendaftaran = 200_000;
+
+  const statusConfig = STATUS_CONFIG[effectiveStatus];
   const StatusIcon = statusConfig.icon;
-  const daysRemaining = getDaysRemaining(data.deadline);
-  const isPaymentCompleted = data.status === "verified";
-  const isPaymentPending = data.status === "pending";
-  const isPaymentRejected = data.status === "rejected";
-  const canMakePayment = data.status === "unpaid" || data.status === "rejected";
+  const daysRemaining = Math.max(0, getDaysRemaining(data.deadline));
+  const isPaymentCompleted = effectiveStatus === "verified";
+  const isPaymentPending = effectiveStatus === "pending";
+  const isPaymentRejected = effectiveStatus === "rejected";
+  const canMakePayment =
+    effectiveStatus === "unpaid" ||
+    effectiveStatus === "rejected" ||
+    data.status === "expired";
+
+  const isStatusOnly = view === "status";
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -592,16 +608,26 @@ export default function PembayaranPendaftaranTab() {
       )}
 
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-ink-900 to-ink-800 p-8 md:p-10 text-white shadow-xl shadow-ink-900/10">
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-teal-600 to-emerald-800 p-8 md:p-10 text-white shadow-xl shadow-teal-900/10">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-start gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0">
-              <CreditCard className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 shrink-0">
+              {isStatusOnly ? (
+                <Shield className="w-8 h-8 text-white" />
+              ) : (
+                <CreditCard className="w-8 h-8 text-white" />
+              )}
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight">Pembayaran Pendaftaran</h1>
-              <p className="text-ink-200 font-medium max-w-lg">Selesaikan pembayaran untuk mengaktifkan akun pendaftaran Anda dan lanjut ke tahap seleksi.</p>
+              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight text-white">
+                {isStatusOnly ? "Status Pembayaran" : "Pembayaran Pendaftaran"}
+              </h1>
+              <p className="text-emerald-50 font-medium max-w-lg">
+                {isStatusOnly
+                  ? "Lihat status verifikasi pembayaran Anda dan riwayat bukti transfer."
+                  : "Selesaikan pembayaran untuk mengaktifkan akun pendaftaran Anda dan lanjut ke tahap seleksi."}
+              </p>
             </div>
           </div>
           <button
@@ -640,6 +666,15 @@ export default function PembayaranPendaftaranTab() {
                   </div>
                 </div>
               )}
+              {data.is_deadline_passed && !isPaymentCompleted && (
+                <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
+                  <AlertCircle className="w-5 h-5 text-amber-600" />
+                  <div>
+                    <p className="text-[10px] font-bold text-amber-500 uppercase">Masa Pembayaran Terlewati</p>
+                    <p className="text-amber-800 font-bold">Silakan selesaikan pembayaran secepatnya.</p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <PaymentTimeline paymentStatus={data.status} />
@@ -653,25 +688,108 @@ export default function PembayaranPendaftaranTab() {
                 </div>
               </div>
             )}
+
+            {/* Ringkasan pembayaran (khusus halaman Status Pembayaran) */}
+            {isStatusOnly && (
+              <div className="mt-8 bg-white border border-ink-100 rounded-2xl p-5">
+                <div className="flex items-center justify-between gap-4 flex-wrap">
+                  <div>
+                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">Nomor Pendaftaran</p>
+                    <p className="font-black text-ink-900">{data.pendaftar.nomor_pendaftaran}</p>
+                    <p className="text-sm text-ink-500 mt-1">{data.pendaftar.nama_lengkap}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">Metode</p>
+                    <p className="font-black text-ink-900">{data.pembayaran?.metode_pembayaran || "-"}</p>
+                    <p className="text-sm text-ink-500 mt-1">
+                      {data.pembayaran?.updated_at ? `Update: ${formatDateTime(data.pembayaran.updated_at)}` : ""}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Manual Transfer Instructions */}
-          {canMakePayment && (
-            <div className="space-y-6">
-              <h3 className="text-xl font-bold text-ink-900 px-2">Metode Pembayaran</h3>
+          {/* Manual Transfer Instructions (hanya di halaman Pembayaran) */}
+          {!isStatusOnly && canMakePayment && (
+            <div className="space-y-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h3 className="text-xl font-bold text-ink-900 px-2">Pilih Metode Pembayaran</h3>
+                <div className="bg-emerald-50 text-emerald-800 px-4 py-2 rounded-lg font-bold text-sm border border-emerald-200">
+                  Total: Rp 200.000
+                </div>
+              </div>
 
+
+              {/* OPTION 1: MIDTRANS (DEV) */}
+              <div
+                className={`glass-panel p-6 rounded-[2rem] border transition-all cursor-pointer hover:border-indigo-300 hover:shadow-indigo-500/10 group ${activePaymentMethod === 'midtrans' ? 'border-indigo-500 ring-4 ring-indigo-500/10' : 'border-white/50'}`}
+                onClick={() => setActivePaymentMethod(prev => prev === 'midtrans' ? null : 'midtrans')}
+              >
+                <div className="flex items-center justify-between relative overflow-hidden">
+                  {/* DEV BADGE */}
+                  <div className="absolute -top-3 -right-3 bg-amber-100 text-amber-700 text-[10px] font-bold px-3 py-1 rounded-bl-xl border-l border-b border-amber-200 shadow-sm z-10">
+                    Tahap Pengembangan
+                  </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                      <span className="font-black text-xl text-indigo-300">1</span>
+                    </div>
+                    <div className="text-left">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-ink-900 text-lg">Virtual Account / QRIS</h4>
+                        <span className="bg-ink-100 text-ink-600 text-[10px] uppercase font-bold px-2 py-0.5 rounded">Otomatis</span>
+                      </div>
+                      <p className="text-sm text-ink-500 font-medium">BCA, BNI, BRI, Mandiri & QRIS</p>
+                    </div>
+                  </div>
+                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${activePaymentMethod === 'midtrans' ? 'border-indigo-500 bg-indigo-500 text-white' : 'border-ink-200'}`}>
+                    {activePaymentMethod === 'midtrans' && <Check className="w-4 h-4" />}
+                  </div>
+                </div>
+
+                {activePaymentMethod === 'midtrans' && (
+                  <div className="mt-6 pt-6 border-t border-ink-100/50">
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 flex gap-3">
+                      <Info className="w-5 h-5 text-amber-600 shrink-0" />
+                      <p className="text-sm text-amber-800">
+                        <strong>Fitur Belum Siap:</strong> Metode pembayaran ini sedang dalam tahap pengembangan. Silakan gunakan Opsi 2 (Transfer Manual) untuk saat ini.
+                      </p>
+                    </div>
+
+                    <p className="text-sm text-ink-600 mb-4 leading-relaxed opacity-50">
+                      Metode ini mendukung Virtual Account (BCA, BNI, BRI, Mandiri) dan QRIS. Pembayaran akan terverifikasi secara otomatis tanpa perlu upload bukti.
+                    </p>
+                    <button
+                      onClick={handleMidtransPayment}
+                      disabled={true} // DISABLED FOR DEV
+                      className="w-full py-4 bg-indigo-600/50 text-white rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      <Loader2 className="w-5 h-5 animate-spin hidden" />
+                      <Wallet className="w-5 h-5" />
+                      <span>Bayar via Midtrans (Coming Soon)</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* OPTION 2: MANUAL TRANSFER */}
               <div
                 className={`glass-panel p-6 rounded-[2rem] border transition-all cursor-pointer hover:border-teal-300 hover:shadow-teal-500/10 group ${activePaymentMethod === 'manual' ? 'border-teal-500 ring-4 ring-teal-500/10' : 'border-white/50'}`}
                 onClick={() => setActivePaymentMethod(prev => prev === 'manual' ? null : 'manual')}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                      <Banknote className="w-7 h-7 text-blue-600" />
+                    <div className="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center group-hover:bg-teal-100 transition-colors">
+                      <span className="font-black text-xl text-teal-600">2</span>
                     </div>
                     <div className="text-left">
-                      <h4 className="font-bold text-ink-900">Transfer Bank Manual</h4>
-                      <p className="text-sm text-ink-500 font-medium">BSI, Mandiri, BCA, dll (Verifikasi Manual)</p>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="font-bold text-ink-900 text-lg">Transfer Manual (BSI)</h4>
+                        <span className="bg-teal-100 text-teal-700 text-[10px] uppercase font-bold px-2 py-0.5 rounded">Rekomendasi</span>
+                      </div>
+                      <p className="text-sm text-ink-500 font-medium">Transfer ke Rekening Pesantren</p>
                     </div>
                   </div>
                   <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${activePaymentMethod === 'manual' ? 'border-teal-500 bg-teal-500 text-white' : 'border-ink-200'}`}>
@@ -682,36 +800,40 @@ export default function PembayaranPendaftaranTab() {
                 {/* Expanded Content */}
                 {activePaymentMethod === 'manual' && (
                   <div className="mt-6 pt-6 border-t border-ink-100/50 animate-in slide-in-from-top-2">
-                    <div className="bg-surface-50 border border-ink-200 rounded-2xl p-6 mb-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <p className="text-xs font-bold text-ink-400 uppercase tracking-widest mb-1">Transfer Ke Rekening</p>
-                          <h4 className="font-black text-xl text-ink-900">{BANK_INFO.nama_bank}</h4>
-                        </div>
-                        <div className="bg-white px-2 py-1 rounded border border-ink-200">
-                          <p className="text-xs font-bold text-ink-500">{BANK_INFO.kode_bank}</p>
+                    <div className="bg-gradient-to-br from-teal-50 to-white border border-teal-100 rounded-2xl p-6 mb-6 shadow-sm">
+                      <div className="flex justify-between items-start mb-6">
+                        <div className="flex items-center gap-3">
+                          {/* Bank Logo Placeholder if needed */}
+                          <div className="bg-white p-2 rounded-lg border border-ink-100">
+                            <Building2 className="w-6 h-6 text-teal-700" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-ink-400 uppercase tracking-widest">Bank Tujuan</p>
+                            <h4 className="font-black text-xl text-ink-900">{BANK_INFO.nama_bank}</h4>
+                          </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-ink-100 mb-3 shadow-sm">
-                        <div>
-                          <p className="text-xs text-ink-400 mb-0.5">Nomor Rekening</p>
-                          <p className="font-mono text-xl font-bold text-ink-900 tracking-wider">{BANK_INFO.nomor_rekening}</p>
+                      <div className="flex flex-col sm:flex-row items-center justify-between bg-white p-5 rounded-xl border border-teal-200 mb-4 shadow-sm gap-4">
+                        <div className="text-center sm:text-left w-full">
+                          <p className="text-xs text-ink-400 mb-1">Nomor Rekening</p>
+                          <p className="font-mono text-2xl sm:text-3xl font-black text-teal-700 tracking-wider">{BANK_INFO.nomor_rekening}</p>
+                          <p className="text-xs font-bold text-ink-500 mt-1">a.n {BANK_INFO.atas_nama}</p>
                         </div>
                         <CopyButton text={BANK_INFO.nomor_rekening} label="No. Rekening" />
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-surface-200 rounded-full flex items-center justify-center">
-                          <Building2 className="w-4 h-4 text-ink-600" />
-                        </div>
-                        <p className="text-sm font-bold text-ink-700">a.n {BANK_INFO.atas_nama}</p>
+                      <div className="flex items-start gap-3 bg-amber-50 p-3 rounded-lg border border-amber-100">
+                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                        <p className="text-sm text-amber-800">
+                          <strong>Penting:</strong> Pastikan nominal transfer sesuai tagihan <strong>(Rp 200.000)</strong>
+                        </p>
                       </div>
                     </div>
 
                     <div className="space-y-4">
-                      <h5 className="font-bold text-ink-900 flex items-center gap-2">
-                        <Upload className="w-4 h-4 text-teal-600" />
+                      <h5 className="font-bold text-ink-900 flex items-center gap-2 text-lg">
+                        <Upload className="w-5 h-5 text-teal-600" />
                         Upload Bukti Transfer
                       </h5>
                       <UploadArea
@@ -726,47 +848,11 @@ export default function PembayaranPendaftaranTab() {
                 )}
               </div>
 
-              {/* Midtrans Option */}
-              <div
-                className={`glass-panel p-6 rounded-[2rem] border transition-all cursor-pointer hover:border-teal-300 hover:shadow-teal-500/10 group opacity-75 hover:opacity-100 ${activePaymentMethod === 'midtrans' ? 'border-teal-500 ring-4 ring-teal-500/10' : 'border-white/50'}`}
-                onClick={() => setActivePaymentMethod(prev => prev === 'midtrans' ? null : 'midtrans')}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
-                      <CreditCard className="w-7 h-7 text-indigo-600" />
-                    </div>
-                    <div className="text-left">
-                      <h4 className="font-bold text-ink-900">Pembayaran Otomatis (VA, QRIS)</h4>
-                      <p className="text-sm text-ink-500 font-medium">Verifikasi Otomatis & Realtime</p>
-                    </div>
-                  </div>
-                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${activePaymentMethod === 'midtrans' ? 'border-teal-500 bg-teal-500 text-white' : 'border-ink-200'}`}>
-                    {activePaymentMethod === 'midtrans' && <Check className="w-4 h-4" />}
-                  </div>
-                </div>
-
-                {activePaymentMethod === 'midtrans' && (
-                  <div className="mt-6 pt-6 border-t border-ink-100/50">
-                    <p className="text-sm text-ink-600 mb-4 leading-relaxed">
-                      Metode ini mendukung Virtual Account (BCA, BNI, BRI, Mandiri) dan QRIS. Pembayaran akan terverifikasi secara otomatis tanpa perlu upload bukti.
-                    </p>
-                    <button
-                      onClick={handleMidtransPayment}
-                      disabled={isMidtransLoading}
-                      className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl shadow-indigo-600/20 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      {isMidtransLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wallet className="w-5 h-5" />}
-                      <span>Bayar Sekarang via Midtrans</span>
-                    </button>
-                  </div>
-                )}
-              </div>
             </div>
           )}
 
-          {/* Success View */}
-          {isPaymentCompleted && (
+          {/* Success View (hanya di halaman Pembayaran) */}
+          {!isStatusOnly && isPaymentCompleted && (
             <div className="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-8 text-center">
               <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in zoom-in duration-300">
                 <CheckCircle className="w-10 h-10 text-emerald-600" />
@@ -786,6 +872,25 @@ export default function PembayaranPendaftaranTab() {
               </div>
             </div>
           )}
+
+          {/* Status-only helper (jika belum bayar) */}
+          {isStatusOnly && !isPaymentCompleted && (
+            <div className="bg-white border border-ink-100 rounded-[2rem] p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-black text-ink-900 text-lg mb-1">Lakukan Pembayaran di Halaman Pembayaran</h3>
+                <p className="text-sm text-ink-500">
+                  Untuk upload bukti transfer atau memilih metode pembayaran, silakan buka menu <strong>Pembayaran</strong>.
+                </p>
+              </div>
+              <a
+                href="/dashboard/pendaftar/pembayaran-pendaftaran"
+                className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold shadow-lg shadow-teal-600/20 transition-all hover:scale-105 flex items-center gap-2"
+              >
+                <span>Ke Halaman Pembayaran</span>
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            </div>
+          )}
         </div>
 
         {/* Sidebar Column */}
@@ -798,7 +903,7 @@ export default function PembayaranPendaftaranTab() {
             <div className="space-y-3">
               <div className="flex justify-between items-center text-sm">
                 <span className="text-ink-500 font-medium">Biaya Pendaftaran</span>
-                <span className="font-bold text-ink-900">{formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}</span>
+                <span className="font-bold text-ink-900">{formatRupiah(biayaPendaftaran)}</span>
               </div>
               <div className="flex justify-between items-center text-sm">
                 <span className="text-ink-500 font-medium">Biaya Admin</span>
@@ -807,7 +912,7 @@ export default function PembayaranPendaftaranTab() {
               <div className="h-px bg-ink-100 my-2" />
               <div className="flex justify-between items-center">
                 <span className="text-ink-900 font-bold">Total Pembayaran</span>
-                <span className="text-xl font-black text-teal-600">{formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}</span>
+                <span className="text-xl font-black text-teal-600">{formatRupiah(biayaPendaftaran)}</span>
               </div>
             </div>
           </div>

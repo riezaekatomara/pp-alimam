@@ -219,9 +219,19 @@ export default function ProgramPage() {
                                 {/* Image Card */}
                                 <div className={idx % 2 === 1 ? 'lg:col-start-1' : ''}>
                                     <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-clay-lg group-hover:rotate-1 transition-transform duration-700">
-                                        {/* Placeholder Pattern */}
-                                        <div className={`absolute inset-0 bg-gradient-to-br opacity-90 z-10 ${program.gradient}`} />
-                                        <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-20 z-10 mix-blend-overlay" />
+                                        {/* Gambar program */}
+                                        <Image
+                                            src={program.image}
+                                            alt={program.fullName}
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 1024px) 100vw, 50vw"
+                                            priority={idx === 0}
+                                        />
+                                        {/* Overlay: gelap di bawah agar teks terbaca + tint warna program */}
+                                        <div className={`absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent z-10`} />
+                                        <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-40 z-10 mix-blend-multiply`} />
+                                        <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-10 z-10 mix-blend-overlay" />
 
                                         <div className="absolute inset-0 z-20 p-10 flex flex-col justify-end text-white">
                                             <div className="w-24 h-24 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-auto border border-white/30">
@@ -229,7 +239,7 @@ export default function ProgramPage() {
                                             </div>
 
                                             <h3 className="text-4xl font-display font-black mb-2">{program.name}</h3>
-                                            <p className="text-white/80 text-lg font-medium">Mencetak Generasi Rabbani</p>
+                                            <p className="text-white/90 text-lg font-medium">Mencetak Generasi Rabbani</p>
                                         </div>
                                     </div>
 

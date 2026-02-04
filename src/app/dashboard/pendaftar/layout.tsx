@@ -69,6 +69,8 @@ export default function DashboardLayout({
           setLoading(false);
           return;
         }
+        const fallbackName =
+          sessionData.full_name || sessionData.name || sessionData.email || "Pendaftar";
 
         // 2. Get user status
         const statusRes = await fetch(
@@ -82,7 +84,7 @@ export default function DashboardLayout({
             const fallbackData = await fallbackRes.json();
             setStatusProses(fallbackData.status_proses || "draft");
             setNomorPendaftaran(fallbackData.nomor_pendaftaran || "MTI20260006");
-            setNamaLengkap(fallbackData.nama_lengkap || "Siswa Baru");
+            setNamaLengkap(fallbackData.nama_lengkap || fallbackName);
             setLoading(false);
             return;
           }
@@ -92,13 +94,13 @@ export default function DashboardLayout({
         const userData = await statusRes.json();
         setStatusProses((userData.status_proses || "draft") as StatusProses);
         setNomorPendaftaran(userData.nomor_pendaftaran || "MTI20260006");
-        setNamaLengkap(userData.nama_lengkap || "Siswa Baru");
+        setNamaLengkap(userData.nama_lengkap || fallbackName);
 
       } catch (error) {
         console.error("Error fetching user data:", error);
         setStatusProses("draft");
         setNomorPendaftaran("MTI20260006");
-        setNamaLengkap("Siswa Baru");
+        setNamaLengkap("Pendaftar");
       } finally {
         setLoading(false);
       }
@@ -121,13 +123,6 @@ export default function DashboardLayout({
       tabName: "pembayaran-pendaftaran" as TabName,
       icon: CreditCard,
       active: pathname === "/dashboard/pendaftar/pembayaran-pendaftaran",
-    },
-    {
-      name: "Status Pembayaran",
-      href: "/dashboard/pendaftar/status-pembayaran",
-      tabName: "status-pembayaran" as TabName,
-      icon: ShieldCheck,
-      active: pathname === "/dashboard/pendaftar/status-pembayaran",
     },
     {
       name: "Isi Data Lengkap",

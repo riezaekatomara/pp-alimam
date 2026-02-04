@@ -421,7 +421,7 @@ export default function DashboardPage() {
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 xs:gap-5 sm:gap-6">
           {/* Step 1: Pembayaran */}
           <Link
-            href="/dashboard/pendaftar/status-pembayaran"
+            href="/dashboard/pendaftar/pembayaran-pendaftaran"
             className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-surface-200 hover:border-gold-500 p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">

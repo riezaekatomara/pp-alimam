@@ -156,20 +156,21 @@ export function calculateProgressToUnlock(tabName: TabName, currentStatus: Statu
 export function getNextStep(currentStatus: StatusProses): {
   status: StatusProses;
   action: string;
+  href: string;
 } | null {
-  const nextSteps: Record<string, { status: StatusProses; action: string }> = {
-    'draft': { status: 'payment_verification', action: 'Lakukan pembayaran pendaftaran' },
-    'awaiting_payment': { status: 'payment_verification', action: 'Upload bukti pembayaran' },
-    'payment_verification': { status: 'verified', action: 'Tunggu verifikasi pembayaran' },
-    'verified': { status: 'data_completed', action: 'Isi formulir data lengkap' },
-    'paid': { status: 'data_completed', action: 'Isi formulir data lengkap' },
-    'data_completed': { status: 'docs_uploaded', action: 'Upload dokumen persyaratan' },
-    'docs_uploaded': { status: 'docs_verified', action: 'Tunggu verifikasi dokumen' },
-    'docs_verified': { status: 'scheduled', action: 'Tunggu jadwal seleksi' },
-    'scheduled': { status: 'tested', action: 'Ikuti ujian seleksi' },
-    'tested': { status: 'announced', action: 'Tunggu pengumuman hasil' },
-    'announced': { status: 'accepted', action: 'Lihat hasil seleksi' },
-    'accepted': { status: 'enrolled', action: 'Lakukan daftar ulang' },
+  const nextSteps: Record<string, { status: StatusProses; action: string; href: string }> = {
+    'draft': { status: 'payment_verification', action: 'Lakukan pembayaran pendaftaran', href: '/dashboard/pendaftar/pembayaran-pendaftaran' },
+    'awaiting_payment': { status: 'payment_verification', action: 'Upload bukti pembayaran', href: '/dashboard/pendaftar/pembayaran-pendaftaran' },
+    'payment_verification': { status: 'verified', action: 'Tunggu verifikasi pembayaran', href: '/dashboard/pendaftar/pembayaran-pendaftaran' },
+    'verified': { status: 'data_completed', action: 'Isi formulir data lengkap', href: '/dashboard/pendaftar' },
+    'paid': { status: 'data_completed', action: 'Isi formulir data lengkap', href: '/dashboard/pendaftar' },
+    'data_completed': { status: 'docs_uploaded', action: 'Upload dokumen persyaratan', href: '/dashboard/pendaftar/upload-berkas' },
+    'docs_uploaded': { status: 'docs_verified', action: 'Tunggu verifikasi dokumen', href: '/dashboard/pendaftar/status' },
+    'docs_verified': { status: 'scheduled', action: 'Tunggu jadwal seleksi', href: '/dashboard/pendaftar/pengumuman' },
+    'scheduled': { status: 'tested', action: 'Ikuti ujian seleksi', href: '/dashboard/pendaftar/pengumuman' },
+    'tested': { status: 'announced', action: 'Tunggu pengumuman hasil', href: '/dashboard/pendaftar/pengumuman' },
+    'announced': { status: 'accepted', action: 'Lihat hasil seleksi', href: '/dashboard/pendaftar/pengumuman' },
+    'accepted': { status: 'enrolled', action: 'Lakukan daftar ulang', href: '/dashboard/pendaftar/daftar-ulang' },
   };
 
   return nextSteps[currentStatus] || null;
