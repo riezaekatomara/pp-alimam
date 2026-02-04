@@ -2,17 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase/server";
 
-// Daftar semua jenis dokumen
+// Daftar semua jenis dokumen sesuai persyaratan PPDB Al-Imam
 const JENIS_DOKUMEN = [
-  { key: "foto_santri", label: "Foto Calon Santri", required: true },
-  { key: "ktp_ortu", label: "KTP Orang Tua", required: true },
-  { key: "kartu_keluarga", label: "Kartu Keluarga", required: true },
-  { key: "akta_kelahiran", label: "Akta Kelahiran", required: true },
-  { key: "rapor_sem1", label: "Rapor Semester 1", required: true },
-  { key: "rapor_sem2", label: "Rapor Semester 2", required: true },
-  { key: "surat_kesanggupan", label: "Surat Kesanggupan", required: true },
-  { key: "surat_kesehatan", label: "Surat Kesehatan", required: false },
-  { key: "hasil_hbsag", label: "Hasil Tes HBsAg", required: false },
+  { key: "kartu_keluarga", label: "Scan Kartu Keluarga", required: true },
+  { key: "akta_kelahiran", label: "Scan Akte Kelahiran", required: true },
+  { key: "rapor_sem1", label: "Scan Rapor Semester 1 Terakhir", required: true },
+  { key: "rapor_sem2", label: "Scan Rapor Semester 2 Terakhir", required: true },
+  { key: "nisn", label: "Scan NISN (Nomor Induk Siswa Nasional)", required: true },
+  { key: "foto_setengah_badan", label: "Foto Setengah Badan", required: true },
+  { key: "surat_kesehatan", label: "Surat Keterangan Sehat (Download format)", required: true },
+  { key: "pakta_integritas", label: "Scan Pakta Integritas (Download format)", required: true },
+  { key: "pernyataan_bebas_negatif", label: "Scan Pernyataan Bebas Perilaku Negatif (Download format)", required: true },
 ];
 
 export async function GET(request: NextRequest) {

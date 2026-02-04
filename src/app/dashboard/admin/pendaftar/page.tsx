@@ -138,10 +138,6 @@ export default function AdminPendaftarPage() {
       if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
       if (kecamatanFilter) params.append("kecamatan", kecamatanFilter);
       if (kelurahanFilter) params.append("kelurahan", kelurahanFilter);
-      if (provinsiFilter) params.append("provinsi", provinsiFilter);
-      if (kabupatenFilter) params.append("kabupaten", kabupatenFilter);
-      if (kecamatanFilter) params.append("kecamatan", kecamatanFilter);
-      if (kelurahanFilter) params.append("kelurahan", kelurahanFilter);
 
       const response = await fetch(`/api/admin/pendaftar/list?${params}`);
       if (!response.ok) throw new Error("Failed to fetch");
@@ -400,6 +396,8 @@ export default function AdminPendaftarPage() {
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
       rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
       enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-700" },
+      // Fix for legacy/seed data
+      verified: { label: "Terverifikasi", color: "bg-green-100 text-green-700" },
     };
 
     const statusInfo = statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
@@ -795,7 +793,7 @@ export default function AdminPendaftarPage() {
               <table className="w-full">
                 <thead className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-200">
                   <tr>
-                    <th className="px-6 py-4 text-center">
+                    <th className="px-4 py-3 text-center">
                       <button
                         onClick={handleSelectAll}
                         className="text-blue-600 hover:text-blue-800"
@@ -807,28 +805,28 @@ export default function AdminPendaftarPage() {
                         )}
                       </button>
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       No. Pendaftaran
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Nama Lengkap
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       NIK
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Jenjang
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Kontak
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Tanggal Daftar
                     </th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                    <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Aksi
                     </th>
                   </tr>
@@ -837,11 +835,10 @@ export default function AdminPendaftarPage() {
                   {pendaftar.map((item) => (
                     <tr
                       key={item.id}
-                      className={`hover:bg-blue-50 transition-colors ${
-                        selectedIds.includes(item.id) ? "bg-purple-50" : ""
-                      }`}
+                      className={`hover:bg-blue-50 transition-colors ${selectedIds.includes(item.id) ? "bg-purple-50" : ""
+                        }`}
                     >
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-4 py-3 text-center">
                         <button
                           onClick={() => handleSelectOne(item.id)}
                           className="text-purple-600 hover:text-purple-800"
@@ -853,7 +850,7 @@ export default function AdminPendaftarPage() {
                           )}
                         </button>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-2">
                           <Hash className="w-4 h-4 text-blue-600" />
                           <span className="font-mono text-sm font-bold text-blue-700">
@@ -861,7 +858,7 @@ export default function AdminPendaftarPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <div>
                           <div className="font-bold text-stone-900">
                             {item.nama_lengkap}
@@ -871,20 +868,20 @@ export default function AdminPendaftarPage() {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <span className="font-mono text-sm text-stone-700">
                           {item.nik}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-bold">
                           {item.jenjang}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         {formatStatus(item.status_pendaftaran)}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-4 py-3">
                         <div className="text-sm space-y-1">
                           {item.no_hp && (
                             <div className="flex items-center gap-1 text-stone-600">
@@ -902,7 +899,7 @@ export default function AdminPendaftarPage() {
                           )}
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center gap-1 text-stone-600">
                           <Calendar className="w-4 h-4" />
                           <span className="text-sm">
@@ -910,13 +907,13 @@ export default function AdminPendaftarPage() {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <Link
                           href={`/dashboard/admin/pendaftar/${item.id}`}
-                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all shadow-sm hover:shadow-md"
                         >
                           <Eye className="w-4 h-4" />
-                          Detail
+                          <span>Buka Detail</span>
                         </Link>
                       </td>
                     </tr>
@@ -973,11 +970,10 @@ export default function AdminPendaftarPage() {
                           )}
                           <button
                             onClick={() => handlePageChange(page)}
-                            className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-                              page === pagination.page
-                                ? "bg-blue-600 text-white"
-                                : "bg-white border-2 border-stone-200 hover:bg-blue-50 hover:border-blue-300"
-                            }`}
+                            className={`w-10 h-10 rounded-lg font-medium transition-colors ${page === pagination.page
+                              ? "bg-blue-600 text-white"
+                              : "bg-white border-2 border-stone-200 hover:bg-blue-50 hover:border-blue-300"
+                              }`}
                           >
                             {page}
                           </button>

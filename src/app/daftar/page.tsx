@@ -23,7 +23,7 @@ interface FormData {
   tanggal_lahir: string;
   no_hp: string;
   jenis_kelamin: "L" | "P" | "";
-  jenjang: "MTs" | "IL" | "MA" | "";
+  jenjang: "MTs" | "IL" | "";
 }
 
 const STEPS = [
@@ -529,8 +529,7 @@ export default function DaftarPage() {
                 <div data-error={!!fieldErrors.jenjang} className="grid sm:grid-cols-3 gap-4">
                   {[
                     { value: "MTs", label: "MTs", sublabel: "Madrasah Tsanawiyah" },
-                    { value: "IL", label: "I'dad Lughowi", sublabel: "Program Bahasa" },
-                    { value: "MA", label: "MA", sublabel: "Madrasah Aliyah" },
+                    { value: "IL", label: "I'dad Lughowi", sublabel: "Setara SMA (4 Tahun)" },
                   ].map((option) => (
                     <button
                       key={option.value}

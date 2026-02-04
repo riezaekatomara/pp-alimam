@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import {
   Users,
   UserCheck,
-  UserX,
-  FileCheck,
   CreditCard,
   Calendar,
   TrendingUp,
@@ -13,57 +11,68 @@ import {
   CheckCircle,
   Clock,
   Loader2,
-  XCircle,
-  FileX,
-  Upload,
-  ClipboardCheck,
+  FileCheck,
   GraduationCap,
-  Trophy,
-  BookOpen,
-  UserPlus,
-  FileText,
+  Download,
+  BarChart3,
+  MapPin,
+  ArrowUpRight,
+  MoreHorizontal,
+  Wallet,
+  FileText
 } from "lucide-react";
 import Link from "next/link";
 
+// Interfaces (Unchanged)
+interface JenjangStat {
+  jenjang: string;
+  pendaftar: number;
+  diterima: number;
+}
+
+interface ProvinsiStat {
+  provinsi: string;
+  jumlah: number;
+}
+
 interface DashboardStats {
   total_pendaftar: number;
-  // Pembayaran
   belum_bayar: number;
   menunggu_verifikasi_pembayaran: number;
   sudah_bayar: number;
   pembayaran_ditolak: number;
-  // Data Lengkap
   belum_isi_data: number;
   sudah_isi_data: number;
-  // Dokumen
   belum_upload_dokumen: number;
   menunggu_verifikasi_dokumen: number;
   dokumen_terverifikasi: number;
   dokumen_ditolak: number;
-  // Ujian
   terjadwal_ujian: number;
   belum_ujian: number;
   sudah_ujian: number;
   hasil_ujian: number;
-  // Penerimaan
   diterima: number;
   belum_daftar_ulang: number;
   sudah_daftar_ulang: number;
+  stats_per_jenjang: JenjangStat[];
+  stats_per_provinsi: ProvinsiStat[];
+  stats_gender: { "Laki-laki": number; "Perempuan": number };
+  pie_chart_status: {
+    diterima: number;
+    menunggu: number;
+    proses: number;
+    ditolak: number;
+  };
 }
 
-interface StatCard {
-  title: string;
-  value: number;
-  icon: React.ElementType;
-  bgColor: string;
-  iconColor: string;
-  textColor: string;
-  borderColor: string;
-  link: string;
-}
+const JENJANG_LABELS: Record<string, string> = {
+  MTs: "MTs Al-Imam",
+  IL: "I'dad Lughowi (Setara SMA)",
+};
 
 export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState<string | null>(null);
   const [stats, setStats] = useState<DashboardStats>({
     total_pendaftar: 0,
     belum_bayar: 0,
@@ -83,7 +92,13 @@ export default function AdminDashboardPage() {
     diterima: 0,
     belum_daftar_ulang: 0,
     sudah_daftar_ulang: 0,
+    stats_per_jenjang: [],
+    stats_per_provinsi: [],
+    stats_gender: { "Laki-laki": 0, "Perempuan": 0 },
+    pie_chart_status: { diterima: 0, menunggu: 0, proses: 0, ditolak: 0 },
   });
+
+  const [activeTahunAjaran, setActiveTahunAjaran] = useState<{ nama: string } | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -94,6 +109,14 @@ export default function AdminDashboardPage() {
           const data = await response.json();
           setStats(data);
         }
+
+        const taResponse = await fetch("/api/admin/tahun-ajaran?active=true");
+        if (taResponse.ok) {
+          const taData = await taResponse.json();
+          const active = Array.isArray(taData.data) ? taData.data.find((t: any) => t.is_active) : taData.data;
+          if (active) setActiveTahunAjaran(active);
+        }
+
       } catch (error) {
         console.error("Error fetching stats:", error);
       } finally {
@@ -104,422 +127,313 @@ export default function AdminDashboardPage() {
     fetchStats();
   }, []);
 
+  const handleExportPembayaran = async (type: "all" | "lunas" | "pending") => {
+    try {
+      setExporting(type);
+      const response = await fetch(`/api/admin/export/pembayaran?type=${type}`);
+      if (!response.ok) throw new Error("Failed to export");
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      const typeLabel = type === "all" ? "semua" : type === "lunas" ? "lunas" : "pending";
+      a.download = `pembayaran_ppdb_${typeLabel}_${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting:", error);
+      alert("Gagal export data pembayaran");
+    } finally {
+      setExporting(null);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-stone-600">Memuat statistik dashboard...</p>
+          <Loader2 className="w-12 h-12 animate-spin text-teal-500 mx-auto mb-4" />
+          <p className="text-ink-400 font-medium">Memuat data dashboard...</p>
         </div>
       </div>
     );
   }
 
-  // Card untuk Total Pendaftar
-  const totalCard: StatCard = {
-    title: "Total Pendaftar",
-    value: stats.total_pendaftar,
-    icon: Users,
-    bgColor: "bg-blue-100",
-    iconColor: "text-blue-600",
-    textColor: "text-blue-600",
-    borderColor: "border-blue-200",
-    link: "/dashboard/admin/pendaftar",
-  };
-
-  // Cards untuk Pembayaran
-  const pembayaranCards: StatCard[] = [
-    {
-      title: "Belum Bayar",
-      value: stats.belum_bayar,
-      icon: AlertCircle,
-      bgColor: "bg-orange-100",
-      iconColor: "text-orange-600",
-      textColor: "text-orange-600",
-      borderColor: "border-orange-200",
-      link: "/dashboard/admin/pendaftar?filter=belum_bayar",
-    },
-    {
-      title: "Menunggu Verifikasi Pembayaran",
-      value: stats.menunggu_verifikasi_pembayaran,
-      icon: Clock,
-      bgColor: "bg-amber-100",
-      iconColor: "text-amber-600",
-      textColor: "text-amber-600",
-      borderColor: "border-amber-200",
-      link: "/dashboard/admin/verifikasi-pembayaran",
-    },
-    {
-      title: "Sudah Bayar",
-      value: stats.sudah_bayar,
-      icon: CheckCircle,
-      bgColor: "bg-green-100",
-      iconColor: "text-green-600",
-      textColor: "text-green-600",
-      borderColor: "border-green-200",
-      link: "/dashboard/admin/pendaftar?filter=sudah_bayar",
-    },
-    {
-      title: "Pembayaran Ditolak",
-      value: stats.pembayaran_ditolak,
-      icon: XCircle,
-      bgColor: "bg-red-100",
-      iconColor: "text-red-600",
-      textColor: "text-red-600",
-      borderColor: "border-red-200",
-      link: "/dashboard/admin/pendaftar?filter=pembayaran_ditolak",
-    },
-  ];
-
-  // Cards untuk Data Lengkap
-  const dataLengkapCards: StatCard[] = [
-    {
-      title: "Belum Isi Data Lengkap",
-      value: stats.belum_isi_data,
-      icon: FileText,
-      bgColor: "bg-pink-100",
-      iconColor: "text-pink-600",
-      textColor: "text-pink-600",
-      borderColor: "border-pink-200",
-      link: "/dashboard/admin/pendaftar?filter=belum_isi_data",
-    },
-    {
-      title: "Sudah Isi Data Lengkap",
-      value: stats.sudah_isi_data,
-      icon: ClipboardCheck,
-      bgColor: "bg-lime-100",
-      iconColor: "text-lime-600",
-      textColor: "text-lime-600",
-      borderColor: "border-lime-200",
-      link: "/dashboard/admin/pendaftar?filter=sudah_isi_data",
-    },
-  ];
-
-  // Cards untuk Dokumen
-  const dokumenCards: StatCard[] = [
-    {
-      title: "Belum Upload Dokumen",
-      value: stats.belum_upload_dokumen,
-      icon: Upload,
-      bgColor: "bg-slate-100",
-      iconColor: "text-slate-600",
-      textColor: "text-slate-600",
-      borderColor: "border-slate-200",
-      link: "/dashboard/admin/pendaftar?filter=belum_upload_dokumen",
-    },
-    {
-      title: "Menunggu Verifikasi Dokumen",
-      value: stats.menunggu_verifikasi_dokumen,
-      icon: FileCheck,
-      bgColor: "bg-yellow-100",
-      iconColor: "text-yellow-600",
-      textColor: "text-yellow-600",
-      borderColor: "border-yellow-200",
-      link: "/dashboard/admin/verifikasi-dokumen",
-    },
-    {
-      title: "Dokumen Terverifikasi",
-      value: stats.dokumen_terverifikasi,
-      icon: ClipboardCheck,
-      bgColor: "bg-emerald-100",
-      iconColor: "text-emerald-600",
-      textColor: "text-emerald-600",
-      borderColor: "border-emerald-200",
-      link: "/dashboard/admin/pendaftar?filter=dokumen_terverifikasi",
-    },
-    {
-      title: "Dokumen Ditolak",
-      value: stats.dokumen_ditolak,
-      icon: FileX,
-      bgColor: "bg-rose-100",
-      iconColor: "text-rose-600",
-      textColor: "text-rose-600",
-      borderColor: "border-rose-200",
-      link: "/dashboard/admin/pendaftar?filter=dokumen_ditolak",
-    },
-  ];
-
-  // Cards untuk Ujian & Wawancara
-  const ujianCards: StatCard[] = [
-    {
-      title: "Terjadwal Ujian & Wawancara",
-      value: stats.terjadwal_ujian,
-      icon: Calendar,
-      bgColor: "bg-purple-100",
-      iconColor: "text-purple-600",
-      textColor: "text-purple-600",
-      borderColor: "border-purple-200",
-      link: "/dashboard/admin/pendaftar?filter=terjadwal_ujian",
-    },
-    {
-      title: "Belum Ujian & Wawancara",
-      value: stats.belum_ujian,
-      icon: Clock,
-      bgColor: "bg-violet-100",
-      iconColor: "text-violet-600",
-      textColor: "text-violet-600",
-      borderColor: "border-violet-200",
-      link: "/dashboard/admin/pendaftar?filter=belum_ujian",
-    },
-    {
-      title: "Sudah Ujian & Wawancara",
-      value: stats.sudah_ujian,
-      icon: BookOpen,
-      bgColor: "bg-indigo-100",
-      iconColor: "text-indigo-600",
-      textColor: "text-indigo-600",
-      borderColor: "border-indigo-200",
-      link: "/dashboard/admin/pendaftar?filter=sudah_ujian",
-    },
-    {
-      title: "Hasil Ujian & Wawancara",
-      value: stats.hasil_ujian,
-      icon: Trophy,
-      bgColor: "bg-fuchsia-100",
-      iconColor: "text-fuchsia-600",
-      textColor: "text-fuchsia-600",
-      borderColor: "border-fuchsia-200",
-      link: "/dashboard/admin/pendaftar?filter=hasil_ujian",
-    },
-  ];
-
-  // Cards untuk Penerimaan
-  const penerimaanCards: StatCard[] = [
-    {
-      title: "Pendaftar Diterima",
-      value: stats.diterima,
-      icon: UserCheck,
-      bgColor: "bg-teal-100",
-      iconColor: "text-teal-600",
-      textColor: "text-teal-600",
-      borderColor: "border-teal-200",
-      link: "/dashboard/admin/pendaftar?filter=diterima",
-    },
-    {
-      title: "Belum Daftar Ulang",
-      value: stats.belum_daftar_ulang,
-      icon: UserX,
-      bgColor: "bg-cyan-100",
-      iconColor: "text-cyan-600",
-      textColor: "text-cyan-600",
-      borderColor: "border-cyan-200",
-      link: "/dashboard/admin/pendaftar?filter=belum_daftar_ulang",
-    },
-    {
-      title: "Sudah Daftar Ulang",
-      value: stats.sudah_daftar_ulang,
-      icon: GraduationCap,
-      bgColor: "bg-sky-100",
-      iconColor: "text-sky-600",
-      textColor: "text-sky-600",
-      borderColor: "border-sky-200",
-      link: "/dashboard/admin/pendaftar?filter=sudah_daftar_ulang",
-    },
-  ];
-
-  const StatCardComponent = ({ card }: { card: StatCard }) => (
-    <Link
-      href={card.link}
-      className={`group bg-white rounded-xl shadow-md hover:shadow-lg transition-all border-2 ${card.borderColor} hover:border-blue-400 overflow-hidden`}
-    >
-      <div className="p-5">
-        <div className="flex items-center justify-between mb-3">
-          <div className={`p-2.5 ${card.bgColor} rounded-lg`}>
-            <card.icon className={`w-5 h-5 ${card.iconColor}`} />
-          </div>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-blue-600 text-xs font-bold">Lihat →</span>
-          </div>
-        </div>
-        <p className="text-xs text-stone-600 mb-1 line-clamp-2">{card.title}</p>
-        <p className={`text-2xl font-black ${card.textColor}`}>
-          {card.value.toLocaleString("id-ID")}
-        </p>
-      </div>
-      <div className={`h-1 ${card.bgColor}`} />
-    </Link>
-  );
-
-  const SectionTitle = ({
-    icon: Icon,
-    title,
-    color,
-  }: {
-    icon: React.ElementType;
-    title: string;
-    color: string;
-  }) => (
-    <div className="flex items-center gap-3 mb-4">
-      <div className={`p-2 ${color} rounded-lg`}>
-        <Icon className="w-5 h-5 text-white" />
-      </div>
-      <h3 className="text-lg font-bold text-stone-800">{title}</h3>
-    </div>
-  );
+  const lunasPersen = stats.total_pendaftar ? Math.round((stats.sudah_bayar / stats.total_pendaftar) * 100) : 0;
 
   return (
-    <div className="space-y-6">
-      {/* Page Title */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-        <div className="flex items-center gap-4">
-          <div className="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
-            <TrendingUp className="w-8 h-8 text-white" />
+    <div className="space-y-8 pb-12">
+      {/* 1. Ultra-Clean Header Section */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="badge badge-success bg-teal-50 text-teal-600 border-teal-200 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
+              Tahun Ajaran {activeTahunAjaran?.nama || "2025/2026"}
+            </span>
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+            </span>
           </div>
-          <div>
-            <h2 className="text-2xl font-black text-stone-900">
-              Dashboard Overview
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
+            Overview
+          </h1>
+          <p className="text-ink-500 mt-2 text-lg">
+            Monitor perkembangan PPDB secara real-time.
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <Link href="/dashboard/admin/pendaftar" className="btn-primary shadow-teal-glow">
+            <Users className="w-5 h-5" />
+            <span>Data Pendaftar</span>
+          </Link>
+          <button
+            onClick={() => handleExportPembayaran("all")}
+            className="btn-secondary"
+            disabled={exporting !== null}
+          >
+            {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Hero KPI Cards - "Clay" Style */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Total Pendaftar - Featured Card */}
+        <div className="card-glass p-6 md:p-8 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Users className="w-24 h-24 text-teal-600" />
+          </div>
+          <p className="text-ink-500 font-medium mb-2">Total Pendaftar</p>
+          <div className="flex items-baseline gap-2">
+            <h2 className="text-5xl font-bold text-ink-900 tracking-tight">
+              {stats.total_pendaftar}
             </h2>
-            <p className="text-stone-600">
-              Statistik dan ringkasan sistem PPDB Al-Imam
-            </p>
+            <span className="text-sm font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">
+              +12
+            </span>
+          </div>
+          <div className="mt-4 pt-4 border-t border-ink-100 flex items-center justify-between text-sm">
+            <span className="text-ink-400">Target: 500</span>
+            <div className="w-24 h-1.5 bg-ink-100 rounded-full overflow-hidden">
+              <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(stats.total_pendaftar / 500) * 100}%` }}></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Keuangan Card */}
+        <div className="card-glass p-6 relative overflow-hidden group hover:border-teal-200">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-teal-50 rounded-2xl text-teal-600">
+              <Wallet className="w-6 h-6" />
+            </div>
+            <span className="badge badge-neutral">Keuangan</span>
+          </div>
+          <p className="text-ink-500 text-sm font-medium">Pembayaran Lunas</p>
+          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_bayar}</h3>
+          <p className="text-sm text-ink-400 mb-4">{lunasPersen}% dari total pendaftar</p>
+
+          <div className="flex gap-2">
+            <Link href="/dashboard/admin/verifikasi-pembayaran" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-teal-50 text-teal-700">
+              Verifikasi ({stats.menunggu_verifikasi_pembayaran})
+            </Link>
+          </div>
+        </div>
+
+        {/* Dokumen Card */}
+        <div className="card-glass p-6 relative overflow-hidden group hover:border-gold-200">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-gold-50 rounded-2xl text-gold-600">
+              <FileCheck className="w-6 h-6" />
+            </div>
+            <span className="badge badge-neutral">Berkas</span>
+          </div>
+          <p className="text-ink-500 text-sm font-medium">Dokumen Lengkap</p>
+          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_isi_data}</h3>
+          <p className="text-sm text-ink-400 mb-4">Siap diverifikasi</p>
+
+          <div className="flex gap-2">
+            <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-gold-50 text-gold-700">
+              Cek Berkas ({stats.menunggu_verifikasi_dokumen})
+            </Link>
+          </div>
+        </div>
+
+        {/* Seleksi Card */}
+        <div className="card-glass p-6 relative overflow-hidden group hover:border-blue-200">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+              <GraduationCap className="w-6 h-6" />
+            </div>
+            <span className="badge badge-neutral">Seleksi</span>
+          </div>
+          <p className="text-ink-500 text-sm font-medium">Siswa Diterima</p>
+          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1 text-blue-600">{stats.diterima}</h3>
+          <p className="text-sm text-ink-400 mb-4">Dari {stats.sudah_ujian} peserta ujian</p>
+
+          <div className="flex gap-2">
+            <Link href="/dashboard/admin/jadwal-ujian" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-blue-50 text-blue-700">
+              Jadwal Ujian
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* Total Pendaftar - Full Width */}
-      <Link
-        href={totalCard.link}
-        className="group block bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg hover:shadow-xl transition-all overflow-hidden"
-      >
-        <div className="p-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-4 bg-white/20 rounded-xl">
-              <Users className="w-10 h-10 text-white" />
-            </div>
-            <div>
-              <p className="text-blue-100 text-sm mb-1">Total Pendaftar</p>
-              <p className="text-4xl font-black text-white">
-                {stats.total_pendaftar.toLocaleString("id-ID")}
-              </p>
+      {/* 3. Main Content Grid - Floating Tables */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        {/* Left: Detailed Program Stats */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-bold text-ink-900">Performa Program Studi</h3>
+            <button className="text-sm text-teal-600 font-medium hover:text-teal-700">Lihat Detail</button>
+          </div>
+
+          <div className="card-glass p-0 overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-ink-100 bg-surface-50/50">
+                  <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider">Jenjang Pendidikan</th>
+                  <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-center">Kuota</th>
+                  <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-center">Pendaftar</th>
+                  <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-center">Diterima</th>
+                  <th className="px-6 py-4 text-xs font-bold text-ink-500 uppercase tracking-wider text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-ink-50">
+                {(stats.stats_per_jenjang || []).map((item, idx) => (
+                  <tr key={idx} className="group hover:bg-surface-50 transition-colors">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md
+                                   ${item.jenjang === 'MTs' ? 'bg-gradient-to-br from-teal-400 to-teal-600' :
+                            'bg-gradient-to-br from-gold-400 to-gold-600'}
+                                `}>
+                          {item.jenjang.substring(0, 2)}
+                        </div>
+                        <div>
+                          <p className="font-bold text-ink-900">{JENJANG_LABELS[item.jenjang]}</p>
+                          <p className="text-xs text-ink-400 font-medium">Reguler • Putra</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-center text-ink-500 font-medium">-</td>
+                    <td className="px-6 py-5 text-center">
+                      <span className="text-ink-900 font-bold bg-surface-200 px-3 py-1 rounded-lg">
+                        {item.pendaftar}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      <span className="text-teal-700 font-bold bg-teal-50 px-3 py-1 rounded-lg border border-teal-100">
+                        {item.diterima}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        Buka
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Regional Stats - Minimalist Map Representation */}
+          <div className="flex items-center justify-between pt-4">
+            <h3 className="text-xl font-bold text-ink-900">Demografi Pendaftar</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {(stats.stats_per_provinsi || []).slice(0, 4).map((item, idx) => (
+              <div key={idx} className="card-glass p-4 flex items-center justify-between group hover:border-teal-200 cursor-default">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-surface-100 text-ink-500 rounded-xl group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
+                    <MapPin className="w-5 h-5" />
+                  </div>
+                  <span className="font-semibold text-ink-700">{item.provinsi}</span>
+                </div>
+                <span className="text-lg font-bold text-ink-900">{item.jumlah}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Quick Actions & Status Stack */}
+        <div className="space-y-6">
+          {/* Quick Action Stack */}
+          <div className="card-glass p-6">
+            <h3 className="text-lg font-bold text-ink-900 mb-4">Aksi Cepat</h3>
+            <div className="space-y-3">
+              <Link href="/dashboard/admin/verifikasi-pembayaran"
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-50 rounded-lg text-amber-600 group-hover:scale-110 transition-transform">
+                    <CreditCard className="w-5 h-5" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-ink-900">Verifikasi Pembayaran</p>
+                    <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_pembayaran} pending</p>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-amber-500" />
+              </Link>
+
+              <Link href="/dashboard/admin/verifikasi-dokumen"
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
+                    <FileCheck className="w-5 h-5" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-ink-900">Verifikasi Dokumen</p>
+                    <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_dokumen} pending</p>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-blue-500" />
+              </Link>
+
+              <Link href="/dashboard/admin/jadwal-ujian"
+                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:scale-110 transition-transform">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-bold text-ink-900">Atur Jadwal Ujian</p>
+                    <p className="text-xs text-ink-400">{stats.belum_ujian} siswa belum dapat jadwal</p>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-purple-500" />
+              </Link>
             </div>
           </div>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="text-white font-bold">Lihat Semua →</span>
+
+          {/* Download Report Card */}
+          <div className="card-glass p-6 bg-gradient-to-br from-teal-500 to-teal-700 text-white border-0 shadow-xl shadow-teal-500/20">
+            <div className="flex items-start justify-between mb-4">
+              <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
+                <FileText className="w-6 h-6 text-white" />
+              </div>
+              <span className="px-2 py-1 bg-white/20 rounded-lg text-xs font-medium text-white/90">Monthly</span>
+            </div>
+            <h3 className="text-xl font-bold mb-1">Laporan Keuangan</h3>
+            <p className="text-teal-100 text-sm mb-6">Download rekap pembayaran bulan ini.</p>
+
+            <button
+              onClick={() => handleExportPembayaran("all")}
+              className="w-full py-3 bg-white text-teal-700 font-bold rounded-xl shadow-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2"
+            >
+              <Download className="w-4 h-4" />
+              Download CSV
+            </button>
           </div>
-        </div>
-      </Link>
-
-      {/* Section: Pembayaran */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-orange-100">
-        <SectionTitle
-          icon={CreditCard}
-          title="Status Pembayaran"
-          color="bg-orange-500"
-        />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {pembayaranCards.map((card, index) => (
-            <StatCardComponent key={index} card={card} />
-          ))}
-        </div>
-      </div>
-
-      {/* Section: Data Lengkap */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-pink-100">
-        <SectionTitle
-          icon={FileText}
-          title="Status Pengisian Data Lengkap"
-          color="bg-pink-500"
-        />
-        <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
-          {dataLengkapCards.map((card, index) => (
-            <StatCardComponent key={index} card={card} />
-          ))}
-        </div>
-      </div>
-
-      {/* Section: Dokumen */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-yellow-100">
-        <SectionTitle
-          icon={FileCheck}
-          title="Status Dokumen"
-          color="bg-yellow-500"
-        />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {dokumenCards.map((card, index) => (
-            <StatCardComponent key={index} card={card} />
-          ))}
-        </div>
-      </div>
-
-      {/* Section: Ujian & Wawancara */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-purple-100">
-        <SectionTitle
-          icon={Calendar}
-          title="Status Ujian & Wawancara"
-          color="bg-purple-500"
-        />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {ujianCards.map((card, index) => (
-            <StatCardComponent key={index} card={card} />
-          ))}
-        </div>
-      </div>
-
-      {/* Section: Penerimaan & Daftar Ulang */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-teal-100">
-        <SectionTitle
-          icon={GraduationCap}
-          title="Status Penerimaan & Daftar Ulang"
-          color="bg-teal-500"
-        />
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {penerimaanCards.map((card, index) => (
-            <StatCardComponent key={index} card={card} />
-          ))}
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-        <h3 className="text-lg font-bold text-stone-900 mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link
-            href="/dashboard/admin/pendaftar"
-            className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors border border-blue-200"
-          >
-            <Users className="w-6 h-6 text-blue-600" />
-            <div>
-              <p className="font-bold text-blue-900">Daftar Pendaftar</p>
-              <p className="text-xs text-blue-600">Kelola semua pendaftar</p>
-            </div>
-          </Link>
-
-          <Link
-            href="/dashboard/admin/verifikasi-pembayaran"
-            className="flex items-center gap-3 p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors border border-green-200"
-          >
-            <CreditCard className="w-6 h-6 text-green-600" />
-            <div>
-              <p className="font-bold text-green-900">Verifikasi Pembayaran</p>
-              <p className="text-xs text-green-600">
-                {stats.menunggu_verifikasi_pembayaran} menunggu
-              </p>
-            </div>
-          </Link>
-
-          <Link
-            href="/dashboard/admin/verifikasi-dokumen"
-            className="flex items-center gap-3 p-4 bg-amber-50 hover:bg-amber-100 rounded-xl transition-colors border border-amber-200"
-          >
-            <FileCheck className="w-6 h-6 text-amber-600" />
-            <div>
-              <p className="font-bold text-amber-900">Verifikasi Dokumen</p>
-              <p className="text-xs text-amber-600">
-                {stats.menunggu_verifikasi_dokumen} menunggu
-              </p>
-            </div>
-          </Link>
-
-          <Link
-            href="/dashboard/admin/jadwal-ujian"
-            className="flex items-center gap-3 p-4 bg-purple-50 hover:bg-purple-100 rounded-xl transition-colors border border-purple-200"
-          >
-            <Calendar className="w-6 h-6 text-purple-600" />
-            <div>
-              <p className="font-bold text-purple-900">Jadwal Ujian</p>
-              <p className="text-xs text-purple-600">Atur jadwal seleksi</p>
-            </div>
-          </Link>
         </div>
       </div>
     </div>

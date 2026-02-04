@@ -2,66 +2,66 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase/server";
 
-// Konfigurasi dokumen
+// Konfigurasi dokumen sesuai persyaratan PPDB Al-Imam
 const DOKUMEN_CONFIG: Record<string, {
   label: string;
   maxSize: number; // dalam bytes
   allowedTypes: string[];
   required: boolean;
 }> = {
-  foto_santri: {
-    label: "Foto Calon Santri",
-    maxSize: 1 * 1024 * 1024, // 1MB
-    allowedTypes: ["image/jpeg", "image/png"],
-    required: true,
-  },
-  ktp_ortu: {
-    label: "KTP Orang Tua",
+  kartu_keluarga: {
+    label: "Scan Kartu Keluarga",
     maxSize: 2 * 1024 * 1024, // 2MB
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
     required: true,
   },
-  kartu_keluarga: {
-    label: "Kartu Keluarga",
-    maxSize: 2 * 1024 * 1024,
-    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-    required: true,
-  },
   akta_kelahiran: {
-    label: "Akta Kelahiran",
+    label: "Scan Akte Kelahiran",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
     required: true,
   },
   rapor_sem1: {
-    label: "Rapor Semester 1",
+    label: "Scan Rapor Semester 1 Terakhir",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
     required: true,
   },
   rapor_sem2: {
-    label: "Rapor Semester 2",
+    label: "Scan Rapor Semester 2 Terakhir",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
     required: true,
   },
-  surat_kesanggupan: {
-    label: "Surat Kesanggupan",
+  nisn: {
+    label: "Scan NISN (Nomor Induk Siswa Nasional)",
     maxSize: 2 * 1024 * 1024,
-    allowedTypes: ["application/pdf"],
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+    required: true,
+  },
+  foto_setengah_badan: {
+    label: "Foto Setengah Badan",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: ["image/jpeg", "image/png"],
     required: true,
   },
   surat_kesehatan: {
-    label: "Surat Kesehatan",
+    label: "Surat Keterangan Sehat (Download format)",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-    required: false,
+    required: true,
   },
-  hasil_hbsag: {
-    label: "Hasil Tes HBsAg",
+  pakta_integritas: {
+    label: "Scan Pakta Integritas (Download format)",
     maxSize: 2 * 1024 * 1024,
     allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
-    required: false,
+    required: true,
+  },
+  pernyataan_bebas_negatif: {
+    label: "Scan Pernyataan Bebas Perilaku Negatif (Download format)",
+    maxSize: 2 * 1024 * 1024,
+    allowedTypes: ["image/jpeg", "image/png", "application/pdf"],
+    required: true,
   },
 };
 

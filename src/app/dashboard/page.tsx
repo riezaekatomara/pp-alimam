@@ -203,13 +203,13 @@ export default function DashboardPage() {
   // Loading state - Fully Responsive
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[var(--color-cream-50)] via-white to-[var(--color-brown-50)] flex items-center justify-center pt-16 sm:pt-20 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-brown-50 flex items-center justify-center pt-16 sm:pt-20 px-4">
         <div className="text-center">
           <Loader2 className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 animate-spin text-[var(--color-brown-700)] mx-auto mb-3 sm:mb-4" />
-          <p className="text-base xs:text-lg sm:text-lg text-[var(--color-text-700)] font-semibold px-4">
+          <p className="text-base xs:text-lg sm:text-lg text-ink-600 font-semibold px-4">
             Memuat data Anda...
           </p>
-          <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] mt-2 flex items-center justify-center gap-2">
+          <p className="text-xs xs:text-sm sm:text-sm text-ink-500 mt-2 flex items-center justify-center gap-2">
             <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
             <span>Mohon tunggu sebentar</span>
           </p>
@@ -231,7 +231,7 @@ export default function DashboardPage() {
   const StatusIcon = statusInfo.icon;
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[var(--color-cream-50)] via-white to-[var(--color-brown-50)] pt-14 sm:pt-16 md:pt-20">
+    <main className="min-h-screen bg-gradient-to-br from-surface-50 via-white to-brown-50 pt-14 sm:pt-16 md:pt-20">
       <BackToHomeButton position="top-left" />
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           HEADER - CELEBRATORY & WELCOMING ✨ - Fully Responsive
@@ -298,17 +298,17 @@ export default function DashboardPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 xs:py-7 sm:py-8 md:py-12">
         {/* Motivational Banner - DYNAMIC BASED ON STATUS - Responsive */}
         {statusInfo.color !== "green" && statusInfo.color !== "red" && (
-          <div className="bg-gradient-to-r from-[var(--color-teal-50)] to-[var(--color-cream-100)] border-2 border-[var(--color-teal-200)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 mb-5 sm:mb-6 shadow-lg">
+          <div className="bg-gradient-to-r from-teal-50 to-surface-100 border-2 border-teal-200 rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 mb-5 sm:mb-6 shadow-lg">
             <div className="flex items-start gap-3 xs:gap-3.5 sm:gap-4">
               <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-teal-600)] flex items-center justify-center flex-shrink-0">
                 <Target className="w-5 h-5 xs:w-5.5 xs:h-5.5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
+                <h3 className="text-base xs:text-lg sm:text-lg font-bold text-ink-900 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
                   <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 flex-shrink-0" />
                   <span>Anda Hampir Sampai Tujuan!</span>
                 </h3>
-                <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-700)] leading-relaxed">
+                <p className="text-xs xs:text-sm sm:text-sm text-ink-600 leading-relaxed">
                   {statusInfo.message}
                 </p>
               </div>
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                   {statusInfo.message}
                 </p>
                 <div className="bg-white rounded-lg sm:rounded-xl p-3 xs:p-3.5 sm:p-4 inline-block">
-                  <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-700)]">
+                  <p className="text-xs xs:text-sm sm:text-sm text-ink-600">
                     <strong className="text-green-700">
                       Langkah selanjutnya:
                     </strong>{" "}
@@ -346,18 +346,18 @@ export default function DashboardPage() {
           )}
 
         {/* Info Card - Nomor Pendaftaran & Status - Fully Responsive */}
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-4 xs:p-5 sm:p-6 md:p-8 mb-5 sm:mb-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-xl border border-surface-200 p-4 xs:p-5 sm:p-6 md:p-8 mb-5 sm:mb-6">
           <div className="grid md:grid-cols-2 gap-5 xs:gap-6 sm:gap-6">
             {/* Nomor Pendaftaran - Responsive */}
             <div>
-              <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2">
+              <p className="text-xs xs:text-sm sm:text-sm text-ink-500 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2">
                 <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span>Nomor Pendaftaran Anda</span>
               </p>
               <p className="text-xl xs:text-2xl sm:text-3xl font-bold text-[var(--color-brown-800)] break-all">
                 {pendaftar.nomor_pendaftaran}
               </p>
-              <p className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-text-500)] mt-1.5 sm:mt-2 flex items-start gap-1.5">
+              <p className="text-[10px] xs:text-xs sm:text-xs text-ink-400 mt-1.5 sm:mt-2 flex items-start gap-1.5">
                 <Star className="w-3 h-3 sm:w-3 sm:h-3 text-yellow-500 flex-shrink-0 mt-0.5" />
                 <span>
                   Jenjang:{" "}
@@ -374,13 +374,12 @@ export default function DashboardPage() {
 
             {/* Status - Responsive */}
             <div>
-              <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2">
+              <p className="text-xs xs:text-sm sm:text-sm text-ink-500 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2">
                 <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span>Status Pendaftaran Saat Ini</span>
               </p>
               <div
-                className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2 rounded-lg font-bold text-xs xs:text-sm sm:text-sm border-2 ${
-                  statusInfo.color === "green"
+                className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 xs:px-3.5 sm:px-4 py-2 xs:py-2.5 sm:py-2 rounded-lg font-bold text-xs xs:text-sm sm:text-sm border-2 ${statusInfo.color === "green"
                     ? "bg-green-50 border-green-500 text-green-700"
                     : statusInfo.color === "red"
                       ? "bg-red-50 border-red-500 text-red-700"
@@ -393,12 +392,12 @@ export default function DashboardPage() {
                             : statusInfo.color === "purple"
                               ? "bg-purple-50 border-purple-500 text-purple-700"
                               : "bg-gray-50 border-gray-500 text-gray-700"
-                }`}
+                  }`}
               >
                 <StatusIcon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <span>{statusInfo.label}</span>
               </div>
-              <p className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-text-500)] mt-2 sm:mt-3 flex items-start gap-1.5">
+              <p className="text-[10px] xs:text-xs sm:text-xs text-ink-400 mt-2 sm:mt-3 flex items-start gap-1.5">
                 <Clock className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0 mt-0.5" />
                 <span>
                   Terdaftar sejak:{" "}
@@ -423,7 +422,7 @@ export default function DashboardPage() {
           {/* Step 1: Pembayaran */}
           <Link
             href="/dashboard/pendaftar/status-pembayaran"
-            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-gold-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
+            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-surface-200 hover:border-gold-500 p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-gold-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
@@ -433,12 +432,12 @@ export default function DashboardPage() {
                 Step 1 - Wajib
               </span>
             </div>
-            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
+            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-ink-900 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
               <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
               <span>Pembayaran</span>
             </h3>
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
-              Bayar biaya pendaftaran Rp 200.000
+            <p className="text-xs xs:text-sm sm:text-sm text-ink-500 leading-relaxed mb-2 sm:mb-3">
+              Bayar biaya pendaftaran Rp 200.000 (Uang Pendaftaran)
             </p>
             <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-gold-600)] font-semibold flex items-center gap-1">
               <Sparkles className="w-3 h-3 sm:w-3 sm:h-3 flex-shrink-0" />
@@ -449,7 +448,7 @@ export default function DashboardPage() {
           {/* Step 2: Data Pribadi */}
           <Link
             href="/dashboard/pendaftar"
-            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-teal-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
+            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-surface-200 hover:border-teal-500 p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-teal-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
@@ -459,11 +458,11 @@ export default function DashboardPage() {
                 Step 2
               </span>
             </div>
-            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
+            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-ink-900 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
               <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
               <span>Data Pribadi</span>
             </h3>
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
+            <p className="text-xs xs:text-sm sm:text-sm text-ink-500 leading-relaxed mb-2 sm:mb-3">
               Lengkapi profil diri, keluarga, dan riwayat pendidikan
             </p>
             <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-teal-600)] font-semibold flex items-center gap-1">
@@ -475,7 +474,7 @@ export default function DashboardPage() {
           {/* Step 3: Upload Dokumen */}
           <Link
             href="/dashboard/pendaftar/upload-berkas"
-            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-[var(--color-cream-200)] hover:border-[var(--color-brown-500)] p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:col-span-2 md:col-span-1 active:scale-95"
+            className="group bg-white rounded-xl sm:rounded-2xl shadow-lg border-2 border-surface-200 hover:border-brown-500 p-4 xs:p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:col-span-2 md:col-span-1 active:scale-95"
           >
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[var(--color-brown-100)] flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
@@ -485,11 +484,11 @@ export default function DashboardPage() {
                 Step 3
               </span>
             </div>
-            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
+            <h3 className="text-base xs:text-lg sm:text-lg font-bold text-ink-900 mb-1.5 sm:mb-2 flex items-center gap-1.5 sm:gap-2 leading-tight">
               <FileText className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
               <span>Upload Dokumen</span>
             </h3>
-            <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-600)] leading-relaxed mb-2 sm:mb-3">
+            <p className="text-xs xs:text-sm sm:text-sm text-ink-500 leading-relaxed mb-2 sm:mb-3">
               Upload berkas persyaratan dengan mudah
             </p>
             <div className="text-[10px] xs:text-xs sm:text-xs text-[var(--color-brown-600)] font-semibold flex items-center gap-1">
@@ -500,16 +499,16 @@ export default function DashboardPage() {
         </div>
 
         {/* Help Card - WARM & SUPPORTIVE - Fully Responsive */}
-        <div className="mt-5 sm:mt-6 bg-gradient-to-r from-[var(--color-teal-50)] to-[var(--color-cream-100)] border-2 border-[var(--color-teal-200)] rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 shadow-lg">
+        <div className="mt-5 sm:mt-6 bg-gradient-to-r from-teal-50 to-surface-100 border-2 border-teal-200 rounded-xl sm:rounded-2xl p-4 xs:p-5 sm:p-6 shadow-lg">
           <div className="flex items-start gap-3 xs:gap-3.5 sm:gap-4">
             <div className="w-9 h-9 xs:w-10 xs:h-10 sm:w-10 sm:h-10 rounded-lg bg-[var(--color-teal-600)] flex items-center justify-center flex-shrink-0">
               <Heart className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-text-900)] mb-1.5 sm:mb-2 leading-tight">
+              <h3 className="text-base xs:text-lg sm:text-lg font-bold text-ink-900 mb-1.5 sm:mb-2 leading-tight">
                 💬 Kami Selalu Siap Membantu Anda!
               </h3>
-              <p className="text-xs xs:text-sm sm:text-sm text-[var(--color-text-700)] mb-2.5 sm:mb-3 leading-relaxed">
+              <p className="text-xs xs:text-sm sm:text-sm text-ink-600 mb-2.5 sm:mb-3 leading-relaxed">
                 Jangan ragu untuk menghubungi kami kapan saja jika ada kendala
                 atau pertanyaan. Tim kami siap membantu dengan sepenuh hati!
               </p>
@@ -517,7 +516,7 @@ export default function DashboardPage() {
                 {/* WhatsApp Button - Responsive */}
 
                 <a
-                  href="https://wa.me/622667345601"
+                  href="https://wa.me/6285722253236"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 xs:px-5 sm:px-4 py-2.5 xs:py-3 sm:py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold text-xs xs:text-sm sm:text-sm transition-all duration-300 transform hover:scale-105 active:scale-95"
@@ -529,11 +528,11 @@ export default function DashboardPage() {
                 {/* Phone Button - Responsive */}
 
                 <a
-                  href="tel:+622667345601"
+                  href="tel:+6285722253236"
                   className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 xs:px-5 sm:px-4 py-2.5 xs:py-3 sm:py-2 bg-[var(--color-teal-600)] hover:bg-[var(--color-teal-700)] text-white rounded-lg font-semibold text-xs xs:text-sm sm:text-sm transition-all duration-300 transform hover:scale-105 active:scale-95"
                 >
                   <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span>Telepon (0266) 734-5601</span>
+                  <span>+62 857-2225-3236</span>
                 </a>
               </div>
             </div>

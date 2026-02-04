@@ -41,7 +41,7 @@ export const registrationSchema = z.object({
     .refine((val) => val !== undefined, "Pilih jenis kelamin (L/P)"),
 
   jenjang: z
-    .enum(["MTs", "IL", "MA"])
+    .enum(["MTs", "IL"])
     .refine((val) => val !== undefined, "Pilih jenjang pendidikan"),
 });
 

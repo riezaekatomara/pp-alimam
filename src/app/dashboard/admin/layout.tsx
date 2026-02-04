@@ -19,9 +19,13 @@ import {
   CheckCircle,
   AlertCircle,
   FileText,
+  ChevronRight,
+  Search,
+  Bell,
+  PanelLeftClose,
+  PanelLeft
 } from "lucide-react";
 import Link from "next/link";
-import IdleTimeoutTracker from "@/components/auth/IdleTimeoutTracker";
 
 export default function AdminDashboardLayout({
   children,
@@ -33,7 +37,6 @@ export default function AdminDashboardLayout({
   const [loading, setLoading] = useState(true);
   const [adminName, setAdminName] = useState("Admin");
 
-  // Fetch admin data
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
@@ -66,7 +69,7 @@ export default function AdminDashboardLayout({
       name: "Daftar Pendaftar",
       href: "/dashboard/admin/pendaftar",
       icon: Users,
-      active: pathname.startsWith("/dashboard/admin/pendaftar"),
+      active: pathname.startsWith("/dashboard/admin/pendaftar") && !pathname.includes("filter="),
     },
     {
       name: "Verifikasi Pembayaran",
@@ -104,37 +107,18 @@ export default function AdminDashboardLayout({
       icon: AlertCircle,
       active: pathname === "/admin/sms-dashboard",
     },
-    {
-      name: "Pengaturan",
-      href: "/dashboard/admin/pengaturan",
-      icon: Settings,
-      active: pathname === "/dashboard/admin/pengaturan",
-    },
   ];
 
   const NavLink = ({ item }: { item: (typeof menuItems)[0] }) => {
     return (
       <Link
         href={item.href}
-        className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all relative ${
-          item.active
-            ? "bg-blue-600 text-white shadow-lg"
-            : "text-stone-700 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md"
-        }`}
+        className={`nav-link group ${item.active ? "active bg-white text-teal-600 shadow-clay-sm" : "text-ink-500 hover:bg-surface-50 hover:text-ink-900"}`}
       >
-        <item.icon className="w-5 h-5 mr-3" />
-        {item.name}
-
+        <item.icon className={`w-5 h-5 transition-colors ${item.active ? 'text-teal-500' : 'text-ink-400 group-hover:text-ink-600'}`} />
+        <span className="flex-1 font-medium">{item.name}</span>
         {item.active && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-300 rounded-b-xl" />
-        )}
-
-        {!item.active && (
-          <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="w-5 h-5 border-2 border-blue-300 rounded-full flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-            </div>
-          </div>
+          <div className="w-1.5 h-1.5 rounded-full bg-teal-500" />
         )}
       </Link>
     );
@@ -145,216 +129,145 @@ export default function AdminDashboardLayout({
     window.location.href = "/login";
   };
 
-  // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-stone-800 mb-2">Memuat Dashboard Admin</h2>
-          <p className="text-stone-600">Mengambil data sistem...</p>
-        </div>
+      <div className="min-h-screen bg-surface-100 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
       </div>
     );
   }
 
   return (
     <>
-      <IdleTimeoutTracker />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-        {/* Mobile Header */}
-        <div className="lg:hidden bg-white border-b-2 border-blue-200 shadow-lg sticky top-0 z-50">
-          <div className="flex items-center justify-between p-4">
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
-            >
-              {sidebarOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
+      <div className="min-h-screen font-sans bg-surface-100/50">
+        {/* Mobile Header (Glass) */}
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm px-4 py-3 flex items-center justify-between">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 -ml-2 rounded-xl text-ink-600 hover:bg-surface-100"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
 
-            <div className="text-center">
-              <h1 className="text-lg font-bold text-stone-900">Admin Panel</h1>
-              <p className="text-xs text-stone-600">{adminName}</p>
-            </div>
+          <span className="font-bold text-ink-900">Admin Panel</span>
 
-            <Link
-              href="/"
-              className="p-2 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors"
-            >
-              <Home className="w-6 h-6" />
-            </Link>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
+            {adminName.charAt(0)}
           </div>
         </div>
 
-        <div className="flex">
-          {/* Desktop Sidebar */}
-          <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:top-0 lg:left-0 lg:h-screen">
-            <div className="flex flex-col h-full bg-white border-r-2 border-blue-200 overflow-y-auto shadow-xl">
-              {/* Logo & Brand */}
-              <div className="flex items-center justify-center mb-8 px-6 pt-8">
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-3 rounded-2xl shadow-lg">
-                  <Shield className="w-8 h-8" />
-                </div>
-                <div className="ml-4">
-                  <h2 className="text-xl font-black text-stone-900">
-                    Admin Panel
-                  </h2>
-                  <p className="text-sm text-stone-600">PPDB Al-Imam</p>
-                </div>
-              </div>
-
-              {/* Admin Info */}
-              <div className="px-4 mb-6">
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                      {adminName.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <p className="text-xs text-stone-600">Logged in as</p>
-                      <p className="font-bold text-blue-700 text-sm">{adminName}</p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <CheckCircle className="w-3 h-3 text-green-500" />
-                        <span className="text-xs text-green-600">Administrator</span>
-                      </div>
-                    </div>
+        <div className="flex items-start">
+          {/* Desktop Sidebar (Glass Panel) */}
+          <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:fixed lg:inset-y-0 z-50">
+            <div className="flex flex-col h-full bg-white/70 backdrop-blur-xl border-r border-white/50 shadow-clay-lg">
+              {/* Brand Area */}
+              <div className="px-6 py-8">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white shadow-lg shadow-teal-500/20">
+                    <Shield className="w-5 h-5" />
                   </div>
+                  <div>
+                    <h1 className="font-bold text-lg text-ink-900 leading-tight">Admin<span className="text-teal-600">Panel</span></h1>
+                    <p className="text-xs text-ink-400 font-medium tracking-wide">Al-Imam PPDB</p>
+                  </div>
+                </div>
+
+                {/* Search Bar - Aesthetic Only */}
+                <div className="relative group">
+                  <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-400 group-focus-within:text-teal-500 transition-colors" />
+                  <input
+                    type="text"
+                    placeholder="Search menu..."
+                    className="w-full bg-surface-50 border-0 rounded-xl pl-9 pr-4 py-2 text-sm text-ink-800 placeholder:text-ink-400 focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all shadow-inner"
+                  />
                 </div>
               </div>
 
               {/* Navigation */}
-              <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
-                {menuItems.map((item) => (
+              <nav className="flex-1 overflow-y-auto px-4 space-y-1 scrollbar-hide">
+                <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-2">Main Menu</p>
+                {menuItems.slice(0, 3).map((item) => (
+                  <NavLink key={item.name} item={item} />
+                ))}
+
+                <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-6">Management</p>
+                {menuItems.slice(3).map((item) => (
                   <NavLink key={item.name} item={item} />
                 ))}
               </nav>
 
-              {/* Bottom Section */}
-              <div className="flex-shrink-0 border-t border-stone-200 p-4">
-                <div className="text-xs text-stone-500 mb-3 text-center">
-                  <Shield className="w-3 h-3 inline mr-1" />
-                  Admin Dashboard v1.0
+              {/* User Profile / Footer */}
+              <div className="p-4 border-t border-ink-100/50 bg-white/50 backdrop-blur-sm">
+                <div className="flex items-center gap-3 p-3 rounded-2xl hover:bg-white transition-colors cursor-pointer group">
+                  <div className="w-10 h-10 rounded-full bg-surface-200 flex items-center justify-center text-ink-600 font-bold group-hover:bg-teal-50 group-hover:text-teal-600 transition-colors">
+                    {adminName.charAt(0)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-ink-900 truncate">{adminName}</p>
+                    <p className="text-xs text-ink-500 truncate">Administrator</p>
+                  </div>
+                  <button onClick={handleLogout} className="p-2 text-ink-400 hover:text-red-600 transition-colors" title="Logout">
+                    <LogOut className="w-4 h-4" />
+                  </button>
                 </div>
-
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-xl transition-all shadow-md hover:shadow-lg"
-                >
-                  <LogOut className="w-5 h-5 mr-2" />
-                  Keluar
-                </button>
               </div>
             </div>
           </aside>
 
           {/* Mobile Sidebar Overlay */}
-          {sidebarOpen && (
-            <div className="fixed inset-0 z-40 lg:hidden">
-              <div
-                className="fixed inset-0 bg-black bg-opacity-25"
-                onClick={() => setSidebarOpen(false)}
-              />
-              <div className="fixed inset-y-0 left-0 flex w-64">
-                <div className="flex flex-col flex-grow pt-8 bg-white shadow-xl">
-                  {/* Mobile Sidebar Header */}
-                  <div className="flex items-center justify-center mb-8 px-6">
-                    <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-3 rounded-2xl">
-                      <Shield className="w-8 h-8" />
+          <div className={`fixed inset-0 z-50 lg:hidden transition-opacity duration-300 ${sidebarOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+            <div className="absolute inset-0 bg-ink-900/20 backdrop-blur-sm" onClick={() => setSidebarOpen(false)} />
+            <div className={`absolute top-0 left-0 bottom-0 w-[80%] max-w-sm bg-white shadow-2xl transition-transform duration-300 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+              <div className="flex flex-col h-full bg-white">
+                <div className="p-6 flex items-center justify-between border-b border-surface-100">
+                  <span className="font-bold text-xl text-ink-900">Menu</span>
+                  <button onClick={() => setSidebarOpen(false)} className="p-2 bg-surface-100 rounded-full text-ink-500">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+                  {menuItems.map((item) => (
+                    <div key={item.name} onClick={() => setSidebarOpen(false)}>
+                      <NavLink item={item} />
                     </div>
-                    <div className="ml-4">
-                      <h2 className="text-xl font-black text-stone-900">
-                        Admin Panel
-                      </h2>
-                      <p className="text-sm text-stone-600">PPDB</p>
-                    </div>
-                  </div>
-
-                  {/* Mobile Admin Info */}
-                  <div className="px-4 mb-6">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4">
-                      <p className="text-xs text-stone-600">Admin</p>
-                      <p className="font-bold text-blue-700 text-sm">{adminName}</p>
-                    </div>
-                  </div>
-
-                  {/* Mobile Navigation */}
-                  <nav className="flex-1 px-4 space-y-2 overflow-y-auto">
-                    {menuItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={() => setSidebarOpen(false)}
-                        className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl ${
-                          item.active
-                            ? "bg-blue-600 text-white"
-                            : "text-stone-700 hover:bg-blue-100"
-                        }`}
-                      >
-                        <item.icon className="w-5 h-5 mr-3" />
-                        {item.name}
-                      </Link>
-                    ))}
-                  </nav>
-
-                  {/* Mobile Logout */}
-                  <div className="border-t border-stone-200 p-4">
-                    <button
-                      onClick={() => {
-                        setSidebarOpen(false);
-                        handleLogout();
-                      }}
-                      className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-xl"
-                    >
-                      <LogOut className="w-5 h-5 mr-2" />
-                      Keluar
-                    </button>
-                  </div>
+                  ))}
+                </nav>
+                <div className="p-4 border-t border-surface-100">
+                  <button onClick={handleLogout} className="w-full btn-secondary text-red-600 bg-red-50 border-red-100 hover:bg-red-100">
+                    <LogOut className="w-4 h-4" /> Keluar
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Main Content */}
-          <main className="flex-1 lg:pl-64">
-            {/* Desktop Header */}
-            <header className="hidden lg:block bg-white border-b-2 border-blue-200 shadow-lg">
-              <div className="max-w-7xl mx-auto px-8 py-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h1 className="text-2xl font-black text-stone-900">
-                      Dashboard Admin
-                    </h1>
-                    <p className="text-sm text-stone-600">
-                      Sistem Manajemen PPDB Al-Imam Al-Islami Sukabumi
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-2 rounded-xl border border-blue-100">
-                      <p className="text-xs text-stone-600">Logged in as:</p>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <p className="font-bold text-blue-700">{adminName}</p>
-                      </div>
-                    </div>
+          {/* Main Content Area */}
+          <main className="flex-1 lg:pl-72 min-w-0 transition-all duration-300">
+            {/* Desktop Topbar - Floating Glass */}
+            <header className="hidden lg:flex sticky top-4 z-30 mx-8 mt-4 rounded-2xl glass px-6 py-3 items-center justify-between shadow-clay-sm border border-white/40">
+              <div className="flex items-center gap-4">
+                <button onClick={() => { }} className="text-ink-400 hover:text-ink-600"><PanelLeft className="w-5 h-5" /></button>
+                <div className="h-4 w-px bg-ink-200" />
+                <div className="flex items-center gap-2 text-sm text-ink-500">
+                  <Home className="w-4 h-4" />
+                  <span className="opacity-50">/</span>
+                  <span className="font-medium text-ink-900">Dashboard</span>
+                </div>
+              </div>
 
-                    <Link
-                      href="/"
-                      className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-lg transition-all shadow-md hover:shadow-lg"
-                    >
-                      <Home className="w-4 h-4" />
-                      <span>Home</span>
-                    </Link>
-                  </div>
+              <div className="flex items-center gap-4">
+                <button className="p-2 text-ink-400 hover:text-teal-600 hover:bg-teal-50 rounded-full transition-colors relative">
+                  <Bell className="w-5 h-5" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+                </button>
+                <div className="flex items-center gap-3 pl-4 border-l border-ink-100">
+                  <Link href="/" className="text-sm font-medium text-teal-600 hover:underline">View Site</Link>
                 </div>
               </div>
             </header>
 
-            {/* Page Content */}
-            <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 lg:py-8">
+            {/* Content Wrapper */}
+            <div className="p-4 lg:p-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
               {children}
             </div>
           </main>

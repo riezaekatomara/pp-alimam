@@ -9,7 +9,8 @@ import {
     MapPin,
     ChevronLeft,
     ChevronRight,
-    Download
+    Download,
+    Search
 } from "lucide-react";
 
 // Mock Data for Events
@@ -70,7 +71,6 @@ const CATEGORIES = ["Semua", "Akademik", "Acara", "Libur", "Program Khusus"];
 
 export default function AgendaPage() {
     const [selectedCategory, setSelectedCategory] = useState("Semua");
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2)); // March 2026
 
@@ -79,240 +79,156 @@ export default function AgendaPage() {
         : EVENTS.filter(event => event.category === selectedCategory);
 
     return (
-        <main className="bg-[var(--color-cream-50)] min-h-screen pt-20">
-            {/* Top Navigation Bar */}
-            <div className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-[var(--color-cream-200)] md:hidden">
-                <div className="flex items-center h-16 px-4">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="mr-2"
-                        onClick={() => window.history.back()}
-                    >
-                        <ChevronLeft className="w-6 h-6 text-[var(--color-text-900)]" />
-                    </Button>
-                    <h1 className="text-lg font-bold text-[var(--color-text-900)]">Kalender Akademik</h1>
-                </div>
+        <main className="bg-surface-50 min-h-screen">
+            {/* 1. Hero Section - Brown Aesthetic */}
+            <section className="relative pt-32 pb-20 overflow-hidden bg-brown-900 border-b border-white/5">
+                <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
+                <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+                <Container className="relative z-10">
+                    <div className="flex flex-col md:flex-row items-end justify-between gap-8">
+                        <div>
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6 animate-in fade-in slide-in-from-bottom-4">
+                                <Calendar className="w-4 h-4" />
+                                <span>Jadwal Kegiatan</span>
+                            </div>
+
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
+                                Kalender <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Akademik</span>
+                            </h1>
+                        </div>
+
+                        <div className="w-full md:w-auto animate-in fade-in slide-in-from-right-8 duration-700 delay-100">
+                            <div className="bg-white/10 backdrop-blur-md border border-white/10 p-1 rounded-2xl flex items-center">
+                                <button className="p-3 hover:bg-white/10 rounded-xl text-white transition-colors">
+                                    <ChevronLeft className="w-5 h-5" />
+                                </button>
+                                <div className="px-6 text-center">
+                                    <span className="block text-xs uppercase font-bold text-white/50 tracking-widest">Periode</span>
+                                    <span className="font-bold text-xl text-white">Maret 2026</span>
+                                </div>
+                                <button className="p-3 hover:bg-white/10 rounded-xl text-white transition-colors">
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </Container>
+            </section>
+
+            {/* 2. Controls & Filter */}
+            <div className="sticky top-20 z-30 bg-white/80 backdrop-blur-xl border-y border-brown-100 shadow-sm">
+                <Container>
+                    <div className="flex gap-2 py-4 overflow-x-auto no-scrollbar">
+                        {CATEGORIES.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all whitespace-nowrap border
+                                    ${selectedCategory === cat
+                                        ? 'bg-brown-800 text-white border-brown-800 shadow-lg shadow-brown-900/10'
+                                        : 'bg-white text-ink-500 border-ink-100 hover:border-brown-300 hover:text-brown-700'}
+                                `}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                </Container>
             </div>
 
-
-
-            {/* Redesigned Hero Section */}
-            <section className="py-12 md:py-20">
-                <Container>
-                    <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
-                        {/* Left Column: Visual "Jurnal" Representation */}
-                        <div className="w-full lg:w-1/2 flex justify-center">
-                            <div className="relative w-full max-w-md aspect-square bg-white rounded-3xl shadow-2xl p-6 border border-gray-100 transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                                {/* Decorative "Binder" elements */}
-                                <div className="absolute left-0 top-0 bottom-0 w-8 bg-gray-50 rounded-l-3xl border-r border-gray-100 flex flex-col justify-center gap-4 py-8">
-                                    {[...Array(6)].map((_, i) => (
-                                        <div key={i} className="w-3 h-3 rounded-full bg-gray-300 mx-auto" />
-                                    ))}
-                                </div>
-
-                                <div className="pl-6 h-full flex flex-col">
-                                    {/* Header Visual: "Jurnal" + Month Badge */}
-                                    <div className="flex items-stretch gap-4 mb-6">
-                                        <div className="flex-1 bg-blue-600 rounded-xl flex items-center justify-center p-4 shadow-lg active-pattern">
-                                            <h2 className="text-4xl sm:text-5xl font-black text-white uppercase tracking-tighter" style={{ fontFamily: 'var(--font-display)' }}>
-                                                Jurnal
-                                            </h2>
-                                        </div>
-                                        <div className="w-24 sm:w-32 bg-yellow-400 rounded-xl flex flex-col items-center justify-center p-2 shadow-md rotate-2">
-                                            <span className="text-xs font-bold uppercase tracking-wider">Bulan</span>
-                                            <span className="text-lg sm:text-xl font-black uppercase">Maret</span>
-                                            <span className="text-lg sm:text-xl font-black">2026</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Calendar Grid Visual */}
-                                    <div className="flex-1 bg-white rounded-xl border border-gray-200 p-4 shadow-inner">
-                                        <div className="bg-blue-600 text-white text-center py-1.5 rounded-lg mb-4 text-sm font-bold shadow-md">
-                                            Maret 2026
-                                        </div>
-                                        <div className="grid grid-cols-7 gap-1 text-center text-xs sm:text-sm font-medium text-gray-400 mb-2">
-                                            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d) => (
-                                                <div key={d}>{d}</div>
-                                            ))}
-                                        </div>
-                                        <div className="grid grid-cols-7 gap-1 text-center text-sm font-semibold text-gray-700">
-                                            {/* Mock days for visual appeal */}
-                                            {[...Array(31)].map((_, i) => {
-                                                const day = i + 1;
-                                                const isToday = day === 15; // Example highlight
-                                                const isHoliday = day === 20; // Example holiday
-                                                return (
-                                                    <div
-                                                        key={i}
-                                                        className={`aspect-square flex items-center justify-center rounded-lg
-                                                            ${isToday ? 'bg-blue-600 text-white shadow-md scale-110' : ''}
-                                                            ${isHoliday ? 'bg-red-100 text-red-600' : ''}
-                                                        `}
-                                                    >
-                                                        {day}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Right Column: Text Content */}
-                        <div className="w-full lg:w-1/2 pt-4">
-                            <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-900)] mb-6">
-                                Kalender Akademik
-                            </h1>
-
-                            <div className="prose prose-lg text-[var(--color-text-600)] mb-8">
-                                <p className="mb-4">
-                                    Kalender Akademik Pondok Pesantren Al-Imam Al-Islami dirancang sebagai panduan utama bagi seluruh santri, orang tua, dan dewan guru dalam mengikuti kegiatan belajar-mengajar selama tahun pelajaran berlangsung.
-                                </p>
-                                <p className="mb-4">
-                                    Setiap bulannya, sejumlah agenda penting akan dilaksanakan, mulai dari ujian, kegiatan ekstrakurikuler, hingga hari libur nasional dan cuti bersama yang telah dijadwalkan secara sistematis.
-                                </p>
-                                <p>
-                                    Kami berharap dengan adanya kalender ini, seluruh pihak dapat lebih siap dan terkoordinasi dalam menjalani aktivitas pendidikan di lingkungan pesantren. Silakan klik tombol di bawah ini untuk melihat detail lengkap kalender.
-                                </p>
-                            </div>
-
-                            <Button
-                                onClick={() => {
-                                    const eventsSection = document.getElementById('events-grid');
-                                    eventsSection?.scrollIntoView({ behavior: 'smooth' });
-                                }}
-                                className="w-full sm:w-auto h-12 px-8 bg-white border-2 border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl font-bold transition-all duration-300 shadow-sm hover:shadow-md"
-                            >
-                                Lihat Kalender
-                            </Button>
-                        </div>
-                    </div>
-                </Container>
-            </section>
-
-            {/* Controls & Filter */}
-            <section className="py-12 border-b border-[var(--color-cream-200)] bg-white sticky top-20 z-30 shadow-sm">
-                <Container>
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        {/* Categories */}
-                        <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto scrollbar-hide">
-                            {CATEGORIES.map((cat) => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
-                                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                                        ${selectedCategory === cat
-                                            ? 'bg-[var(--color-brown-700)] text-white shadow-md'
-                                            : 'bg-[var(--color-cream-100)] text-[var(--color-text-600)] hover:bg-[var(--color-brown-100)]'}
-                                    `}
-                                >
-                                    {cat}
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Month Nav */}
-                        <div className="flex items-center gap-4 bg-[var(--color-cream-50)] p-2 rounded-xl">
-                            <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                                <ChevronLeft className="w-5 h-5 text-[var(--color-text-600)]" />
-                            </button>
-                            <span className="font-bold text-[var(--color-text-900)] min-w-[120px] text-center">
-                                Maret 2026
-                            </span>
-                            <button className="p-2 hover:bg-white rounded-lg transition-colors">
-                                <ChevronRight className="w-5 h-5 text-[var(--color-text-600)]" />
-                            </button>
-                        </div>
-                    </div>
-                </Container>
-            </section>
-
-            {/* Events Grid */}
-            <section id="events-grid" className="py-16">
+            {/* 3. Events List */}
+            <section className="py-16">
                 <Container>
                     <div className="grid lg:grid-cols-3 gap-8">
-                        {/* Main Events List */}
+                        {/* List */}
                         <div className="lg:col-span-2 space-y-6">
                             {filteredEvents.length > 0 ? (
                                 filteredEvents.map((event) => (
-                                    <div key={event.id} className="bg-white p-6 rounded-2xl shadow-sm border border-[var(--color-brown-100)] hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6">
-                                        {/* Date Box */}
-                                        <div className="flex-shrink-0 bg-[var(--color-cream-50)] rounded-xl p-4 flex flex-col items-center justify-center min-w-[100px] border border-[var(--color-cream-200)]">
-                                            <span className="text-3xl font-bold text-[var(--color-brown-700)]">
-                                                {new Date(event.date).getDate()}
-                                            </span>
-                                            <span className="text-xs uppercase font-bold text-[var(--color-text-500)] tracking-wider">
-                                                {new Date(event.date).toLocaleString('id-ID', { month: 'short' })}
-                                            </span>
-                                        </div>
-
-                                        {/* Content */}
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-3 mb-2">
-                                                <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider
-                                                    ${event.category === 'Akademik' ? 'bg-blue-100 text-blue-700' :
-                                                        event.category === 'Libur' ? 'bg-red-100 text-red-700' :
-                                                            event.category === 'Acara' ? 'bg-purple-100 text-purple-700' :
-                                                                'bg-orange-100 text-orange-700'}
-                                                `}>
-                                                    {event.category}
-                                                </span>
+                                    <div key={event.id} className="group card-glass p-0 overflow-hidden hover:-translate-y-1 transition-transform border border-surface-200">
+                                        <div className="flex flex-col md:flex-row">
+                                            {/* Date Stripe */}
+                                            <div className="md:w-32 bg-surface-50 p-6 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-surface-200 group-hover:bg-brown-50 transition-colors">
+                                                <span className="text-4xl font-black text-brown-900">{new Date(event.date).getDate()}</span>
+                                                <span className="text-xs font-bold text-ink-400 uppercase tracking-widest">{new Date(event.date).toLocaleString('id-ID', { month: 'short' })}</span>
                                             </div>
-                                            <h3 className="text-xl font-bold text-[var(--color-text-900)] mb-2">
-                                                {event.title}
-                                            </h3>
-                                            <p className="text-[var(--color-text-600)] text-sm mb-4 leading-relaxed">
-                                                {event.description}
-                                            </p>
 
-                                            <div className="flex flex-wrap gap-4 text-sm text-[var(--color-text-500)]">
-                                                <div className="flex items-center gap-1.5">
-                                                    <Clock className="w-4 h-4" />
-                                                    {event.time}
+                                            {/* Details */}
+                                            <div className="p-6 md:p-8 flex-1">
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider
+                                                        ${event.category === 'Akademik' ? 'bg-blue-50 text-blue-700' :
+                                                            event.category === 'Libur' ? 'bg-red-50 text-red-700' :
+                                                                event.category === 'Acara' ? 'bg-purple-50 text-purple-700' :
+                                                                    'bg-orange-50 text-orange-700'}
+                                                    `}>
+                                                        {event.category}
+                                                    </span>
                                                 </div>
-                                                <div className="flex items-center gap-1.5">
-                                                    <MapPin className="w-4 h-4" />
-                                                    {event.location}
+
+                                                <h3 className="text-xl font-bold text-brown-900 mb-2 group-hover:text-teal-600 transition-colors">
+                                                    {event.title}
+                                                </h3>
+                                                <p className="text-sm text-ink-500 leading-relaxed mb-6">
+                                                    {event.description}
+                                                </p>
+
+                                                <div className="flex flex-wrap gap-4 pt-4 border-t border-surface-100">
+                                                    <div className="flex items-center gap-2 text-xs font-bold text-ink-500">
+                                                        <Clock className="w-4 h-4 text-gold-500" />
+                                                        {event.time}
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-xs font-bold text-ink-500">
+                                                        <MapPin className="w-4 h-4 text-teal-500" />
+                                                        {event.location}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
-                                    <p className="text-gray-500">Tidak ada agenda pada kategori ini.</p>
+                                <div className="text-center py-20 bg-white rounded-[2rem] border border-dashed border-ink-200">
+                                    <div className="w-16 h-16 bg-surface-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-ink-400">
+                                        <Search className="w-8 h-8" />
+                                    </div>
+                                    <p className="text-ink-500 font-medium">Tidak ada agenda pada kategori ini.</p>
                                 </div>
                             )}
                         </div>
 
-                        {/* Sidebar / Widgets */}
-                        <div className="space-y-8">
-                            {/* Download Calendar */}
-                            <div className="bg-[var(--color-brown-900)] text-white p-8 rounded-3xl text-center">
-                                <Calendar className="w-12 h-12 mx-auto mb-4 opacity-80" />
-                                <h3 className="text-xl font-bold mb-2">Unduh Kalender</h3>
-                                <p className="text-white/80 text-sm mb-6">
-                                    Dapatkan versi PDF lengkap kalender akademik tahun ajaran 2026/2027.
-                                </p>
-                                <Button className="w-full bg-[var(--color-gold-500)] hover:bg-[var(--color-gold-600)] text-white">
-                                    <Download className="w-4 h-4 mr-2" />
-                                    Download PDF
-                                </Button>
+                        {/* Sidebar */}
+                        <div className="space-y-6">
+                            {/* Download Widget */}
+                            <div className="bg-brown-900 rounded-[2rem] p-8 text-center shadow-clay-lg relative overflow-hidden group">
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/20 rounded-full blur-3xl group-hover:bg-gold-500/30 transition-colors" />
+
+                                <div className="relative z-10">
+                                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-gold-400 backdrop-blur-md border border-white/10">
+                                        <Download className="w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-xl font-black text-white mb-2">Unduh Kalender PDF</h3>
+                                    <p className="text-sm text-white/70 mb-8 leading-relaxed">
+                                        Dapatkan jadwal lengkap satu tahun ajaran dalam format PDF.
+                                    </p>
+                                    <Button className="w-full bg-gold-500 hover:bg-gold-600 text-white font-bold h-12 rounded-xl shadow-lg shadow-gold-900/20">
+                                        Download PDF
+                                    </Button>
+                                </div>
                             </div>
 
                             {/* Info Box */}
-                            <div className="bg-white p-6 rounded-2xl shadow-sm border border-[var(--color-brown-100)]">
-                                <h4 className="font-bold text-[var(--color-text-900)] mb-4">Catatan Penting</h4>
-                                <ul className="space-y-3 text-sm text-[var(--color-text-600)]">
-                                    <li className="flex gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5" />
-                                        Jadwal dapat berubah sewaktu-waktu menyesuaikan kondisi.
+                            <div className="card-glass p-6">
+                                <h4 className="font-bold text-brown-900 mb-4 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+                                    Catatan Penting
+                                </h4>
+                                <ul className="space-y-3">
+                                    <li className="text-xs text-ink-600 font-medium leading-relaxed bg-surface-50 p-3 rounded-lg border border-surface-200">
+                                        Jadwal dapat berubah sewaktu-waktu menyesuaikan kondisi pesantren.
                                     </li>
-                                    <li className="flex gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5" />
-                                        Informasi detail setiap kegiatan akan diumumkan melalui grup WhatsApp wali santri.
+                                    <li className="text-xs text-ink-600 font-medium leading-relaxed bg-surface-50 p-3 rounded-lg border border-surface-200">
+                                        Info detail diumumkan via Grup WhatsApp Wali Santri H-3 kegiatan.
                                     </li>
                                 </ul>
                             </div>

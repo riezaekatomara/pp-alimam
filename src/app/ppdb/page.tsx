@@ -27,52 +27,47 @@ export default function PPDBPage() {
   const requirements = [
     {
       icon: CheckCircle,
-      title: "Persyaratan Umum",
-      subtitle: "Dokumen standar yang mudah disiapkan",
+      title: "Berkas Persyaratan",
+      subtitle: "Dokumen wajib untuk pendaftaran",
       items: [
         {
-          text: "Fotokopi Kartu Keluarga (KK)",
-          benefit: "Proses verifikasi cepat",
+          text: "Scan Kartu Keluarga",
+          benefit: "Format: PDF/JPG",
         },
-        { text: "Fotokopi Akta Kelahiran", benefit: "Data valid terjamin" },
+        { text: "Scan Akte Kelahiran", benefit: "Format: PDF/JPG" },
         {
-          text: "Fotokopi KTP Orang Tua/Wali",
-          benefit: "Keamanan santri maksimal",
-        },
-        {
-          text: "Pas Foto 3x4 (4 lembar)",
-          benefit: "Untuk administrasi lengkap",
+          text: "Scan Rapor 2 Semester Terakhir",
+          benefit: "Format: PDF/JPG",
         },
         {
-          text: "Surat Keterangan Sehat dari Dokter",
-          benefit: "Jaminan kesehatan anak",
+          text: "Scan Nomor Induk Siswa Nasional (NISN)",
+          benefit: "Format: PDF/JPG",
         },
         {
-          text: "Surat Keterangan Tidak Buta Warna",
-          benefit: "Syarat akademis standar",
+          text: "Foto Setengah Badan",
+          benefit: "Latar belakang putih",
         },
       ],
     },
     {
       icon: FileText,
-      title: "Persyaratan Akademik",
-      subtitle: "Bukti prestasi & kemampuan anak Anda",
+      title: "Dokumen Tambahan",
+      subtitle: "Format disiapkan panitia - download di dashboard",
       items: [
         {
-          text: "Fotokopi Ijazah/Rapor Terakhir",
-          benefit: "Penempatan kelas tepat",
+          text: "Surat Keterangan Sehat",
+          benefit: "Download format dari panitia",
+          isDownload: true,
         },
         {
-          text: "Surat Keterangan Lulus (bagi yang sudah lulus)",
-          benefit: "Legalitas terjamin",
+          text: "Pakta Integritas",
+          benefit: "Download format dari panitia",
+          isDownload: true,
         },
         {
-          text: "Nilai Ujian Sekolah/Madrasah",
-          benefit: "Evaluasi kemampuan awal",
-        },
-        {
-          text: "Sertifikat Prestasi (jika ada)",
-          benefit: "Beasiswa prestasi tersedia!",
+          text: "Pernyataan Bebas Perilaku Negatif",
+          benefit: "Download format dari panitia",
+          isDownload: true,
         },
       ],
     },
@@ -81,7 +76,7 @@ export default function PPDBPage() {
   const timeline = [
     {
       phase: "Pendaftaran Online",
-      date: "1 Januari - 31 Maret 2026",
+      date: "10 Februari - 30 Mei 2026",
       description: "Daftar dari rumah, hanya 10 menit!",
       benefit: "Dapat nomor pendaftaran prioritas",
       status: "active",
@@ -90,7 +85,7 @@ export default function PPDBPage() {
     },
     {
       phase: "Seleksi Administrasi",
-      date: "1 - 15 April 2026",
+      date: "Setelah pendaftaran lengkap",
       description: "Tim kami verifikasi berkas Anda",
       benefit: "Notifikasi real-time via WhatsApp",
       status: "upcoming",
@@ -98,19 +93,19 @@ export default function PPDBPage() {
       color: "from-[var(--color-brown-600)] to-[var(--color-brown-700)]",
     },
     {
-      phase: "Tes Masuk & Wawancara",
-      date: "20 - 25 April 2026",
-      description: "Tes akademik + wawancara santai",
-      benefit: "Konsultasi langsung dengan ustadz",
+      phase: "Tes Seleksi",
+      date: "Jadwal menyusul",
+      description: "Al-Qur'an, Akademik, Kepribadian & Wawancara",
+      benefit: "Wawancara dengan santri & orangtua",
       status: "upcoming",
       icon: Users,
       color: "from-[var(--color-brown-700)] to-[var(--color-brown-800)]",
     },
     {
       phase: "Pengumuman Hasil",
-      date: "1 Mei 2026",
+      date: "Setelah tes seleksi",
       description: "Kelulusan diumumkan via email & WA",
-      benefit: "Bonus diskon early bird 15%!",
+      benefit: "Daftar ulang segera setelah lulus",
       status: "upcoming",
       icon: Trophy,
       color: "from-[var(--color-gold-600)] to-[var(--color-gold-700)]",
@@ -171,22 +166,22 @@ export default function PPDBPage() {
   const faqs = [
     {
       q: "Apakah masih ada kuota untuk tahun ajaran 2026/2027?",
-      a: "Ya! Saat ini masih tersisa 50 kursi dari total 150 kuota. Daftar sekarang untuk dapat nomor prioritas!",
+      a: "Ya! Kuota terbatas untuk MTs dan I'dad Lughowi (setara SMA) masing-masing 32 santri ikhwan. Daftar sekarang untuk dapat nomor prioritas!",
     },
     {
-      q: "Berapa biaya pendaftaran dan SPP per bulan?",
-      a: "Biaya pendaftaran Rp 500.000 (sekali bayar). SPP mulai dari Rp 1.200.000/bulan. Ada diskon 15% untuk pendaftar sebelum 31 Maret!",
+      q: "Berapa biaya pendaftaran dan SPP?",
+      a: "Uang Pendaftaran: Rp 200.000. Uang Pangkal: Rp 7.500.000. Iuran Wajib Ta'awun/SPP: Rp 11.400.000/tahun atau Rp 950.000/bulan (All in).",
     },
     {
-      q: "Apakah ada beasiswa untuk anak berprestasi?",
-      a: "Ada! Kami sediakan beasiswa 50% untuk santri berprestasi akademik/non-akademik. Syarat: sertifikat juara minimal tingkat kabupaten.",
+      q: "Apa saja materi tes seleksi?",
+      a: "Tes meliputi: Al-Qur'an, Kemampuan Dasar Akademik, Identifikasi Kepribadian, Tes Kesiapan, Wawancara dengan Santri, dan Wawancara dengan Orangtua.",
     },
   ];
 
   const urgencyStats = [
-    { value: "500+", label: "Pendaftar 2025", icon: Users },
-    { value: "50", label: "Kursi Tersisa", icon: AlertCircle },
-    { value: "73", label: "Hari Lagi", icon: Calendar },
+    { value: "32", label: "Kuota MTs", icon: Users },
+    { value: "32", label: "Kuota I'dad", icon: Users },
+    { value: "Terbatas", label: "Segera Daftar!", icon: AlertCircle },
   ];
 
   return (
@@ -219,11 +214,11 @@ export default function PPDBPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
               <div className="flex items-center gap-2 text-[var(--color-brown-800)] dark:text-[var(--color-cream-100)] bg-white/50 dark:bg-white/10 px-4 py-2 rounded-lg border border-[var(--color-brown-100)] dark:border-white/10">
                 <Users className="w-5 h-5 text-[var(--color-brown-600)] dark:text-[var(--color-gold-400)]" />
-                <span className="text-sm font-semibold">Tersedia Kuota Terbatas</span>
+                <span className="text-sm font-semibold">Kuota Terbatas: 32 per Jenjang</span>
               </div>
               <div className="flex items-center gap-2 text-[var(--color-brown-800)] dark:text-[var(--color-cream-100)] bg-white/50 dark:bg-white/10 px-4 py-2 rounded-lg border border-[var(--color-brown-100)] dark:border-white/10">
                 <Calendar className="w-5 h-5 text-[var(--color-brown-600)] dark:text-[var(--color-gold-400)]" />
-                <span className="text-sm font-semibold">Gelombang 1: Jan - Mar 2026</span>
+                <span className="text-sm font-semibold">Pendaftaran: 10 Feb - 30 Mei 2026</span>
               </div>
             </div>
 
@@ -422,7 +417,7 @@ export default function PPDBPage() {
 
           <div className="mt-8 sm:mt-10 text-center px-4 sm:px-0">
             <p className="text-base xs:text-lg sm:text-lg font-bold text-[var(--color-brown-700)] dark:text-[var(--color-cream-200)] mb-3 sm:mb-4">
-              Silakan mendaftar sebelum <span className="text-[var(--color-brown-900)] dark:text-white">31 Maret 2026</span>
+              Pendaftaran dibuka <span className="text-[var(--color-brown-900)] dark:text-white">10 Februari - 30 Mei 2026</span>
             </p>
             <a
               href="/daftar"

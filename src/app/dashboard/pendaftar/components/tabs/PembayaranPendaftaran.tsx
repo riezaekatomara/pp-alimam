@@ -95,7 +95,7 @@ const STATUS_CONFIG: Record<
     label: "Menunggu Pembayaran",
     color: "text-amber-700",
     bgColor: "bg-amber-50",
-    borderColor: "border-amber-300",
+    borderColor: "border-amber-200",
     icon: Clock,
     description: "Silakan lakukan pembayaran untuk melanjutkan pendaftaran",
   },
@@ -103,15 +103,15 @@ const STATUS_CONFIG: Record<
     label: "Menunggu Verifikasi",
     color: "text-blue-700",
     bgColor: "bg-blue-50",
-    borderColor: "border-blue-300",
+    borderColor: "border-blue-200",
     icon: Clock,
     description: "Pembayaran sedang diverifikasi oleh tim kami (1x24 jam)",
   },
   verified: {
     label: "Pembayaran Terverifikasi",
-    color: "text-green-700",
-    bgColor: "bg-green-50",
-    borderColor: "border-green-300",
+    color: "text-emerald-700",
+    bgColor: "bg-emerald-50",
+    borderColor: "border-emerald-200",
     icon: CheckCircle,
     description: "Alhamdulillah! Pembayaran Anda telah terverifikasi",
   },
@@ -119,15 +119,15 @@ const STATUS_CONFIG: Record<
     label: "Pembayaran Ditolak",
     color: "text-red-700",
     bgColor: "bg-red-50",
-    borderColor: "border-red-300",
+    borderColor: "border-red-200",
     icon: XCircle,
     description: "Mohon upload ulang bukti pembayaran yang valid",
   },
   expired: {
     label: "Batas Waktu Habis",
     color: "text-stone-700",
-    bgColor: "bg-stone-50",
-    borderColor: "border-stone-300",
+    bgColor: "bg-surface-200",
+    borderColor: "border-stone-200",
     icon: AlertCircle,
     description: "Maaf, batas waktu pembayaran telah berakhir",
   },
@@ -164,12 +164,6 @@ function formatDateTime(dateString: string): string {
   });
 }
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-}
-
 function getDaysRemaining(deadline: string): number {
   const now = new Date();
   const deadlineDate = new Date(deadline);
@@ -197,17 +191,17 @@ function CopyButton({ text, label }: { text: string; label: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--color-gold-100)] hover:bg-[var(--color-gold-200)] text-[var(--color-gold-800)] text-sm font-medium rounded-lg transition-colors"
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-ink-200 hover:bg-surface-50 text-ink-600 text-xs font-bold rounded-lg transition-all active:scale-95 shadow-sm"
       title={`Salin ${label}`}
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4" />
-          <span>Tersalin!</span>
+          <Check className="w-3.5 h-3.5 text-emerald-500" />
+          <span className="text-emerald-600">Disalin</span>
         </>
       ) : (
         <>
-          <Copy className="w-4 h-4" />
+          <Copy className="w-3.5 h-3.5" />
           <span>Salin</span>
         </>
       )}
@@ -232,10 +226,7 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
       id: 1,
       title: "Upload Bukti",
       description: "Kirim bukti transfer",
-      status:
-        paymentStatus === "unpaid" || paymentStatus === "expired"
-          ? "current"
-          : "completed",
+      status: paymentStatus === "unpaid" || paymentStatus === "expired" ? "current" : "completed",
     },
     {
       id: 2,
@@ -253,57 +244,37 @@ function PaymentTimeline({ paymentStatus }: { paymentStatus: PaymentStatus }) {
     {
       id: 3,
       title: "Selesai",
-      description: "Pembayaran terverifikasi",
+      description: "Pembayaran valid",
       status: paymentStatus === "verified" ? "completed" : "upcoming",
     },
   ];
 
   return (
-    <div className="flex items-center justify-between">
-      {steps.map((step, index) => (
-        <div key={step.id} className="flex items-center flex-1">
-          <div className="flex flex-col items-center">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${step.status === "completed"
-                  ? "bg-green-500 border-green-500 text-white"
-                  : step.status === "current"
-                    ? "bg-[var(--color-gold-500)] border-[var(--color-gold-500)] text-white animate-pulse"
-                    : "bg-stone-100 border-stone-300 text-stone-400"
-                }`}
-            >
-              {step.status === "completed" ? (
-                <CheckCircle className="w-5 h-5" />
-              ) : (
-                <span className="text-sm font-bold">{step.id}</span>
-              )}
+    <div className="relative">
+      <div className="absolute top-5 left-0 right-0 h-0.5 bg-surface-200 -z-10 rounded-full" />
+      <div className="flex justify-between items-start">
+        {steps.map((step, index) => {
+          let statusColor = "bg-surface-100 border-surface-300 text-ink-300"; // default upcoming
+          if (step.status === "completed") statusColor = "bg-emerald-500 border-emerald-500 text-white shadow-emerald-500/30";
+          if (step.status === "current") statusColor = "bg-white border-teal-500 text-teal-600 shadow-lg shadow-teal-500/20";
+
+          return (
+            <div key={step.id} className="flex flex-col items-center">
+              <div className={`w-10 h-10 rounded-full border-4 flex items-center justify-center transition-all duration-500 z-10 ${statusColor}`}>
+                {step.status === "completed" ? (
+                  <Check className="w-5 h-5" />
+                ) : (
+                  <span className="text-sm font-black">{step.id}</span>
+                )}
+              </div>
+              <div className="mt-3 text-center">
+                <p className={`text-xs font-bold transition-colors ${step.status === "upcoming" ? "text-ink-300" : "text-ink-900"}`}>{step.title}</p>
+                <p className="text-[10px] text-ink-400 mt-0.5 font-medium hidden sm:block">{step.description}</p>
+              </div>
             </div>
-            <div className="mt-2 text-center">
-              <p
-                className={`text-xs font-bold ${step.status === "completed"
-                    ? "text-green-700"
-                    : step.status === "current"
-                      ? "text-[var(--color-gold-700)]"
-                      : "text-stone-400"
-                  }`}
-              >
-                {step.title}
-              </p>
-              <p className="text-[10px] text-stone-500 hidden sm:block">
-                {step.description}
-              </p>
-            </div>
-          </div>
-          {index < steps.length - 1 && (
-            <div
-              className={`flex-1 h-1 mx-2 rounded ${steps[index + 1].status === "completed" ||
-                  steps[index + 1].status === "current"
-                  ? "bg-green-300"
-                  : "bg-stone-200"
-                }`}
-            />
-          )}
-        </div>
-      ))}
+          )
+        })}
+      </div>
     </div>
   );
 }
@@ -372,33 +343,30 @@ function UploadArea({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {/* Current file info */}
       {currentFile && !isRejected && (
-        <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-blue-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-blue-900 truncate">
-                {currentFile.name}
-              </p>
-              <p className="text-sm text-blue-600">
-                Bukti transfer sudah diupload
-              </p>
-            </div>
+        <div className="p-4 bg-blue-50 border border-blue-100 rounded-2xl flex items-center gap-4">
+          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-blue-100 shadow-sm">
+            <FileText className="w-6 h-6 text-blue-500" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-blue-500 uppercase tracking-wide mb-0.5">File Terupload</p>
+            <p className="font-bold text-ink-900 truncate">{currentFile.name}</p>
+          </div>
+          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+            <Check className="w-4 h-4 text-blue-600" />
           </div>
         </div>
       )}
 
       {/* Upload area */}
       <div
-        className={`border-2 border-dashed rounded-xl p-6 text-center transition-all cursor-pointer ${isDragging
-            ? "border-[var(--color-teal-500)] bg-[var(--color-teal-50)]"
-            : isRejected
-              ? "border-red-300 bg-red-50 hover:border-red-400"
-              : "border-stone-300 hover:border-[var(--color-teal-400)] hover:bg-stone-50"
+        className={`relative overflow-hidden group border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer ${isDragging
+          ? "border-teal-500 bg-teal-50/50"
+          : isRejected
+            ? "border-red-300 bg-red-50 hover:border-red-400"
+            : "border-ink-200 hover:border-teal-400 hover:bg-surface-50"
           } ${isUploading ? "pointer-events-none opacity-50" : ""}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -412,57 +380,43 @@ function UploadArea({
           accept="image/jpeg,image/png,application/pdf"
           onChange={handleFileSelect}
         />
-        <div className="flex flex-col items-center gap-3">
+
+        <div className="flex flex-col items-center gap-5 relative z-10">
           {isUploading ? (
-            <Loader2 className="w-12 h-12 text-[var(--color-teal-500)] animate-spin" />
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full border-4 border-teal-100 animate-pulse" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-bold text-teal-600">{uploadProgress}%</span>
+              </div>
+            </div>
           ) : (
             <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center ${isRejected
-                  ? "bg-red-100"
-                  : "bg-[var(--color-teal-100)]"
+              className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 ${isRejected
+                ? "bg-red-100 text-red-600"
+                : "bg-teal-50 text-teal-600"
                 }`}
             >
-              <Upload
-                className={`w-8 h-8 ${isRejected
-                    ? "text-red-600"
-                    : "text-[var(--color-teal-600)]"
-                  }`}
-              />
+              <Upload className="w-8 h-8" />
             </div>
           )}
+
           <div>
-            <p
-              className={`font-bold ${isRejected ? "text-red-700" : "text-stone-700"
-                }`}
-            >
+            <p className={`font-bold text-lg ${isRejected ? "text-red-700" : "text-ink-900"}`}>
               {isRejected
                 ? "Upload Ulang Bukti Transfer"
                 : currentFile
                   ? "Ganti Bukti Transfer"
                   : "Klik atau Seret File ke Sini"}
             </p>
-            <p className="text-sm text-stone-500 mt-1">
+            <p className="text-sm text-ink-500 mt-1 font-medium">
               Format: JPG, PNG, atau PDF (Maks. 2MB)
             </p>
           </div>
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar background for visual feedback */}
         {isUploading && (
-          <div className="mt-4">
-            <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-[var(--color-teal-600)] font-medium">
-                Mengupload...
-              </span>
-              <span className="text-stone-500">{uploadProgress}%</span>
-            </div>
-            <div className="h-2 bg-stone-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-[var(--color-teal-500)] to-[var(--color-teal-600)] rounded-full transition-all duration-300"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
-          </div>
+          <div className="absolute bottom-0 left-0 h-1 bg-teal-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
         )}
       </div>
     </div>
@@ -473,7 +427,7 @@ function UploadArea({
 // MAIN COMPONENT
 // ============================================
 
-export default function StatusPembayaranTab() {
+export default function PembayaranPendaftaranTab() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<PaymentStatusResponse | null>(null);
@@ -513,47 +467,27 @@ export default function StatusPembayaranTab() {
     fetchPaymentStatus();
   }, [fetchPaymentStatus]);
 
-  // Show toast
-  const showToast = (
-    type: "success" | "error" | "info",
-    message: string
-  ) => {
+  const showToast = (type: "success" | "error" | "info", message: string) => {
     setToast({ type, message });
     setTimeout(() => setToast(null), 5000);
   };
 
-  // Handle manual upload
   const handleManualUpload = async (file: File) => {
     try {
       setIsUploading(true);
       setUploadProgress(0);
 
-      // Validate file
-      if (file.size > 2 * 1024 * 1024) {
-        throw new Error("Ukuran file terlalu besar! Maksimal 2MB");
-      }
-
+      if (file.size > 2 * 1024 * 1024) throw new Error("Ukuran file terlalu besar! Maksimal 2MB");
       const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-      if (!allowedTypes.includes(file.type)) {
-        throw new Error("Format file tidak didukung! Gunakan JPG, PNG, atau PDF");
-      }
+      if (!allowedTypes.includes(file.type)) throw new Error("Format file tidak didukung! Gunakan JPG, PNG, atau PDF");
 
-      // Create form data
       const formData = new FormData();
       formData.append("file", file);
 
-      // Simulate progress
       const progressInterval = setInterval(() => {
-        setUploadProgress((prev) => {
-          if (prev >= 90) {
-            clearInterval(progressInterval);
-            return prev;
-          }
-          return prev + 10;
-        });
+        setUploadProgress((prev) => (prev >= 90 ? prev : prev + 10));
       }, 200);
 
-      // Upload
       const response = await fetch("/api/pembayaran/manual/upload", {
         method: "POST",
         body: formData,
@@ -564,13 +498,10 @@ export default function StatusPembayaranTab() {
 
       const result = await response.json();
 
-      if (!result.success) {
-        throw new Error(result.error || "Gagal mengupload bukti pembayaran");
-      }
+      if (!result.success) throw new Error(result.error || "Gagal mengupload bukti pembayaran");
 
-      showToast("success", result.message || "Bukti pembayaran berhasil diupload!");
-
-      // Refresh data
+      showToast("success", "Bukti pembayaran berhasil diupload!");
+      setActivePaymentMethod(null); // Close modal/section
       await fetchPaymentStatus();
     } catch (err: any) {
       showToast("error", err.message || "Gagal mengupload file");
@@ -580,26 +511,17 @@ export default function StatusPembayaranTab() {
     }
   };
 
-  // Handle Midtrans payment
   const handleMidtransPayment = async () => {
     try {
       setIsMidtransLoading(true);
-
-      const response = await fetch("/api/pembayaran/midtrans/create", {
-        method: "POST",
-      });
-
+      const response = await fetch("/api/pembayaran/midtrans/create", { method: "POST" });
       const result = await response.json();
 
-      if (!result.success) {
-        throw new Error(result.error || "Gagal membuat transaksi pembayaran");
-      }
+      if (!result.success) throw new Error(result.error || "Gagal membuat transaksi");
 
-      // Redirect to Midtrans Snap
       if (result.data.redirect_url) {
         window.location.href = result.data.redirect_url;
       } else if (result.data.snap_token && (window as any).snap) {
-        // Use Snap popup if available
         (window as any).snap.pay(result.data.snap_token, {
           onSuccess: () => {
             showToast("success", "Pembayaran berhasil!");
@@ -613,7 +535,7 @@ export default function StatusPembayaranTab() {
             showToast("error", "Pembayaran gagal. Silakan coba lagi.");
           },
           onClose: () => {
-            showToast("info", "Anda menutup popup pembayaran tanpa menyelesaikan transaksi.");
+            showToast("info", "Anda menutup popup pembayaran.");
           },
         });
       } else {
@@ -626,34 +548,24 @@ export default function StatusPembayaranTab() {
     }
   };
 
-  // Loading state
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <Loader2 className="w-12 h-12 text-[var(--color-brown-600)] animate-spin" />
-        <p className="text-stone-600 font-medium">Memuat data pembayaran...</p>
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <Loader2 className="w-10 h-10 text-teal-500 animate-spin mb-4" />
+        <p className="text-ink-500 font-medium">Memuat data pembayaran...</p>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <div className="space-y-6">
-        <div className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
-          <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-red-800 mb-2">
-            Gagal Memuat Data
-          </h3>
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={fetchPaymentStatus}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Coba Lagi
-          </button>
-        </div>
+      <div className="bg-red-50 border border-red-200 rounded-3xl p-8 text-center max-w-lg mx-auto">
+        <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+        <h3 className="text-lg font-bold text-red-900 mb-2">Gagal Memuat Data</h3>
+        <p className="text-red-600 mb-6">{error}</p>
+        <button onClick={fetchPaymentStatus} className="btn-primary bg-red-600 hover:bg-red-700 shadow-red-500/20">
+          <RefreshCw className="w-4 h-4 mr-2" /> Coba Lagi
+        </button>
       </div>
     );
   }
@@ -666,492 +578,257 @@ export default function StatusPembayaranTab() {
   const isPaymentCompleted = data.status === "verified";
   const isPaymentPending = data.status === "pending";
   const isPaymentRejected = data.status === "rejected";
-  const canMakePayment =
-    data.status === "unpaid" || data.status === "rejected";
+  const canMakePayment = data.status === "unpaid" || data.status === "rejected";
 
   return (
-    <div className="space-y-6">
-      {/* Toast Notification */}
+    <div className="space-y-8 animate-in fade-in duration-500">
       {toast && (
-        <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 animate-fadeInRight ${toast.type === "success"
-              ? "bg-green-500 text-white"
-              : toast.type === "error"
-                ? "bg-red-500 text-white"
-                : "bg-blue-500 text-white"
-            }`}
-        >
-          {toast.type === "success" ? (
-            <CheckCircle className="w-5 h-5" />
-          ) : toast.type === "error" ? (
-            <XCircle className="w-5 h-5" />
-          ) : (
-            <Info className="w-5 h-5" />
-          )}
-          <span className="font-medium">{toast.message}</span>
-          <button onClick={() => setToast(null)} className="ml-2 hover:opacity-80">
-            &times;
-          </button>
+        <div className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${toast.type === "success" ? "bg-emerald-500" : toast.type === "error" ? "bg-red-500" : "bg-blue-500"
+          } text-white shadow-lg`}>
+          <CheckCircle className="w-5 h-5" />
+          <span className="font-bold text-sm tracking-wide">{toast.message}</span>
+          <button onClick={() => setToast(null)} className="ml-2 hover:bg-white/20 p-1 rounded-lg">&times;</button>
         </div>
       )}
 
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] rounded-2xl p-6 text-white">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <CreditCard className="w-6 h-6" />
-              <span className="px-2 py-0.5 bg-white/20 rounded text-xs font-bold">
-                STEP 1
-              </span>
+      {/* Header Banner */}
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-ink-900 to-ink-800 p-8 md:p-10 text-white shadow-xl shadow-ink-900/10">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="flex items-start gap-5">
+            <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 shrink-0">
+              <CreditCard className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-black text-white">Pembayaran Pendaftaran</h1>
-            <p className="text-[var(--color-cream-200)]">
-              Lakukan pembayaran untuk melanjutkan proses pendaftaran
-            </p>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-black mb-2 tracking-tight">Pembayaran Pendaftaran</h1>
+              <p className="text-ink-200 font-medium max-w-lg">Selesaikan pembayaran untuk mengaktifkan akun pendaftaran Anda dan lanjut ke tahap seleksi.</p>
+            </div>
           </div>
           <button
             onClick={fetchPaymentStatus}
-            className="inline-flex items-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold rounded-xl transition-all"
+            className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl flex items-center gap-2 text-sm font-bold transition-all"
           >
             <RefreshCw className="w-4 h-4" />
-            Refresh
+            Refresh Status
           </button>
         </div>
       </div>
 
-      {/* Payment Amount Card */}
-      <div className="bg-gradient-to-br from-[var(--color-gold-50)] to-[var(--color-cream-100)] border-2 border-[var(--color-gold-300)] rounded-2xl p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <p className="text-sm text-[var(--color-gold-700)] font-medium mb-1">
-              Total Biaya Pendaftaran
-            </p>
-            <p className="text-3xl md:text-4xl font-black text-[var(--color-brown-800)]">
-              {formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}
-            </p>
-            <p className="text-sm text-stone-600 mt-2">
-              {data.tahun_ajaran.nama}
-            </p>
-          </div>
-          <div className="text-right">
-            <div
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 ${statusConfig.bgColor} ${statusConfig.borderColor}`}
-            >
-              <StatusIcon className={`w-5 h-5 ${statusConfig.color}`} />
-              <span className={`font-bold ${statusConfig.color}`}>
-                {statusConfig.label}
-              </span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Content Column */}
+        <div className="lg:col-span-2 space-y-8">
+
+          {/* Status Card */}
+          <div className="glass-panel p-8 rounded-[2rem] shadow-clay-md relative overflow-hidden">
+            <div className={`absolute top-0 left-0 w-2 h-full ${statusConfig.bgColor.replace("bg-", "bg-")}`} /> {/* Accent Bar */}
+
+            <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between mb-8">
+              <div>
+                <p className="text-xs font-bold text-ink-400 uppercase tracking-widest mb-1">Status Pembayaran</p>
+                <div className={`inline-flex items-center gap-3 px-4 py-2 rounded-xl ${statusConfig.bgColor} border ${statusConfig.borderColor}`}>
+                  <StatusIcon className={`w-5 h-5 ${statusConfig.color}`} />
+                  <span className={`font-black text-lg ${statusConfig.color}`}>{statusConfig.label}</span>
+                </div>
+              </div>
+
+              {!data.is_deadline_passed && daysRemaining > 0 && !isPaymentCompleted && (
+                <div className="bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-amber-600" />
+                  <div>
+                    <p className="text-[10px] font-bold text-amber-500 uppercase">Sisa Waktu</p>
+                    <p className="text-amber-800 font-bold">{daysRemaining} Hari Lagi</p>
+                  </div>
+                </div>
+              )}
             </div>
-            {!data.is_deadline_passed && daysRemaining > 0 && !isPaymentCompleted && (
-              <p className="text-sm text-stone-600 mt-2 flex items-center justify-end gap-1">
-                <Calendar className="w-4 h-4" />
-                Batas waktu: <strong>{daysRemaining} hari lagi</strong>
-              </p>
+
+            <PaymentTimeline paymentStatus={data.status} />
+
+            {isPaymentRejected && data.pembayaran?.catatan_verifikasi && (
+              <div className="mt-8 p-4 bg-red-50 border border-red-200 rounded-2xl flex gap-4">
+                <AlertCircle className="w-6 h-6 text-red-600 shrink-0 mt-1" />
+                <div>
+                  <h4 className="font-bold text-red-900 mb-1">Pembayaran Ditolak</h4>
+                  <p className="text-red-700 text-sm leading-relaxed">{data.pembayaran.catatan_verifikasi}</p>
+                </div>
+              </div>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Status Description & Timeline */}
-      <div className="bg-white border-2 border-stone-200 rounded-2xl p-6">
-        <div className={`p-4 rounded-xl mb-6 ${statusConfig.bgColor} border ${statusConfig.borderColor}`}>
-          <div className="flex items-start gap-3">
-            <StatusIcon className={`w-6 h-6 ${statusConfig.color} flex-shrink-0 mt-0.5`} />
-            <div>
-              <p className={`font-bold ${statusConfig.color}`}>
-                {statusConfig.label}
-              </p>
-              <p className="text-sm text-stone-600 mt-1">
-                {statusConfig.description}
-              </p>
-              {isPaymentRejected && data.pembayaran?.catatan_verifikasi && (
-                <div className="mt-3 p-3 bg-red-100 border border-red-300 rounded-lg">
-                  <p className="text-sm text-red-800">
-                    <strong>Alasan Penolakan:</strong>{" "}
-                    {data.pembayaran.catatan_verifikasi}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+          {/* Manual Transfer Instructions */}
+          {canMakePayment && (
+            <div className="space-y-6">
+              <h3 className="text-xl font-bold text-ink-900 px-2">Metode Pembayaran</h3>
 
-        {/* Timeline */}
-        <div>
-          <h3 className="text-sm font-bold text-stone-700 mb-4">
-            Proses Pembayaran
-          </h3>
-          <PaymentTimeline paymentStatus={data.status} />
-        </div>
-      </div>
-
-      {/* Payment Verified - Success Message */}
-      {isPaymentCompleted && (
-        <div className="bg-gradient-to-r from-green-50 to-[var(--color-teal-50)] border-2 border-green-300 rounded-2xl p-6">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="w-10 h-10 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-black text-green-800 mb-2">
-              Pembayaran Berhasil!
-            </h2>
-            <p className="text-green-700 mb-4">
-              Alhamdulillah, pembayaran Anda telah terverifikasi pada{" "}
-              {data.pembayaran?.verified_at
-                ? formatDateTime(data.pembayaran.verified_at)
-                : "-"}
-            </p>
-
-            {/* Download Kwitansi Button */}
-            <div className="mb-4">
-              <a
-                href="/api/pembayaran/kwitansi"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+              <div
+                className={`glass-panel p-6 rounded-[2rem] border transition-all cursor-pointer hover:border-teal-300 hover:shadow-teal-500/10 group ${activePaymentMethod === 'manual' ? 'border-teal-500 ring-4 ring-teal-500/10' : 'border-white/50'}`}
+                onClick={() => setActivePaymentMethod(prev => prev === 'manual' ? null : 'manual')}
               >
-                <Download className="w-5 h-5" />
-                <span>Download Kwitansi Pembayaran</span>
-              </a>
-              <p className="text-xs text-green-600 mt-2">
-                Simpan kwitansi ini sebagai bukti pembayaran resmi
-              </p>
-            </div>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-green-200">
-              <Shield className="w-5 h-5 text-green-600" />
-              <span className="text-sm text-green-800">
-                Anda sekarang dapat melanjutkan ke tahap berikutnya
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Payment Options - Only show if can make payment */}
-      {canMakePayment && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-bold text-stone-900 flex items-center gap-2">
-            <Wallet className="w-5 h-5 text-[var(--color-gold-600)]" />
-            Pilih Metode Pembayaran
-          </h2>
-
-          {/* Payment Method Tabs */}
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Option 1: Midtrans */}
-            <button
-              onClick={() =>
-                setActivePaymentMethod(
-                  activePaymentMethod === "midtrans" ? null : "midtrans"
-                )
-              }
-              className={`p-5 rounded-xl border-2 text-left transition-all ${activePaymentMethod === "midtrans"
-                  ? "border-[var(--color-teal-500)] bg-[var(--color-teal-50)]"
-                  : "border-stone-200 bg-white hover:border-[var(--color-teal-300)]"
-                }`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${activePaymentMethod === "midtrans"
-                        ? "bg-[var(--color-teal-500)]"
-                        : "bg-[var(--color-teal-100)]"
-                      }`}
-                  >
-                    <CreditCard
-                      className={`w-6 h-6 ${activePaymentMethod === "midtrans"
-                          ? "text-white"
-                          : "text-[var(--color-teal-600)]"
-                        }`}
-                    />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                      <Banknote className="w-7 h-7 text-blue-600" />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-bold text-ink-900">Transfer Bank Manual</h4>
+                      <p className="text-sm text-ink-500 font-medium">BSI, Mandiri, BCA, dll (Verifikasi Manual)</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-stone-900">
-                      Pembayaran Online
-                    </h3>
-                    <p className="text-sm text-stone-500">
-                      Virtual Account, E-wallet, Kartu
-                    </p>
+                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${activePaymentMethod === 'manual' ? 'border-teal-500 bg-teal-500 text-white' : 'border-ink-200'}`}>
+                    {activePaymentMethod === 'manual' && <Check className="w-4 h-4" />}
                   </div>
                 </div>
-                <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">
-                  Rekomendasi
-                </span>
-              </div>
-            </button>
 
-            {/* Option 2: Manual Transfer */}
-            <button
-              onClick={() =>
-                setActivePaymentMethod(
-                  activePaymentMethod === "manual" ? null : "manual"
-                )
-              }
-              className={`p-5 rounded-xl border-2 text-left transition-all ${activePaymentMethod === "manual"
-                  ? "border-[var(--color-gold-500)] bg-[var(--color-gold-50)]"
-                  : "border-stone-200 bg-white hover:border-[var(--color-gold-300)]"
-                }`}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center ${activePaymentMethod === "manual"
-                      ? "bg-[var(--color-gold-500)]"
-                      : "bg-[var(--color-gold-100)]"
-                    }`}
-                >
-                  <Building2
-                    className={`w-6 h-6 ${activePaymentMethod === "manual"
-                        ? "text-white"
-                        : "text-[var(--color-gold-600)]"
-                      }`}
-                  />
-                </div>
-                <div>
-                  <h3 className="font-bold text-stone-900">Transfer Manual</h3>
-                  <p className="text-sm text-stone-500">
-                    Transfer ke rekening BSI
-                  </p>
-                </div>
-              </div>
-            </button>
-          </div>
+                {/* Expanded Content */}
+                {activePaymentMethod === 'manual' && (
+                  <div className="mt-6 pt-6 border-t border-ink-100/50 animate-in slide-in-from-top-2">
+                    <div className="bg-surface-50 border border-ink-200 rounded-2xl p-6 mb-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <p className="text-xs font-bold text-ink-400 uppercase tracking-widest mb-1">Transfer Ke Rekening</p>
+                          <h4 className="font-black text-xl text-ink-900">{BANK_INFO.nama_bank}</h4>
+                        </div>
+                        <div className="bg-white px-2 py-1 rounded border border-ink-200">
+                          <p className="text-xs font-bold text-ink-500">{BANK_INFO.kode_bank}</p>
+                        </div>
+                      </div>
 
-          {/* Midtrans Payment Content */}
-          {activePaymentMethod === "midtrans" && (
-            <div className="bg-white border-2 border-[var(--color-teal-200)] rounded-xl p-6 space-y-4">
-              <h3 className="font-bold text-stone-900 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-[var(--color-teal-600)]" />
-                Pembayaran Online via Midtrans
-              </h3>
+                      <div className="flex items-center justify-between bg-white p-4 rounded-xl border border-ink-100 mb-3 shadow-sm">
+                        <div>
+                          <p className="text-xs text-ink-400 mb-0.5">Nomor Rekening</p>
+                          <p className="font-mono text-xl font-bold text-ink-900 tracking-wider">{BANK_INFO.nomor_rekening}</p>
+                        </div>
+                        <CopyButton text={BANK_INFO.nomor_rekening} label="No. Rekening" />
+                      </div>
 
-              <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center gap-2 text-stone-600">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  Virtual Account (BCA, BNI, BRI, Mandiri)
-                </div>
-                <div className="flex items-center gap-2 text-stone-600">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  E-wallet (GoPay, OVO, DANA, ShopeePay)
-                </div>
-                <div className="flex items-center gap-2 text-stone-600">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  Kartu Kredit/Debit
-                </div>
-                <div className="flex items-center gap-2 text-stone-600">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  Minimarket (Alfamart, Indomaret)
-                </div>
-              </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-surface-200 rounded-full flex items-center justify-center">
+                          <Building2 className="w-4 h-4 text-ink-600" />
+                        </div>
+                        <p className="text-sm font-bold text-ink-700">a.n {BANK_INFO.atas_nama}</p>
+                      </div>
+                    </div>
 
-              <div className="bg-[var(--color-teal-50)] border border-[var(--color-teal-200)] rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-[var(--color-teal-600)] flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-[var(--color-teal-800)]">
-                    <p className="font-bold">Pembayaran Aman & Otomatis</p>
-                    <p className="mt-1">
-                      Status pembayaran akan diperbarui otomatis setelah transaksi
-                      berhasil. Tidak perlu upload bukti transfer.
-                    </p>
+                    <div className="space-y-4">
+                      <h5 className="font-bold text-ink-900 flex items-center gap-2">
+                        <Upload className="w-4 h-4 text-teal-600" />
+                        Upload Bukti Transfer
+                      </h5>
+                      <UploadArea
+                        onUpload={handleManualUpload}
+                        isUploading={isUploading}
+                        uploadProgress={uploadProgress}
+                        currentFile={data.pembayaran?.bukti_transfer_filename ? { name: data.pembayaran.bukti_transfer_filename, path: '' } : null}
+                        isRejected={isPaymentRejected}
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <button
-                onClick={handleMidtransPayment}
-                disabled={isMidtransLoading}
-                className="w-full py-4 bg-gradient-to-r from-[var(--color-teal-600)] to-[var(--color-teal-700)] hover:from-[var(--color-teal-700)] hover:to-[var(--color-teal-800)] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {isMidtransLoading ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Memproses...</span>
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="w-5 h-5" />
-                    <span>Bayar Sekarang</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </>
                 )}
-              </button>
-            </div>
-          )}
-
-          {/* Manual Transfer Content */}
-          {activePaymentMethod === "manual" && (
-            <div className="bg-white border-2 border-[var(--color-gold-200)] rounded-xl p-6 space-y-6">
-              <h3 className="font-bold text-stone-900 flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-[var(--color-gold-600)]" />
-                Transfer Manual ke Rekening BSI
-              </h3>
-
-              {/* Bank Info */}
-              <div className="bg-[var(--color-gold-50)] border-2 border-[var(--color-gold-200)] rounded-xl p-5">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-stone-500">Bank Tujuan</p>
-                      <p className="font-bold text-stone-900">
-                        {BANK_INFO.nama_bank}
-                      </p>
-                    </div>
-                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center border">
-                      <Banknote className="w-6 h-6 text-[var(--color-gold-600)]" />
-                    </div>
-                  </div>
-
-                  <div className="border-t border-[var(--color-gold-200)] pt-4">
-                    <p className="text-sm text-stone-500 mb-1">Nomor Rekening</p>
-                    <div className="flex items-center justify-between">
-                      <p className="text-2xl font-black text-[var(--color-brown-800)] tracking-wider">
-                        {BANK_INFO.nomor_rekening}
-                      </p>
-                      <CopyButton
-                        text={BANK_INFO.nomor_rekening}
-                        label="nomor rekening"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="border-t border-[var(--color-gold-200)] pt-4">
-                    <p className="text-sm text-stone-500 mb-1">Atas Nama</p>
-                    <p className="font-bold text-stone-900">{BANK_INFO.atas_nama}</p>
-                  </div>
-
-                  <div className="border-t border-[var(--color-gold-200)] pt-4">
-                    <p className="text-sm text-stone-500 mb-1">Jumlah Transfer</p>
-                    <div className="flex items-center justify-between">
-                      <p className="text-2xl font-black text-green-700">
-                        {formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}
-                      </p>
-                      <CopyButton
-                        text={data.tahun_ajaran.biaya_pendaftaran.toString()}
-                        label="jumlah"
-                      />
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Instructions */}
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm">
-                    <p className="font-bold text-amber-800">
-                      Petunjuk Transfer Manual:
+              {/* Midtrans Option */}
+              <div
+                className={`glass-panel p-6 rounded-[2rem] border transition-all cursor-pointer hover:border-teal-300 hover:shadow-teal-500/10 group opacity-75 hover:opacity-100 ${activePaymentMethod === 'midtrans' ? 'border-teal-500 ring-4 ring-teal-500/10' : 'border-white/50'}`}
+                onClick={() => setActivePaymentMethod(prev => prev === 'midtrans' ? null : 'midtrans')}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
+                      <CreditCard className="w-7 h-7 text-indigo-600" />
+                    </div>
+                    <div className="text-left">
+                      <h4 className="font-bold text-ink-900">Pembayaran Otomatis (VA, QRIS)</h4>
+                      <p className="text-sm text-ink-500 font-medium">Verifikasi Otomatis & Realtime</p>
+                    </div>
+                  </div>
+                  <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${activePaymentMethod === 'midtrans' ? 'border-teal-500 bg-teal-500 text-white' : 'border-ink-200'}`}>
+                    {activePaymentMethod === 'midtrans' && <Check className="w-4 h-4" />}
+                  </div>
+                </div>
+
+                {activePaymentMethod === 'midtrans' && (
+                  <div className="mt-6 pt-6 border-t border-ink-100/50">
+                    <p className="text-sm text-ink-600 mb-4 leading-relaxed">
+                      Metode ini mendukung Virtual Account (BCA, BNI, BRI, Mandiri) dan QRIS. Pembayaran akan terverifikasi secara otomatis tanpa perlu upload bukti.
                     </p>
-                    <ol className="mt-2 space-y-1 text-amber-700 list-decimal list-inside">
-                      <li>Transfer sesuai jumlah yang tertera di atas</li>
-                      <li>
-                        Simpan bukti transfer (foto struk ATM / screenshot mobile
-                        banking)
-                      </li>
-                      <li>Upload bukti transfer di bawah ini</li>
-                      <li>Tunggu verifikasi dari tim kami (maks. 1x24 jam)</li>
-                    </ol>
+                    <button
+                      onClick={handleMidtransPayment}
+                      disabled={isMidtransLoading}
+                      className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-xl shadow-indigo-600/20 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isMidtransLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Wallet className="w-5 h-5" />}
+                      <span>Bayar Sekarang via Midtrans</span>
+                    </button>
                   </div>
-                </div>
+                )}
               </div>
+            </div>
+          )}
 
-              {/* Upload Area */}
-              <div>
-                <h4 className="font-bold text-stone-900 mb-3 flex items-center gap-2">
-                  <Upload className="w-5 h-5 text-stone-600" />
-                  Upload Bukti Transfer
-                </h4>
-                <UploadArea
-                  onUpload={handleManualUpload}
-                  isUploading={isUploading}
-                  uploadProgress={uploadProgress}
-                  currentFile={
-                    data.pembayaran?.bukti_transfer_filename
-                      ? {
-                        name: data.pembayaran.bukti_transfer_filename,
-                        path: data.pembayaran.bukti_transfer_path || "",
-                      }
-                      : null
-                  }
-                  isRejected={isPaymentRejected}
-                />
+          {/* Success View */}
+          {isPaymentCompleted && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-[2rem] p-8 text-center">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-in zoom-in duration-300">
+                <CheckCircle className="w-10 h-10 text-emerald-600" />
+              </div>
+              <h3 className="text-2xl font-black text-emerald-900 mb-2">Pembayaran Lunas</h3>
+              <p className="text-emerald-700 max-w-md mx-auto mb-8">
+                Terima kasih telah melakukan pembayaran. Anda sekarang dapat melanjutkan ke tahap berikutnya yaitu mengisi formulir data diri lengkap.
+              </p>
+              <div className="flex justify-center">
+                <a
+                  href="/dashboard/pendaftar/kelengkapan-berkas"
+                  className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-lg shadow-emerald-600/20 transition-all hover:scale-105 flex items-center gap-2"
+                >
+                  <span>Lanjut Isi Data Diri</span>
+                  <ArrowRight className="w-5 h-5" />
+                </a>
               </div>
             </div>
           )}
         </div>
-      )}
 
-      {/* Payment Pending - Waiting Message */}
-      {isPaymentPending && (
-        <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <Clock className="w-6 h-6 text-blue-600 animate-pulse" />
-            </div>
-            <div>
-              <h3 className="font-bold text-blue-900 mb-1">
-                Pembayaran Sedang Diverifikasi
-              </h3>
-              <p className="text-blue-700 text-sm mb-3">
-                Tim kami sedang memverifikasi pembayaran Anda. Proses ini biasanya
-                memakan waktu maksimal 1x24 jam pada hari kerja.
-              </p>
-              {data.pembayaran && (
-                <div className="bg-white rounded-lg p-3 border border-blue-200">
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <p className="text-stone-500">Metode</p>
-                      <p className="font-medium text-stone-900">
-                        {data.pembayaran.metode_pembayaran === "midtrans"
-                          ? `Online (${data.pembayaran.midtrans_payment_type || "Midtrans"})`
-                          : "Transfer Manual BSI"}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-stone-500">Tanggal Upload</p>
-                      <p className="font-medium text-stone-900">
-                        {formatDateTime(data.pembayaran.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Help Section */}
-      <div className="bg-gradient-to-r from-[var(--color-teal-50)] to-[var(--color-cream-100)] border-2 border-[var(--color-teal-200)] rounded-2xl p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-[var(--color-teal-600)] rounded-lg flex items-center justify-center flex-shrink-0">
-            <Phone className="w-5 h-5 text-white" />
-          </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-stone-900 mb-2">
-              Butuh Bantuan?
+        {/* Sidebar Column */}
+        <div className="space-y-6">
+          <div className="glass-panel p-6 rounded-[2rem] shadow-clay-sm border border-white/50">
+            <h3 className="text-lg font-bold text-ink-900 mb-4 flex items-center gap-2">
+              <Info className="w-5 h-5 text-teal-600" />
+              Rincian Biaya
             </h3>
-            <p className="text-sm text-stone-600 mb-3">
-              Jika mengalami kendala dalam pembayaran, silakan hubungi kami:
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href="https://wa.me/622667345601"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium text-sm transition-colors"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Chat WhatsApp
-              </a>
-              <a
-                href="tel:+622667345601"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-[var(--color-teal-600)] hover:bg-[var(--color-teal-700)] text-white rounded-lg font-medium text-sm transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                (0266) 734-5601
-              </a>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-ink-500 font-medium">Biaya Pendaftaran</span>
+                <span className="font-bold text-ink-900">{formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}</span>
+              </div>
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-ink-500 font-medium">Biaya Admin</span>
+                <span className="font-bold text-ink-900">Rp 0</span>
+              </div>
+              <div className="h-px bg-ink-100 my-2" />
+              <div className="flex justify-between items-center">
+                <span className="text-ink-900 font-bold">Total Pembayaran</span>
+                <span className="text-xl font-black text-teal-600">{formatRupiah(data.tahun_ajaran.biaya_pendaftaran)}</span>
+              </div>
             </div>
+          </div>
+
+          <div className="bg-surface-100 rounded-[2rem] p-6 border border-white/50">
+            <h4 className="font-bold text-ink-900 mb-3 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-ink-400" />
+              Bantuan Pembayaran
+            </h4>
+            <p className="text-sm text-ink-500 mb-4 leading-relaxed">
+              Mengalami kendala saat melakukan pembayaran? Hubungi tim support kami.
+            </p>
+            <a href="https://wa.me/6285722253236" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 bg-white rounded-xl border border-ink-100 hover:border-teal-200 transition-colors group">
+              <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+                <MessageCircle className="w-5 h-5 text-green-600 group-hover:scale-110 transition-transform" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-ink-400 uppercase">WhatsApp Admin</p>
+                <p className="font-bold text-ink-900 text-sm">+62 857-2225-3236</p>
+              </div>
+            </a>
           </div>
         </div>
       </div>

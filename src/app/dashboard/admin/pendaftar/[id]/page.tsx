@@ -150,6 +150,9 @@ export default function PendaftarDetailPage() {
       accepted: { label: "Diterima", color: "bg-green-100 text-green-700" },
       rejected: { label: "Ditolak", color: "bg-red-100 text-red-700" },
       enrolled: { label: "Terdaftar", color: "bg-emerald-100 text-emerald-700" },
+      // Added missing keys matching seed/list
+      verified: { label: "Terverifikasi", color: "bg-green-100 text-green-700" },
+      payment_verification: { label: "Verifikasi Pembayaran", color: "bg-orange-100 text-orange-700" },
     };
     return statusMap[status] || { label: status, color: "bg-stone-100 text-stone-700" };
   };
@@ -202,36 +205,77 @@ export default function PendaftarDetailPage() {
 
   const statusInfo = formatStatus(pendaftar.status_proses);
 
+  // Calculate document and payment progress
+  const totalDocs = pendaftar.dokumen.length;
+  const verifiedDocs = pendaftar.dokumen.filter(d => d.status_verifikasi === "verified").length;
+  const hasPaid = pendaftar.pembayaran.some(p => p.status_pembayaran === "verified");
+
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-        <div className="flex items-center justify-between">
+      {/* Back Button */}
+      <Link
+        href="/dashboard/admin/pendaftar"
+        className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Kembali ke Daftar Pendaftar
+      </Link>
+
+      {/* Summary Card */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl shadow-xl p-6 text-white">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* Main Info */}
           <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard/admin/pendaftar"
-              className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </Link>
+            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-white">
+              <User className="w-8 h-8" />
+            </div>
             <div>
-              <h2 className="text-2xl font-black text-stone-900">
-                Detail Pendaftar
-              </h2>
-              <p className="text-stone-600">
-                {pendaftar.nomor_pendaftaran}
-              </p>
+              <h1 className="text-2xl font-black text-white">{pendaftar.nama_lengkap}</h1>
+              <div className="flex flex-wrap items-center gap-3 mt-1">
+                <span className="font-mono text-blue-100">{pendaftar.nomor_pendaftaran}</span>
+                <span className="px-2 py-0.5 bg-white/20 rounded text-xs font-bold text-white">
+                  {pendaftar.jenjang}
+                </span>
+                <span className="text-blue-100">
+                  {pendaftar.jenis_kelamin === "L" ? "Laki-laki" : "Perempuan"}
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Status Update Section */}
+          {/* Quick Stats */}
+          <div className="flex flex-wrap gap-4">
+            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
+              <p className="text-xs text-blue-100 mb-1">Pembayaran</p>
+              <p className="font-bold text-lg flex items-center gap-1 text-white">
+                {hasPaid ? (
+                  <><CheckCircle className="w-4 h-4 text-green-300" /> Lunas</>
+                ) : (
+                  <><AlertCircle className="w-4 h-4 text-amber-300" /> Pending</>
+                )}
+              </p>
+            </div>
+            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
+              <p className="text-xs text-blue-100 mb-1">Dokumen</p>
+              <p className="font-bold text-lg text-white">{verifiedDocs}/{totalDocs} Verified</p>
+            </div>
+            <div className="bg-white/10 rounded-xl px-4 py-3 min-w-[100px]">
+              <p className="text-xs text-blue-100 mb-1">Tahun Ajaran</p>
+              <p className="font-bold text-lg text-white">{pendaftar.tahun_ajaran?.nama || "-"}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Status & Actions Bar */}
+        <div className="mt-6 pt-6 border-t border-white/20 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
+            <span className="text-blue-100">Status:</span>
             {editingStatus ? (
-              <>
+              <div className="flex items-center gap-2">
                 <select
                   value={newStatus}
                   onChange={(e) => setNewStatus(e.target.value)}
-                  className="px-4 py-2 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-500"
+                  className="px-3 py-1.5 bg-white text-stone-800 rounded-lg text-sm focus:outline-none"
                   disabled={savingStatus}
                 >
                   <option value="draft">Draft</option>
@@ -250,16 +294,9 @@ export default function PendaftarDetailPage() {
                 <button
                   onClick={handleUpdateStatus}
                   disabled={savingStatus}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 bg-green-500 hover:bg-green-600 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
                 >
-                  {savingStatus ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : (
-                    <>
-                      <Save className="w-5 h-5 inline mr-2" />
-                      Simpan
-                    </>
-                  )}
+                  {savingStatus ? <Loader2 className="w-4 h-4 animate-spin" /> : "Simpan"}
                 </button>
                 <button
                   onClick={() => {
@@ -267,25 +304,48 @@ export default function PendaftarDetailPage() {
                     setNewStatus(pendaftar.status_proses);
                   }}
                   disabled={savingStatus}
-                  className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-lg font-medium transition-colors"
+                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors"
                 >
-                  <X className="w-5 h-5 inline mr-2" />
                   Batal
                 </button>
-              </>
+              </div>
             ) : (
-              <>
-                <span className={`px-4 py-2 rounded-lg text-sm font-bold ${statusInfo.color}`}>
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-lg text-sm font-bold ${statusInfo.color}`}>
                   {statusInfo.label}
                 </span>
                 <button
                   onClick={() => setEditingStatus(true)}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                  className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
                 >
-                  <Edit className="w-5 h-5 inline mr-2" />
-                  Ubah Status
+                  <Edit className="w-3 h-3" />
+                  Ubah
                 </button>
-              </>
+              </div>
+            )}
+          </div>
+
+          {/* Quick Actions */}
+          <div className="flex items-center gap-2">
+            {pendaftar.no_hp && (
+              <a
+                href={`https://wa.me/${pendaftar.no_hp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 bg-green-500 hover:bg-green-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+              >
+                <Phone className="w-3 h-3" />
+                WhatsApp
+              </a>
+            )}
+            {pendaftar.email && (
+              <a
+                href={`mailto:${pendaftar.email}`}
+                className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-sm font-medium transition-colors flex items-center gap-1"
+              >
+                <Mail className="w-3 h-3" />
+                Email
+              </a>
             )}
           </div>
         </div>
@@ -409,30 +469,6 @@ export default function PendaftarDetailPage() {
 
         {/* Sidebar - 1 column */}
         <div className="space-y-6">
-          {/* Tahun Ajaran */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-indigo-100 rounded-lg">
-                <Calendar className="w-6 h-6 text-indigo-600" />
-              </div>
-              <h3 className="text-lg font-bold text-stone-900">Tahun Ajaran</h3>
-            </div>
-            <div className="space-y-3">
-              <InfoItem
-                label="Periode"
-                value={pendaftar.tahun_ajaran?.nama || "-"}
-              />
-              <InfoItem
-                label="Biaya Pendaftaran"
-                value={
-                  pendaftar.tahun_ajaran
-                    ? formatRupiah(pendaftar.tahun_ajaran.biaya_pendaftaran)
-                    : "-"
-                }
-              />
-            </div>
-          </div>
-
           {/* Status Dokumen */}
           <div className="bg-white rounded-xl shadow-lg p-6 border-2 border-blue-100">
             <div className="flex items-center gap-3 mb-4">

@@ -10,12 +10,13 @@ import {
     Users,
     Clock,
     Calendar,
-    ArrowRight
+    ArrowRight,
+    Star
 } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
 
-// Program Data
+// Program Data with Updated Colors
 const PROGRAMS = [
     {
         id: "mts",
@@ -35,48 +36,35 @@ const PROGRAMS = [
             "Ekstrakurikuler (Pramuka, Silat, Panahan, Futsal)",
         ],
         image: "/images/hero.jpg", // Placeholder
-        color: "brown",
+        theme: "brown",
+        gradient: "from-brown-800 to-brown-600",
+        accent: "text-brown-600",
+        bg: "bg-brown-50"
     },
     {
         id: "il",
         name: "I'dad Lughowi",
-        fullName: "Program I'dad Lughowi (Persiapan Bahasa)",
-        description: "Program intensif satu tahun khusus pembelajaran Bahasa Arab dan dasar-dasar ilmu syar'i sebagai persiapan masuk jenjang MA atau perguruan tinggi Timur Tengah.",
+        fullName: "Program I'dad Lughowi (Setara SMA)",
+        description: "Program pendidikan 4 tahun (1 tahun persiapan bahasa + 3 tahun MA) yang setara dengan SMA/MA. Memadukan kurikulum kepesantrenan dan umum untuk mencetak kader ulama dan profesional.",
         stats: [
-            { label: "Masa Studi", value: "1 Tahun" },
-            { label: "Fokus", value: "Bahasa Arab" },
-            { label: "Target", value: "Mahir Baca Kitab" },
+            { label: "Masa Studi", value: "4 Tahun" },
+            { label: "Jenjang", value: "Setara SMA" },
+            { label: "Target", value: "Hafal 30 Juz" },
         ],
         curriculum: [
-            "Intensif Bahasa Arab (Durusul Lughah, Nahwu, Shorof)",
-            "Tahsin & Tahfidz Al-Qur'an",
-            "Fiqh Ibadah Praktis",
-            "Aqidah Dasar",
-            "Praktek Ibadah Harian",
+            "Tahun 1: Intensif Bahasa Arab & Dasar Syar'i",
+            "Tahun 2-4: Kurikulum MA & Lanjutan Diniyah",
+            "Tahfidz Al-Qur'an (Target 30 Juz)",
+            "Kajian Kitab Kuning/Turats",
+            "Ijazah Negara (Paket C/Formal)",
         ],
         image: "/images/hero.jpg", // Placeholder
-        color: "gold",
+        theme: "gold",
+        gradient: "from-gold-600 to-gold-400",
+        accent: "text-gold-600",
+        bg: "bg-gold-50"
     },
-    {
-        id: "ma",
-        name: "MA Al-Imam",
-        fullName: "Madrasah Aliyah Al-Imam",
-        description: "Jenjang pendidikan menengah atas dengan pilihan jurusan IPA dan Keagamaan, disiapkan untuk melanjutkan ke perguruan tinggi ternama baik di dalam maupun luar negeri.",
-        stats: [
-            { label: "Masa Studi", value: "3 Tahun" },
-            { label: "Target Hapalan", value: "10+ Juz" },
-            { label: "Jurusan", value: "IPA & Agama" },
-        ],
-        curriculum: [
-            "Tahfidz Al-Qur'an Lanjutan",
-            "Kajian Kitab Kuning Menengah-Lanjut (Fathul Qorib, Bulughul Maram)",
-            "Ujian Nasional & persiapan SBMPTN/Timur Tengah",
-            "Leadership & Public Speaking (Muhadhoroh)",
-            "Riset & Karya Tulis Ilmiah",
-        ],
-        image: "/images/hero.jpg", // Placeholder
-        color: "teal",
-    },
+
 ];
 
 export default function ProgramPage() {
@@ -84,141 +72,129 @@ export default function ProgramPage() {
 
     useEffect(() => {
         const handleScroll = () => {
-            const sections = PROGRAMS.map(p => ({
-                id: p.id,
-                element: document.getElementById(p.id)
-            }));
+            const viewportMiddle = window.scrollY + (window.innerHeight / 2);
 
-            // "Center of Viewport" Strategy
-            // We consider the "active" section to be the one that occupies the middle of the screen.
-            const scrollPosition = window.scrollY + (window.innerHeight / 2);
-
-            for (const section of sections) {
-                if (section.element) {
-                    const top = section.element.offsetTop;
-                    const height = section.element.offsetHeight;
-
-                    if (scrollPosition >= top && scrollPosition < top + height) {
-                        setActiveSection(section.id);
-                        return;
+            // Find which section is currently in the middle of the viewport
+            for (const program of PROGRAMS) {
+                const element = document.getElementById(program.id);
+                if (element) {
+                    const { offsetTop, offsetHeight } = element;
+                    if (viewportMiddle >= offsetTop && viewportMiddle < offsetTop + offsetHeight) {
+                        setActiveSection(program.id);
+                        break;
                     }
                 }
             }
         };
 
         window.addEventListener("scroll", handleScroll);
-        // Initial check
         handleScroll();
-
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
-        <main className="bg-[var(--color-cream-50)] min-h-screen pt-20">
-            {/* Header Section */}
-            <section className="bg-[var(--color-brown-900)] text-white py-20 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-[url('/images/pattern.png')] bg-repeat" />
+        <main className="bg-surface-50 min-h-screen">
+            {/* 1. Hero Section - Brown Aesthetic */}
+            <section className="relative pt-32 pb-20 overflow-hidden bg-brown-900">
+                <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
+
                 <Container className="relative z-10 text-center">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 text-white">
-                        Program Pendidikan
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6 animate-in fade-in slide-in-from-bottom-4">
+                        <GraduationCap className="w-4 h-4" />
+                        <span>Jenjang Pendidikan</span>
+                    </div>
+
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black mb-6 text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
+                        Program Pendidikan <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Al-Imam Al-Islami</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-[var(--color-cream-200)] max-w-2xl mx-auto">
-                        Membangun generasi unggul dengan kurikulum terpadu yang menyeimbangkan ilmu dunia dan akhirat.
+
+                    <p className="text-lg md:text-xl text-brown-100 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+                        Membangun generasi unggul dengan kurikulum terpadu yang menyeimbangkan ilmu dunia dan akhirat untuk masa depan yang gemilang.
                     </p>
                 </Container>
             </section>
 
-            {/* Navigation Tabs (Sticky) */}
-            <div className="sticky top-20 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--color-cream-200)] shadow-sm">
+            {/* 2. Navigation Tabs (Sticky) */}
+            <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-xl border-b border-brown-100 shadow-sm transition-all">
                 <Container>
-                    <div className="flex justify-center gap-4 py-4 overflow-x-auto">
-                        <a
-                            href="#mts"
-                            className={`px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap
-                             ${activeSection === 'mts'
-                                    ? 'bg-[var(--color-brown-700)] text-white'
-                                    : 'bg-[var(--color-cream-100)] text-[var(--color-brown-800)] hover:bg-[var(--color-brown-100)]'}
-                           `}
-                        >
-                            MTs Al-Imam
-                        </a>
-                        <a
-                            href="#il"
-                            className={`px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap
-                             ${activeSection === 'il'
-                                    ? 'bg-[var(--color-gold-500)] text-white'
-                                    : 'bg-[var(--color-cream-100)] text-[var(--color-brown-800)] hover:bg-[var(--color-gold-50)] hover:text-[var(--color-gold-700)]'}
-                           `}
-                        >
-                            I'dad Lughowi
-                        </a>
-                        <a
-                            href="#ma"
-                            className={`px-6 py-2 rounded-full font-medium transition-colors whitespace-nowrap
-                             ${activeSection === 'ma'
-                                    ? 'bg-[var(--color-teal-600)] text-white'
-                                    : 'bg-[var(--color-cream-100)] text-[var(--color-brown-800)] hover:bg-[var(--color-teal-50)] hover:text-[var(--color-teal-700)]'}
-                           `}
-                        >
-                            MA Al-Imam
-                        </a>
+                    <div className="flex justify-center gap-2 md:gap-4 py-4 overflow-x-auto no-scrollbar">
+                        {PROGRAMS.map((program) => (
+                            <a
+                                key={program.id}
+                                href={`#${program.id}`}
+                                className={`px-5 py-2.5 rounded-full font-bold text-sm transition-all whitespace-nowrap border
+                                ${activeSection === program.id
+                                        ? program.theme === 'brown' ? 'bg-brown-600 text-white border-brown-600 shadow-lg shadow-brown-600/20' :
+                                            program.theme === 'gold' ? 'bg-gold-500 text-white border-gold-500 shadow-lg shadow-gold-500/20' :
+                                                'bg-teal-600 text-white border-teal-600 shadow-lg shadow-teal-600/20'
+                                        : 'bg-white text-ink-500 border-ink-100 hover:border-brown-300 hover:text-brown-700'
+                                    }`}
+                            >
+                                {program.name}
+                            </a>
+                        ))}
                     </div>
                 </Container>
             </div>
 
-            <div className="space-y-24 py-16">
+            {/* 3. Program Sections */}
+            <div className="space-y-20 py-20">
                 {PROGRAMS.map((program, idx) => (
-                    <section key={program.id} id={program.id} className="scroll-mt-32">
+                    <section key={program.id} id={program.id} className="scroll-mt-40">
                         <Container>
-                            <div className={`grid lg:grid-cols-2 gap-12 items-center ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+                            <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center group ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
 
                                 {/* Text Content */}
                                 <div className={idx % 2 === 1 ? 'lg:col-start-2' : ''}>
-                                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 font-semibold
-                    ${program.color === 'brown' ? 'bg-[var(--color-brown-100)] text-[var(--color-brown-700)]' :
-                                            program.color === 'teal' ? 'bg-[var(--color-teal-100)] text-[var(--color-teal-700)]' :
-                                                'bg-[var(--color-gold-100)] text-[var(--color-gold-700)]'}
-                  `}>
-                                        <GraduationCap className="w-5 h-5" />
-                                        <span>{program.name}</span>
+                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg mb-6 font-bold text-xs uppercase tracking-widest
+                                        ${program.theme === 'brown' ? 'bg-brown-100 text-brown-700' :
+                                            program.theme === 'gold' ? 'bg-gold-100 text-gold-700' :
+                                                'bg-teal-100 text-teal-700'}
+                                    `}>
+                                        <Star className="w-4 h-4" />
+                                        <span>Program Unggulan</span>
                                     </div>
 
-                                    <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-900)] mb-6">
+                                    <h2 className="text-3xl md:text-5xl font-black text-brown-900 mb-6 font-display">
                                         {program.fullName}
                                     </h2>
-                                    <p className="text-[var(--color-text-600)] text-lg leading-relaxed mb-8">
+                                    <p className="text-ink-600 text-lg leading-relaxed mb-8">
                                         {program.description}
                                     </p>
 
-                                    {/* Quick Stats Grid */}
-                                    <div className="grid grid-cols-3 gap-4 mb-8">
+                                    {/* Stats Grid */}
+                                    <div className="grid grid-cols-3 gap-4 mb-10">
                                         {program.stats.map((stat, statIdx) => (
-                                            <div key={statIdx} className="bg-white p-4 rounded-xl border border-[var(--color-cream-200)] text-center shadow-sm">
-                                                <p className="text-xs text-[var(--color-text-500)] uppercase font-bold mb-1">{stat.label}</p>
+                                            <div key={statIdx} className="bg-white p-4 rounded-2xl border border-surface-200 text-center shadow-clay-sm hover:shadow-clay-md transition-shadow">
+                                                <p className="text-[10px] text-ink-400 uppercase font-extrabold tracking-widest mb-1.5">{stat.label}</p>
                                                 <p className={`text-lg font-bold
-                          ${program.color === 'brown' ? 'text-[var(--color-brown-700)]' :
-                                                        program.color === 'teal' ? 'text-[var(--color-teal-700)]' :
-                                                            'text-[var(--color-gold-600)]'}
-                        `}>{stat.value}</p>
+                                                    ${program.theme === 'brown' ? 'text-brown-700' :
+                                                        program.theme === 'gold' ? 'text-gold-600' :
+                                                            'text-teal-600'}
+                                                `}>{stat.value}</p>
                                             </div>
                                         ))}
                                     </div>
 
-                                    {/* Curriculum List */}
-                                    <div className="mb-8">
-                                        <h3 className="text-xl font-bold text-[var(--color-text-900)] mb-4 flex items-center gap-2">
-                                            <BookOpen className="w-5 h-5 text-[var(--color-text-500)]" />
-                                            Kurikulum Unggulan
+                                    {/* Curriculum */}
+                                    <div className={`rounded-3xl p-8 mb-10 border ${program.bg} ${program.theme === 'brown' ? 'border-brown-200' : program.theme === 'gold' ? 'border-gold-200' : 'border-teal-200'}`}>
+                                        <h3 className="text-xl font-bold text-brown-900 mb-6 flex items-center gap-3">
+                                            <BookOpen className={`w-6 h-6 ${program.accent}`} />
+                                            Kurikulum & Materi
                                         </h3>
-                                        <ul className="space-y-3">
+                                        <ul className="space-y-4">
                                             {program.curriculum.map((item, cIdx) => (
-                                                <li key={cIdx} className="flex items-start gap-3">
-                                                    <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5
-                               ${program.color === 'brown' ? 'text-[var(--color-brown-500)]' :
-                                                            program.color === 'teal' ? 'text-[var(--color-teal-500)]' :
-                                                                'text-[var(--color-gold-500)]'}
-                            `} />
-                                                    <span className="text-[var(--color-text-700)]">{item}</span>
+                                                <li key={cIdx} className="flex items-start gap-4">
+                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
+                                                        ${program.theme === 'brown' ? 'bg-brown-200 text-brown-700' :
+                                                            program.theme === 'gold' ? 'bg-gold-200 text-gold-700' :
+                                                                'bg-teal-200 text-teal-700'}
+                                                    `}>
+                                                        <CheckCircle className="w-3.5 h-3.5" />
+                                                    </div>
+                                                    <span className="text-ink-700 font-medium">{item}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -226,11 +202,11 @@ export default function ProgramPage() {
 
                                     <Button
                                         size="lg"
-                                        className={`w-full sm:w-auto text-white shadow-lg transition-all hover:-translate-y-1
-                      ${program.color === 'brown' ? 'bg-[var(--color-brown-700)] hover:bg-[var(--color-brown-800)]' :
-                                                program.color === 'teal' ? 'bg-[var(--color-teal-600)] hover:bg-[var(--color-teal-700)]' :
-                                                    'bg-[var(--color-gold-500)] hover:bg-[var(--color-gold-600)]'}
-                    `}
+                                        className={`w-full sm:w-auto text-white rounded-xl h-14 px-8 text-base shadow-lg transition-all hover:scale-105
+                                            ${program.theme === 'brown' ? 'bg-brown-600 hover:bg-brown-700 shadow-brown-500/20' :
+                                                program.theme === 'gold' ? 'bg-gold-500 hover:bg-gold-600 shadow-gold-500/20' :
+                                                    'bg-teal-600 hover:bg-teal-700 shadow-teal-500/20'}
+                                        `}
                                         asChild
                                     >
                                         <Link href={`/daftar?jenjang=${program.id.toUpperCase()}`}>
@@ -240,21 +216,29 @@ export default function ProgramPage() {
                                     </Button>
                                 </div>
 
-                                {/* Image Section */}
+                                {/* Image Card */}
                                 <div className={idx % 2 === 1 ? 'lg:col-start-1' : ''}>
-                                    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl group">
-                                        {/* Placeholder Image using colors if real image fails */}
-                                        <div className={`absolute inset-0 bg-gradient-to-br opacity-80 z-0
-                        ${program.color === 'brown' ? 'from-[var(--color-brown-800)] to-[var(--color-brown-600)]' :
-                                                program.color === 'teal' ? 'from-[var(--color-teal-800)] to-[var(--color-teal-600)]' :
-                                                    'from-[var(--color-gold-700)] to-[var(--color-gold-500)]'}
-                     `} />
-                                        <div className="absolute inset-0 z-10 p-8 flex flex-col justify-end text-white">
-                                            <GraduationCap className="w-20 h-20 mb-auto opacity-20" />
-                                            <h3 className="text-3xl font-bold mb-2">{program.name}</h3>
-                                            <p className="text-white/80">Mencetak Generasi Rabbani</p>
+                                    <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-clay-lg group-hover:rotate-1 transition-transform duration-700">
+                                        {/* Placeholder Pattern */}
+                                        <div className={`absolute inset-0 bg-gradient-to-br opacity-90 z-10 ${program.gradient}`} />
+                                        <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-20 z-10 mix-blend-overlay" />
+
+                                        <div className="absolute inset-0 z-20 p-10 flex flex-col justify-end text-white">
+                                            <div className="w-24 h-24 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-auto border border-white/30">
+                                                <GraduationCap className="w-12 h-12 text-white" />
+                                            </div>
+
+                                            <h3 className="text-4xl font-display font-black mb-2">{program.name}</h3>
+                                            <p className="text-white/80 text-lg font-medium">Mencetak Generasi Rabbani</p>
                                         </div>
                                     </div>
+
+                                    {/* Decorative Blob specific to section */}
+                                    <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-3xl -z-10 opacity-40
+                                         ${program.theme === 'brown' ? 'bg-brown-300' :
+                                            program.theme === 'gold' ? 'bg-gold-300' :
+                                                'bg-teal-300'}
+                                    `} />
                                 </div>
 
                             </div>

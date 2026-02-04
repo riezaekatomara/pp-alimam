@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
@@ -7,60 +8,60 @@ export async function GET(
 ) {
   const params = await props.params;
   try {
-    const supabase = await createServerSupabaseClient();
+    // 1. Validasi session manual (match list route logic)
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("app_session");
 
-    // Check if user is admin
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user role from profiles
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    let session;
+    try {
+      session = JSON.parse(sessionCookie.value);
+    } catch {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
 
-    if (!profile || profile.role !== "admin") {
+    // Check custom role
+    if (session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Fetch pendaftar with all related data
-    const { data: pendaftar, error } = await supabase
+    // Fetch pendaftar with all related data using supabaseAdmin (bypass RLS)
+    const { data: pendaftar, error } = await supabaseAdmin
       .from("pendaftar")
       .select(
         `
         *,
-        tahun_ajaran:tahun_ajaran_id (
+        tahun_ajaran (
           id,
           nama,
           tahun_mulai,
           tahun_selesai,
           biaya_pendaftaran
         ),
-        orang_tua:orang_tua (*),
-        dokumen:dokumen (*),
-        pembayaran:pembayaran (*),
-        jadwal_ujian:jadwal_ujian (*),
-        nilai_ujian:nilai_ujian (*),
-        pengumuman:pengumuman (*),
-        rapor:data_rapor (*),
-        prestasi:data_prestasi (*),
-        kesehatan:data_kesehatan (*),
-        asrama:data_asrama (*)
+        orang_tua (*),
+        dokumen (*),
+        pembayaran (*),
+        jadwal_ujian (*),
+        nilai_ujian (*),
+        pengumuman (*),
+        data_rapor (*),
+        data_prestasi (*),
+        data_kesehatan (*),
+        data_asrama (*)
       `
       )
       .eq("id", params.id)
       .single();
 
+    console.log("Fetching pendaftar with ID:", params.id);
+
     if (error || !pendaftar) {
-      console.error("Error fetching pendaftar:", error);
+      console.error("Supabase Error fetching pendaftar:", error);
       return NextResponse.json(
-        { error: "Pendaftar not found" },
+        { error: "Pendaftar not found", details: error },
         { status: 404 }
       );
     }
@@ -82,25 +83,22 @@ export async function PATCH(
 ) {
   const params = await props.params;
   try {
-    const supabase = await createServerSupabaseClient();
+    // 1. Validasi session manual
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get("app_session");
 
-    // Check if user is admin
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
+    if (!sessionCookie) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user role from profiles
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
+    let session;
+    try {
+      session = JSON.parse(sessionCookie.value);
+    } catch {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 });
+    }
 
-    if (!profile || profile.role !== "admin") {
+    if (session.role !== "admin") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -116,10 +114,10 @@ export async function PATCH(
     }
 
     // Update pendaftar status
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from("pendaftar")
       .update({
-        status_proses,
+        status_pendaftaran: status_proses, // Fixed: status_proses -> status_pendaftaran to match DB
         updated_at: new Date().toISOString()
       })
       .eq("id", params.id)

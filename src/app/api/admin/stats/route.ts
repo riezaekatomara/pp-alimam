@@ -24,10 +24,10 @@ export async function GET() {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Fetch pendaftar data with status
+    // Fetch pendaftar data with status, jenjang, and location
     const { data: pendaftarData, error: pendaftarError } = await supabaseAdmin
       .from("pendaftar")
-      .select("id, status_pendaftaran");
+      .select("id, status_pendaftaran, jenjang, provinsi, jenis_kelamin");
 
     if (pendaftarError) {
       console.error("Error fetching pendaftar:", pendaftarError);
@@ -49,9 +49,35 @@ export async function GET() {
     // Calculate pendaftar status counts
     const total_pendaftar = pendaftarData?.length || 0;
     const statusCounts: Record<string, number> = {};
+    const jenjangCounts: Record<string, { total: number; diterima: number }> = {};
+    const provinsiCounts: Record<string, number> = {};
+    const genderCounts: Record<string, number> = { "Laki-laki": 0, "Perempuan": 0 };
+
     (pendaftarData || []).forEach((item) => {
       const status = item.status_pendaftaran;
+      const jenjang = item.jenjang || "Unknown";
+      const provinsi = item.provinsi || "Tidak Diketahui";
+      const gender = item.jenis_kelamin || "Unknown";
+
+      // Status counts
       statusCounts[status] = (statusCounts[status] || 0) + 1;
+
+      // Jenjang counts
+      if (!jenjangCounts[jenjang]) {
+        jenjangCounts[jenjang] = { total: 0, diterima: 0 };
+      }
+      jenjangCounts[jenjang].total += 1;
+      if (status === "accepted") {
+        jenjangCounts[jenjang].diterima += 1;
+      }
+
+      // Provinsi counts
+      provinsiCounts[provinsi] = (provinsiCounts[provinsi] || 0) + 1;
+
+      // Gender counts
+      if (gender === "Laki-laki" || gender === "Perempuan") {
+        genderCounts[gender] += 1;
+      }
     });
 
     // Calculate pembayaran status counts
@@ -145,6 +171,33 @@ export async function GET() {
       announced: 0,
       accepted: statusCounts.accepted || 0,
       enrolled: 0,
+
+      // === STATISTIK PER JENJANG ===
+      stats_per_jenjang: Object.entries(jenjangCounts).map(([jenjang, data]) => ({
+        jenjang,
+        pendaftar: data.total,
+        diterima: data.diterima,
+      })),
+
+      // === STATISTIK PER PROVINSI (Top 10) ===
+      stats_per_provinsi: Object.entries(provinsiCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([provinsi, jumlah]) => ({
+          provinsi,
+          jumlah,
+        })),
+
+      // === STATISTIK GENDER ===
+      stats_gender: genderCounts,
+
+      // === PIE CHART DATA ===
+      pie_chart_status: {
+        diterima: statusCounts.accepted || 0,
+        menunggu: (statusCounts.scheduled || 0) + (statusCounts.verified || 0),
+        proses: (statusCounts.draft || 0) + (statusCounts.payment_verification || 0),
+        ditolak: statusCounts.rejected || 0,
+      },
 
       // Raw counts for debugging
       _raw_status_counts: statusCounts,

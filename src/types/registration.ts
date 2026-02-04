@@ -8,7 +8,7 @@ export interface RegistrationFormData {
   tanggal_lahir: string;
   no_hp: string;
   jenis_kelamin: "L" | "P" | "";
-  jenjang: "MTs" | "IL" | "MA" | "";
+  jenjang: "MTs" | "IL" | "";
 }
 
 export interface OTPVerificationData {
@@ -86,8 +86,7 @@ export type FieldErrors = Partial<Record<keyof RegistrationFormData, string>>;
 
 export const JENJANG_OPTIONS = [
   { value: "MTs", label: "MTs", description: "Fondasi Kokoh" },
-  { value: "IL", label: "I'dad Lughowi", description: "Mahir 2 Bahasa" },
-  { value: "MA", label: "MA", description: "Siap Universitas" },
+  { value: "IL", label: "I'dad Lughowi", description: "Setara SMA (4 Tahun)" },
 ] as const;
 
 export type JenjangValue = (typeof JENJANG_OPTIONS)[number]["value"];

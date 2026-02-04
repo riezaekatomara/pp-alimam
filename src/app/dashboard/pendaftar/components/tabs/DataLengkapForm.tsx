@@ -16,6 +16,8 @@ import {
   AlertCircle,
   ChevronDown,
   ChevronUp,
+  Send,
+  Info
 } from "lucide-react";
 
 import WilayahSelector from "@/components/form/WilayahSelector";
@@ -245,33 +247,36 @@ function SectionHeader({
     <button
       type="button"
       onClick={onToggle}
-      className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-teal-50 to-amber-50 rounded-xl border-2 border-teal-100 hover:border-teal-300 transition-all"
+      className={`w-full flex items-center justify-between p-5 rounded-2xl transition-all duration-300 border ${isOpen
+          ? "bg-white border-teal-200 shadow-clay-md"
+          : "bg-surface-50 border-white/50 hover:bg-white hover:border-teal-100"
+        }`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <div
-          className={`w-10 h-10 rounded-lg flex items-center justify-center ${isCompleted
-            ? "bg-green-500 text-white"
-            : "bg-teal-500 text-white"
+          className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${isCompleted
+              ? "bg-emerald-100 text-emerald-600"
+              : isOpen
+                ? "bg-teal-100 text-teal-600"
+                : "bg-surface-200 text-ink-400"
             }`}
         >
-          {isCompleted ? <CheckCircle className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+          {isCompleted ? <CheckCircle className="w-6 h-6" /> : <Icon className="w-6 h-6" />}
         </div>
         <div className="text-left">
-          <h3 className="font-bold text-stone-900">{title}</h3>
-          {subtitle && <p className="text-sm text-stone-500">{subtitle}</p>}
+          <h3 className={`font-bold text-lg ${isOpen ? "text-ink-900" : "text-ink-600"}`}>{title}</h3>
+          {subtitle && <p className="text-sm text-ink-400 font-medium">{subtitle}</p>}
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         {isCompleted && (
-          <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded">
+          <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg uppercase tracking-wide">
             Lengkap
           </span>
         )}
-        {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-stone-400" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-stone-400" />
-        )}
+        <div className={`p-2 rounded-full transition-all ${isOpen ? "bg-surface-100 rotate-180" : "bg-transparent"}`}>
+          <ChevronDown className={`w-5 h-5 ${isOpen ? "text-ink-900" : "text-ink-400"}`} />
+        </div>
       </div>
     </button>
   );
@@ -302,37 +307,42 @@ function InputField({
   options,
   maxLength,
 }: InputFieldProps) {
+  const baseInputClass = "w-full px-4 py-3 bg-white border border-ink-200 rounded-xl text-ink-900 placeholder:text-ink-300 focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all outline-none disabled:bg-surface-100 disabled:text-ink-400 font-medium";
+
   if (options) {
     return (
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">
+      <div className="space-y-1.5">
+        <label className="block text-sm font-bold text-ink-700 ml-1">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ml-0.5">*</span>}
         </label>
-        <select
-          name={name}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          disabled={disabled}
-          className="w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-teal-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500"
-        >
-          <option value="" disabled={value !== ""}>Pilih {label}</option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            name={name}
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={disabled}
+            className={`${baseInputClass} appearance-none cursor-pointer`}
+          >
+            <option value="" disabled={value !== ""}>Pilih {label}</option>
+            {options.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400 pointer-events-none" />
+        </div>
       </div>
     );
   }
 
   if (type === "textarea") {
     return (
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1">
+      <div className="space-y-1.5">
+        <label className="block text-sm font-bold text-ink-700 ml-1">
           {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-red-500 ml-0.5">*</span>}
         </label>
         <textarea
           name={name}
@@ -341,17 +351,17 @@ function InputField({
           placeholder={placeholder}
           disabled={disabled}
           rows={3}
-          className="w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-teal-500 focus:outline-none resize-none transition-colors disabled:bg-stone-100"
+          className={`${baseInputClass} resize-none`}
         />
       </div>
     );
   }
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-stone-700 mb-1">
+    <div className="space-y-1.5">
+      <label className="block text-sm font-bold text-ink-700 ml-1">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-500 ml-0.5">*</span>}
       </label>
       <input
         type={type}
@@ -361,7 +371,7 @@ function InputField({
         placeholder={placeholder}
         disabled={disabled}
         maxLength={maxLength}
-        className="w-full px-4 py-2.5 border-2 border-stone-200 rounded-lg focus:border-teal-500 focus:outline-none transition-colors disabled:bg-stone-100 disabled:text-stone-500"
+        className={baseInputClass}
       />
     </div>
   );
@@ -389,49 +399,7 @@ export default function DataLengkapForm() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [toast, setToast] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
-
-  // Fetch existing data
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/pendaftar/data-lengkap");
-        const result = await response.json();
-
-        if (result.success && result.data) {
-          setFormData((prev) => ({
-            ...prev,
-            santri: { ...prev.santri, ...result.data.santri },
-            ayah: { ...prev.ayah, ...result.data.ayah },
-            ibu: { ...prev.ibu, ...result.data.ibu },
-            wali: {
-              ...prev.wali,
-              ...result.data.wali,
-              alamat: result.data.wali.alamat_wali || result.data.wali.alamat || "",
-              rt: result.data.wali.rt_wali || "",
-              rw: result.data.wali.rw_wali || "",
-              kelurahan: result.data.wali.kelurahan_wali || "",
-              kecamatan: result.data.wali.kecamatan_wali || "",
-              kabupaten: result.data.wali.kabupaten_wali || "",
-              provinsi: result.data.wali.provinsi_wali || "",
-              kode_pos: result.data.wali.kode_pos_wali || "",
-            },
-            wali_sama_dengan_ortu: result.data.wali_sama_dengan_ortu ?? true,
-          }));
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const [requestStatus, setRequestStatus] = useState<any>(null);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -493,22 +461,75 @@ export default function DataLengkapForm() {
     }));
   };
 
-  // Check if both parents are deceased - wali becomes required
+  // Check if both parents are deceased
   const bothParentsDeceased =
     formData.ayah.status_hidup === "Sudah Meninggal" &&
     formData.ibu.status_hidup === "Sudah Meninggal";
 
-  // Auto-set wali_sama_dengan_ortu to false when both parents are deceased
   useEffect(() => {
     if (bothParentsDeceased && formData.wali_sama_dengan_ortu) {
       setFormData((prev) => ({
         ...prev,
         wali_sama_dengan_ortu: false,
       }));
-      // Auto-open wali section
       setOpenSections((prev) => ({ ...prev, wali: true }));
     }
   }, [bothParentsDeceased, formData.wali_sama_dengan_ortu]);
+
+  const [toastMessage, setToast] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const sessionRes = await fetch("/api/auth/session");
+        const session = await sessionRes.json();
+
+        const [dataRes, reqRes] = await Promise.all([
+          fetch("/api/pendaftar/data-lengkap"),
+          session.pendaftar_id ? fetch(`/api/pendaftar/request-edit?pendaftar_id=${session.pendaftar_id}`) : Promise.resolve(null)
+        ]);
+
+        const result = await dataRes.json();
+        if (result.success && result.data) {
+          setFormData((prev) => ({
+            ...prev,
+            santri: { ...prev.santri, ...result.data.santri },
+            ayah: { ...prev.ayah, ...result.data.ayah },
+            ibu: { ...prev.ibu, ...result.data.ibu },
+            wali: {
+              ...prev.wali,
+              ...result.data.wali,
+              alamat: result.data.wali.alamat_wali || result.data.wali.alamat || "", // Fallback
+              rt: result.data.wali.rt_wali || "",
+              rw: result.data.wali.rw || "",
+              kelurahan: result.data.wali.kelurahan_wali || "",
+              kecamatan: result.data.wali.kecamatan_wali || "",
+              kabupaten: result.data.wali.kabupaten_wali || "",
+              provinsi: result.data.wali.provinsi_wali || "",
+              kode_pos: result.data.wali.kode_pos_wali || "",
+            },
+            wali_sama_dengan_ortu: result.data.wali_sama_dengan_ortu ?? true,
+          }));
+        }
+
+        if (reqRes) {
+          const reqJson = await reqRes.json();
+          if (reqJson.success) setRequestStatus(reqJson.data);
+        }
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const showToast = (type: "success" | "error", message: string) => {
     setToast({ type, message });
@@ -520,7 +541,6 @@ export default function DataLengkapForm() {
 
     try {
       setSaving(true);
-
       const response = await fetch("/api/pendaftar/data-lengkap", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -528,12 +548,31 @@ export default function DataLengkapForm() {
       });
 
       const result = await response.json();
-
       if (!result.success) {
         throw new Error(result.error || "Gagal menyimpan data");
       }
 
-      showToast("success", "Data berhasil disimpan!");
+      if (requestStatus?.status === 'approved_to_edit') {
+        const reqUpdate = await fetch("/api/pendaftar/request-edit", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            request_id: requestStatus.id,
+            status: 'submitted'
+          })
+        });
+
+        const reqJson = await reqUpdate.json();
+        if (reqJson.success) {
+          setRequestStatus(reqJson.data);
+          showToast("success", "Perubahan data berhasil diajukan untuk verifikasi!");
+        } else {
+          showToast("success", "Data tersimpan, namun gagal update status request.");
+        }
+      } else {
+        showToast("success", "Data berhasil disimpan!");
+      }
+
     } catch (error: any) {
       showToast("error", error.message || "Gagal menyimpan data");
     } finally {
@@ -541,72 +580,88 @@ export default function DataLengkapForm() {
     }
   };
 
-  // Check section completion
-  const isSantriComplete =
+  const isSantriComplete = Boolean(
     formData.santri.nama_lengkap &&
     formData.santri.tempat_lahir &&
     formData.santri.tanggal_lahir &&
-    formData.santri.alamat_lengkap;
+    formData.santri.alamat_lengkap
+  );
 
-  const isAyahComplete =
-    formData.ayah.nama_lengkap && formData.ayah.pekerjaan;
+  const isAyahComplete = Boolean(
+    formData.ayah.nama_lengkap && formData.ayah.pekerjaan
+  );
 
-  const isIbuComplete =
-    formData.ibu.nama_lengkap && formData.ibu.pekerjaan;
+  const isIbuComplete = Boolean(
+    formData.ibu.nama_lengkap && formData.ibu.pekerjaan
+  );
+
+  const isEditMode = requestStatus?.status === 'approved_to_edit';
 
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64 space-y-4">
-        <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
-        <p className="text-stone-600">Memuat data...</p>
+        <Loader2 className="w-10 h-10 text-teal-600 animate-spin" />
+        <p className="text-ink-500 font-medium">Memuat data...</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Toast */}
-      {toast && (
+    <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in duration-500">
+
+      {toastMessage && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg flex items-center gap-3 ${toast.type === "success"
-            ? "bg-green-500 text-white"
-            : "bg-red-500 text-white"
+          className={`fixed top-6 right-6 z-50 px-6 py-4 rounded-2xl shadow-clay-lg flex items-center gap-3 animate-in slide-in-from-right duration-300 ${toastMessage.type === "success"
+            ? "bg-emerald-500 text-white shadow-emerald-500/20"
+            : "bg-red-500 text-white shadow-red-500/20"
             }`}
         >
-          {toast.type === "success" ? (
+          {toastMessage.type === "success" ? (
             <CheckCircle className="w-5 h-5" />
           ) : (
             <XCircle className="w-5 h-5" />
           )}
-          <span className="font-medium">{toast.message}</span>
+          <span className="font-bold text-sm tracking-wide">{toastMessage.message}</span>
         </div>
       )}
 
       {/* Info Box */}
-      <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+      {isEditMode ? (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 shadow-sm">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center shrink-0">
+              <CheckCircle className="w-6 h-6 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-sm text-emerald-800 font-bold mb-1">
+                Mode Edit Aktif
+              </p>
+              <p className="text-sm text-emerald-700 leading-relaxed">
+                Anda diizinkan admin untuk mengubah data. Silakan perbaiki data yang salah, lalu klik tombol <strong>"Simpan & Ajukan Verifikasi"</strong> di bawah.
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-5 flex gap-4">
+          <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center shrink-0">
+            <Info className="w-6 h-6 text-amber-600" />
+          </div>
           <div>
-            <p className="text-sm text-amber-800 font-bold">
+            <p className="text-sm text-amber-900 font-bold mb-1">
               Petunjuk Pengisian Data
             </p>
-            <ul className="text-sm text-amber-700 mt-1 space-y-1">
-              <li>
-                &bull; Isi data dengan lengkap dan benar sesuai dokumen resmi
-              </li>
-              <li>&bull; Data yang bertanda (*) wajib diisi</li>
-              <li>
-                &bull; Pastikan nomor telepon dan email aktif untuk komunikasi
-              </li>
-              <li>
-                &bull; Klik tombol "Simpan Data" setelah selesai mengisi
-              </li>
+            <ul className="text-sm text-amber-800 space-y-1 font-medium opacity-80 list-disc list-inside">
+              <li>Isi data dengan lengkap dan benar sesuai dokumen resmi</li>
+              <li>Data yang bertanda (*) wajib diisi</li>
+              <li>Klik tombol "Simpan Data" setelah selesai mengisi</li>
             </ul>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Section: Data Diri Santri */}
+      {/* SECTIONS */}
+      {/* 1. Data Diri Santri */}
       <div className="space-y-4">
         <SectionHeader
           icon={User}
@@ -618,271 +673,90 @@ export default function DataLengkapForm() {
         />
 
         {openSections.santri && (
-          <div className="bg-white rounded-xl border-2 border-stone-200 p-6 space-y-6">
+          <div className="glass-panel p-6 md:p-8 rounded-[2rem] space-y-8 animate-in slide-in-from-top-4 duration-300">
+
             {/* Identitas */}
             <div>
-              <h4 className="font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded text-xs flex items-center justify-center">
-                  1
-                </span>
-                Identitas Diri
+              <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
+                <span className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-sm">1</span>
+                Identitas Utama
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <InputField
-                  label="NIK"
-                  name="nik"
-                  value={formData.santri.nik}
-                  onChange={(v) => updateSantri("nik", v)}
-                  placeholder="16 digit NIK"
-                  maxLength={16}
-                  required
-                />
-                <InputField
-                  label="Nama Lengkap"
-                  name="nama_lengkap"
-                  value={formData.santri.nama_lengkap}
-                  onChange={(v) => updateSantri("nama_lengkap", v)}
-                  placeholder="Sesuai akta kelahiran"
-                  required
-                />
-                <InputField
-                  label="Tempat Lahir"
-                  name="tempat_lahir"
-                  value={formData.santri.tempat_lahir}
-                  onChange={(v) => updateSantri("tempat_lahir", v)}
-                  placeholder="Kota/Kabupaten"
-                  required
-                />
-                <InputField
-                  label="Tanggal Lahir"
-                  name="tanggal_lahir"
-                  value={formData.santri.tanggal_lahir}
-                  onChange={(v) => updateSantri("tanggal_lahir", v)}
-                  type="date"
-                  required
-                />
-                <InputField
-                  label="Jenis Kelamin"
-                  name="jenis_kelamin"
-                  value={formData.santri.jenis_kelamin}
-                  onChange={(v) => updateSantri("jenis_kelamin", v)}
-                  options={["Laki-laki", "Perempuan"]}
-                  required
-                />
-                <InputField
-                  label="Agama"
-                  name="agama"
-                  value={formData.santri.agama}
-                  onChange={(v) => updateSantri("agama", v)}
-                  options={AGAMA_OPTIONS}
-                  required
-                />
-                <InputField
-                  label="Kewarganegaraan"
-                  name="kewarganegaraan"
-                  value={formData.santri.kewarganegaraan}
-                  onChange={(v) => updateSantri("kewarganegaraan", v)}
-                  placeholder="Indonesia"
-                  required
-                />
-                <InputField
-                  label="Anak Ke"
-                  name="anak_ke"
-                  value={formData.santri.anak_ke}
-                  onChange={(v) => updateSantri("anak_ke", parseInt(v) || 1)}
-                  type="number"
-                />
-                <InputField
-                  label="Jumlah Saudara"
-                  name="jumlah_saudara"
-                  value={formData.santri.jumlah_saudara}
-                  onChange={(v) =>
-                    updateSantri("jumlah_saudara", parseInt(v) || 1)
-                  }
-                  type="number"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <InputField label="NIK" name="nik" value={formData.santri.nik} onChange={(v) => updateSantri("nik", v)} placeholder="16 digit NIK" maxLength={16} required />
+                <InputField label="Nama Lengkap" name="nama_lengkap" value={formData.santri.nama_lengkap} onChange={(v) => updateSantri("nama_lengkap", v)} placeholder="Sesuai akta kelahiran" required />
+                <InputField label="Tempat Lahir" name="tempat_lahir" value={formData.santri.tempat_lahir} onChange={(v) => updateSantri("tempat_lahir", v)} placeholder="Kota/Kabupaten" required />
+                <InputField label="Tanggal Lahir" name="tanggal_lahir" value={formData.santri.tanggal_lahir} onChange={(v) => updateSantri("tanggal_lahir", v)} type="date" required />
+                <InputField label="Jenis Kelamin" name="jenis_kelamin" value={formData.santri.jenis_kelamin} onChange={(v) => updateSantri("jenis_kelamin", v)} options={["Laki-laki", "Perempuan"]} required />
+                <InputField label="Agama" name="agama" value={formData.santri.agama} onChange={(v) => updateSantri("agama", v)} options={AGAMA_OPTIONS} required />
+                <InputField label="Kewarganegaraan" name="kewarganegaraan" value={formData.santri.kewarganegaraan} onChange={(v) => updateSantri("kewarganegaraan", v)} placeholder="Indonesia" required />
+                <InputField label="Anak Ke" name="anak_ke" value={formData.santri.anak_ke} onChange={(v) => updateSantri("anak_ke", parseInt(v) || 1)} type="number" />
+                <InputField label="Jumlah Saudara" name="jumlah_saudara" value={formData.santri.jumlah_saudara} onChange={(v) => updateSantri("jumlah_saudara", parseInt(v) || 1)} type="number" />
               </div>
             </div>
 
-            {/* Data Fisik */}
+            {/* Fisik */}
             <div>
-              <h4 className="font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded text-xs flex items-center justify-center">
-                  2
-                </span>
-                Data Fisik & Kesehatan
+              <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
+                <span className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-sm">2</span>
+                Fisik & Kesehatan
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <InputField
-                  label="Golongan Darah"
-                  name="golongan_darah"
-                  value={formData.santri.golongan_darah}
-                  onChange={(v) => updateSantri("golongan_darah", v)}
-                  options={GOLONGAN_DARAH_OPTIONS}
-                />
-                <InputField
-                  label="Tinggi Badan (cm)"
-                  name="tinggi_badan"
-                  value={formData.santri.tinggi_badan || ""}
-                  onChange={(v) =>
-                    updateSantri("tinggi_badan", parseInt(v) || 0)
-                  }
-                  type="number"
-                  placeholder="150"
-                />
-                <InputField
-                  label="Berat Badan (kg)"
-                  name="berat_badan"
-                  value={formData.santri.berat_badan || ""}
-                  onChange={(v) =>
-                    updateSantri("berat_badan", parseInt(v) || 0)
-                  }
-                  type="number"
-                  placeholder="45"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <InputField label="Golongan Darah" name="golongan_darah" value={formData.santri.golongan_darah} onChange={(v) => updateSantri("golongan_darah", v)} options={GOLONGAN_DARAH_OPTIONS} />
+                <InputField label="Tinggi Badan (cm)" name="tinggi_badan" value={formData.santri.tinggi_badan || ""} onChange={(v) => updateSantri("tinggi_badan", parseInt(v) || 0)} type="number" placeholder="150" />
+                <InputField label="Berat Badan (kg)" name="berat_badan" value={formData.santri.berat_badan || ""} onChange={(v) => updateSantri("berat_badan", parseInt(v) || 0)} type="number" placeholder="45" />
                 <div className="md:col-span-2 lg:col-span-1">
-                  <InputField
-                    label="Riwayat Penyakit"
-                    name="riwayat_penyakit"
-                    value={formData.santri.riwayat_penyakit}
-                    onChange={(v) => updateSantri("riwayat_penyakit", v)}
-                    placeholder="Kosongkan jika tidak ada"
-                  />
+                  <InputField label="Riwayat Penyakit" name="riwayat_penyakit" value={formData.santri.riwayat_penyakit} onChange={(v) => updateSantri("riwayat_penyakit", v)} placeholder="-" />
                 </div>
               </div>
             </div>
 
             {/* Alamat */}
             <div>
-              <h4 className="font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded text-xs flex items-center justify-center">
-                  3
-                </span>
+              <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
+                <span className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-sm">3</span>
                 Alamat Tempat Tinggal
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <InputField
-                    label="Alamat Lengkap"
-                    name="alamat_lengkap"
-                    value={formData.santri.alamat_lengkap}
-                    onChange={(v) => updateSantri("alamat_lengkap", v)}
-                    type="textarea"
-                    placeholder="Jalan, nomor rumah, nama perumahan/kampung"
-                    required
-                  />
+                  <InputField label="Alamat Lengkap" name="alamat_lengkap" value={formData.santri.alamat_lengkap} onChange={(v) => updateSantri("alamat_lengkap", v)} type="textarea" placeholder="Jalan, nomor rumah, RT/RW..." required />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <InputField
-                    label="RT"
-                    name="rt"
-                    value={formData.santri.rt}
-                    onChange={(v) => updateSantri("rt", v)}
-                    placeholder="001"
-                    maxLength={3}
-                  />
-                  <InputField
-                    label="RW"
-                    name="rw"
-                    value={formData.santri.rw}
-                    onChange={(v) => updateSantri("rw", v)}
-                    placeholder="002"
-                    maxLength={3}
-                  />
+                  <InputField label="RT" name="rt" value={formData.santri.rt} onChange={(v) => updateSantri("rt", v)} placeholder="001" maxLength={3} />
+                  <InputField label="RW" name="rw" value={formData.santri.rw} onChange={(v) => updateSantri("rw", v)} placeholder="002" maxLength={3} />
                 </div>
-
                 <div className="md:col-span-2">
-                  <WilayahSelector
-                    value={{
-                      provinsi: formData.santri.provinsi,
-                      kabupaten: formData.santri.kabupaten,
-                      kecamatan: formData.santri.kecamatan,
-                      kelurahan: formData.santri.kelurahan,
-                      kode_pos: formData.santri.kode_pos,
-                    }}
-                    onChange={handleSantriAddressChange}
-                  />
+                  <WilayahSelector value={{
+                    provinsi: formData.santri.provinsi,
+                    kabupaten: formData.santri.kabupaten,
+                    kecamatan: formData.santri.kecamatan,
+                    kelurahan: formData.santri.kelurahan,
+                    kode_pos: formData.santri.kode_pos
+                  }} onChange={handleSantriAddressChange} />
                 </div>
               </div>
             </div>
 
             {/* Kontak */}
             <div>
-              <h4 className="font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded text-xs flex items-center justify-center">
-                  4
-                </span>
-                Kontak
+              <h4 className="flex items-center gap-2 text-lg font-bold text-ink-900 mb-6 pb-2 border-b border-ink-100">
+                <span className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center text-sm">4</span>
+                Kontak & Sekolah Asal
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="Nomor HP/WhatsApp"
-                  name="no_hp"
-                  value={formData.santri.no_hp}
-                  onChange={(v) => updateSantri("no_hp", v)}
-                  placeholder="08xxxxxxxxxx"
-                  required
-                />
-                <InputField
-                  label="Email"
-                  name="email"
-                  value={formData.santri.email}
-                  onChange={(v) => updateSantri("email", v)}
-                  type="email"
-                  placeholder="email@example.com"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputField label="Nomor HP/WhatsApp" name="no_hp" value={formData.santri.no_hp} onChange={(v) => updateSantri("no_hp", v)} placeholder="08xxxxxxxxxx" required />
+                <InputField label="Email" name="email" value={formData.santri.email} onChange={(v) => updateSantri("email", v)} type="email" placeholder="email@example.com" />
+                <InputField label="Nama Sekolah Asal" name="asal_sekolah" value={formData.santri.asal_sekolah} onChange={(v) => updateSantri("asal_sekolah", v)} placeholder="Nama Sekolah" required />
+                <InputField label="NISN" name="nisn" value={formData.santri.nisn} onChange={(v) => updateSantri("nisn", v)} placeholder="10 digit NISN" maxLength={10} />
+                <InputField label="Tahun Lulus" name="tahun_lulus" value={formData.santri.tahun_lulus} onChange={(v) => updateSantri("tahun_lulus", v)} placeholder="2024" maxLength={4} />
+                <InputField label="Alamat Sekolah" name="alamat_sekolah" value={formData.santri.alamat_sekolah} onChange={(v) => updateSantri("alamat_sekolah", v)} placeholder="Alamat lengkap sekolah" />
               </div>
             </div>
 
-            {/* Sekolah Asal */}
-            <div>
-              <h4 className="font-bold text-stone-900 mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-teal-500 text-white rounded text-xs flex items-center justify-center">
-                  5
-                </span>
-                Asal Sekolah
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <InputField
-                  label="Nama Sekolah Asal"
-                  name="asal_sekolah"
-                  value={formData.santri.asal_sekolah}
-                  onChange={(v) => updateSantri("asal_sekolah", v)}
-                  placeholder="SDN/MI/SMP/MTs ..."
-                  required
-                />
-                <InputField
-                  label="NISN"
-                  name="nisn"
-                  value={formData.santri.nisn}
-                  onChange={(v) => updateSantri("nisn", v)}
-                  placeholder="10 digit NISN"
-                  maxLength={10}
-                />
-                <div className="md:col-span-2">
-                  <InputField
-                    label="Alamat Sekolah"
-                    name="alamat_sekolah"
-                    value={formData.santri.alamat_sekolah}
-                    onChange={(v) => updateSantri("alamat_sekolah", v)}
-                    placeholder="Alamat lengkap sekolah asal"
-                  />
-                </div>
-                <InputField
-                  label="Tahun Lulus"
-                  name="tahun_lulus"
-                  value={formData.santri.tahun_lulus}
-                  onChange={(v) => updateSantri("tahun_lulus", v)}
-                  placeholder="2026"
-                  maxLength={4}
-                />
-              </div>
-            </div>
           </div>
         )}
       </div>
 
-      {/* Section: Data Ayah */}
+      {/* 2. Data Ayah */}
       <div className="space-y-4">
         <SectionHeader
           icon={Users}
@@ -894,104 +768,29 @@ export default function DataLengkapForm() {
         />
 
         {openSections.ayah && (
-          <div className="bg-white rounded-xl border-2 border-stone-200 p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <InputField
-                label="Nama Lengkap Ayah"
-                name="nama_lengkap_ayah"
-                value={formData.ayah.nama_lengkap}
-                onChange={(v) => updateAyah("nama_lengkap", v)}
-                placeholder="Sesuai KTP"
-                required
-              />
-              <InputField
-                label="NIK Ayah"
-                name="nik_ayah"
-                value={formData.ayah.nik}
-                onChange={(v) => updateAyah("nik", v)}
-                placeholder="16 digit NIK"
-                maxLength={16}
-                disabled={formData.ayah.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Status"
-                name="status_ayah"
-                value={formData.ayah.status_hidup}
-                onChange={(v) => updateAyah("status_hidup", v)}
-                options={["Masih Hidup", "Sudah Meninggal"]}
-                required
-              />
-              <InputField
-                label="Tempat Lahir"
-                name="tempat_lahir_ayah"
-                value={formData.ayah.tempat_lahir}
-                onChange={(v) => updateAyah("tempat_lahir", v)}
-                placeholder="Kota/Kabupaten"
-              />
-              <InputField
-                label="Tanggal Lahir"
-                name="tanggal_lahir_ayah"
-                value={formData.ayah.tanggal_lahir}
-                onChange={(v) => updateAyah("tanggal_lahir", v)}
-                type="date"
-              />
-              <InputField
-                label="Agama"
-                name="agama_ayah"
-                value={formData.ayah.agama}
-                onChange={(v) => updateAyah("agama", v)}
-                options={AGAMA_OPTIONS}
-              />
-              <InputField
-                label="Pendidikan Terakhir"
-                name="pendidikan_ayah"
-                value={formData.ayah.pendidikan_terakhir}
-                onChange={(v) => updateAyah("pendidikan_terakhir", v)}
-                options={PENDIDIKAN_OPTIONS}
-                required
-              />
-              <InputField
-                label="Pekerjaan"
-                name="pekerjaan_ayah"
-                value={formData.ayah.pekerjaan}
-                onChange={(v) => updateAyah("pekerjaan", v)}
-                options={PEKERJAAN_OPTIONS}
-                required={formData.ayah.status_hidup !== "Sudah Meninggal"}
-                disabled={formData.ayah.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Penghasilan/Bulan"
-                name="penghasilan_ayah"
-                value={formData.ayah.penghasilan}
-                onChange={(v) => updateAyah("penghasilan", v)}
-                options={PENGHASILAN_OPTIONS}
-                required={formData.ayah.status_hidup !== "Sudah Meninggal"}
-                disabled={formData.ayah.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="No HP Ayah"
-                name="no_hp_ayah"
-                value={formData.ayah.no_hp}
-                onChange={(v) => updateAyah("no_hp", v)}
-                placeholder="08xxxxxxxxxx"
-                required={formData.ayah.status_hidup !== "Sudah Meninggal"}
-                disabled={formData.ayah.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Email Ayah"
-                name="email_ayah"
-                value={formData.ayah.email}
-                onChange={(v) => updateAyah("email", v)}
-                type="email"
-                placeholder="email@example.com"
-                disabled={formData.ayah.status_hidup === "Sudah Meninggal"}
-              />
+          <div className="glass-panel p-6 md:p-8 rounded-[2rem] animate-in slide-in-from-top-4 duration-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <InputField label="Nama Lengkap Ayah" name="nama_lengkap_ayah" value={formData.ayah.nama_lengkap} onChange={(v) => updateAyah("nama_lengkap", v)} placeholder="Sesuai KTP" required />
+              <InputField label="NIK" name="nik_ayah" value={formData.ayah.nik} onChange={(v) => updateAyah("nik", v)} placeholder="16 digit NIK" maxLength={16} disabled={formData.ayah.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Status" name="status_ayah" value={formData.ayah.status_hidup} onChange={(v) => updateAyah("status_hidup", v)} options={["Masih Hidup", "Sudah Meninggal"]} required />
+
+              {/* Conditional Fields based on Status Hidup */}
+              <InputField label="Tempat Lahir" name="tempat_lahir_ayah" value={formData.ayah.tempat_lahir} onChange={(v) => updateAyah("tempat_lahir", v)} placeholder="Kota" />
+              <InputField label="Tanggal Lahir" name="tanggal_lahir_ayah" value={formData.ayah.tanggal_lahir} onChange={(v) => updateAyah("tanggal_lahir", v)} type="date" />
+              <InputField label="Agama" name="agama_ayah" value={formData.ayah.agama} onChange={(v) => updateAyah("agama", v)} options={AGAMA_OPTIONS} />
+              <InputField label="Pendidikan Terakhir" name="pendidikan_ayah" value={formData.ayah.pendidikan_terakhir} onChange={(v) => updateAyah("pendidikan_terakhir", v)} options={PENDIDIKAN_OPTIONS} required />
+
+              <InputField label="Pekerjaan" name="pekerjaan_ayah" value={formData.ayah.pekerjaan} onChange={(v) => updateAyah("pekerjaan", v)} options={PEKERJAAN_OPTIONS} required={formData.ayah.status_hidup !== "Sudah Meninggal"} disabled={formData.ayah.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Penghasilan" name="penghasilan_ayah" value={formData.ayah.penghasilan} onChange={(v) => updateAyah("penghasilan", v)} options={PENGHASILAN_OPTIONS} required={formData.ayah.status_hidup !== "Sudah Meninggal"} disabled={formData.ayah.status_hidup === "Sudah Meninggal"} />
+
+              <InputField label="No HP" name="no_hp_ayah" value={formData.ayah.no_hp} onChange={(v) => updateAyah("no_hp", v)} placeholder="08xxx" required={formData.ayah.status_hidup !== "Sudah Meninggal"} disabled={formData.ayah.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Email" name="email_ayah" value={formData.ayah.email} onChange={(v) => updateAyah("email", v)} type="email" placeholder="email@example.com" disabled={formData.ayah.status_hidup === "Sudah Meninggal"} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Section: Data Ibu */}
+      {/* 3. Data Ibu */}
       <div className="space-y-4">
         <SectionHeader
           icon={Heart}
@@ -1003,330 +802,108 @@ export default function DataLengkapForm() {
         />
 
         {openSections.ibu && (
-          <div className="bg-white rounded-xl border-2 border-stone-200 p-6 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <InputField
-                label="Nama Lengkap Ibu"
-                name="nama_lengkap_ibu"
-                value={formData.ibu.nama_lengkap}
-                onChange={(v) => updateIbu("nama_lengkap", v)}
-                placeholder="Sesuai KTP"
-                required
-              />
-              <InputField
-                label="NIK Ibu"
-                name="nik_ibu"
-                value={formData.ibu.nik}
-                onChange={(v) => updateIbu("nik", v)}
-                placeholder="16 digit NIK"
-                maxLength={16}
-                disabled={formData.ibu.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Status"
-                name="status_ibu"
-                value={formData.ibu.status_hidup}
-                onChange={(v) => updateIbu("status_hidup", v)}
-                options={["Masih Hidup", "Sudah Meninggal"]}
-                required
-              />
-              <InputField
-                label="Tempat Lahir"
-                name="tempat_lahir_ibu"
-                value={formData.ibu.tempat_lahir}
-                onChange={(v) => updateIbu("tempat_lahir", v)}
-                placeholder="Kota/Kabupaten"
-              />
-              <InputField
-                label="Tanggal Lahir"
-                name="tanggal_lahir_ibu"
-                value={formData.ibu.tanggal_lahir}
-                onChange={(v) => updateIbu("tanggal_lahir", v)}
-                type="date"
-              />
-              <InputField
-                label="Agama"
-                name="agama_ibu"
-                value={formData.ibu.agama}
-                onChange={(v) => updateIbu("agama", v)}
-                options={AGAMA_OPTIONS}
-              />
-              <InputField
-                label="Pendidikan Terakhir"
-                name="pendidikan_ibu"
-                value={formData.ibu.pendidikan_terakhir}
-                onChange={(v) => updateIbu("pendidikan_terakhir", v)}
-                options={PENDIDIKAN_OPTIONS}
-                required
-              />
-              <InputField
-                label="Pekerjaan"
-                name="pekerjaan_ibu"
-                value={formData.ibu.pekerjaan}
-                onChange={(v) => updateIbu("pekerjaan", v)}
-                options={PEKERJAAN_OPTIONS}
-                required={formData.ibu.status_hidup !== "Sudah Meninggal"}
-                disabled={formData.ibu.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Penghasilan/Bulan"
-                name="penghasilan_ibu"
-                value={formData.ibu.penghasilan}
-                onChange={(v) => updateIbu("penghasilan", v)}
-                options={PENGHASILAN_OPTIONS}
-                disabled={formData.ibu.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="No HP Ibu"
-                name="no_hp_ibu"
-                value={formData.ibu.no_hp}
-                onChange={(v) => updateIbu("no_hp", v)}
-                placeholder="08xxxxxxxxxx"
-                required={formData.ibu.status_hidup !== "Sudah Meninggal"}
-                disabled={formData.ibu.status_hidup === "Sudah Meninggal"}
-              />
-              <InputField
-                label="Email Ibu"
-                name="email_ibu"
-                value={formData.ibu.email}
-                onChange={(v) => updateIbu("email", v)}
-                type="email"
-                placeholder="email@example.com"
-                disabled={formData.ibu.status_hidup === "Sudah Meninggal"}
-              />
+          <div className="glass-panel p-6 md:p-8 rounded-[2rem] animate-in slide-in-from-top-4 duration-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <InputField label="Nama Lengkap Ibu" name="nama_lengkap_ibu" value={formData.ibu.nama_lengkap} onChange={(v) => updateIbu("nama_lengkap", v)} placeholder="Sesuai KTP" required />
+              <InputField label="NIK" name="nik_ibu" value={formData.ibu.nik} onChange={(v) => updateIbu("nik", v)} placeholder="16 digit NIK" maxLength={16} disabled={formData.ibu.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Status" name="status_ibu" value={formData.ibu.status_hidup} onChange={(v) => updateIbu("status_hidup", v)} options={["Masih Hidup", "Sudah Meninggal"]} required />
+
+              <InputField label="Tempat Lahir" name="tempat_lahir_ibu" value={formData.ibu.tempat_lahir} onChange={(v) => updateIbu("tempat_lahir", v)} placeholder="Kota" />
+              <InputField label="Tanggal Lahir" name="tanggal_lahir_ibu" value={formData.ibu.tanggal_lahir} onChange={(v) => updateIbu("tanggal_lahir", v)} type="date" />
+              <InputField label="Agama" name="agama_ibu" value={formData.ibu.agama} onChange={(v) => updateIbu("agama", v)} options={AGAMA_OPTIONS} />
+              <InputField label="Pendidikan Terakhir" name="pendidikan_ibu" value={formData.ibu.pendidikan_terakhir} onChange={(v) => updateIbu("pendidikan_terakhir", v)} options={PENDIDIKAN_OPTIONS} required />
+
+              <InputField label="Pekerjaan" name="pekerjaan_ibu" value={formData.ibu.pekerjaan} onChange={(v) => updateIbu("pekerjaan", v)} options={PEKERJAAN_OPTIONS} required={formData.ibu.status_hidup !== "Sudah Meninggal"} disabled={formData.ibu.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Penghasilan" name="penghasilan_ibu" value={formData.ibu.penghasilan} onChange={(v) => updateIbu("penghasilan", v)} options={PENGHASILAN_OPTIONS} disabled={formData.ibu.status_hidup === "Sudah Meninggal"} />
+
+              <InputField label="No HP" name="no_hp_ibu" value={formData.ibu.no_hp} onChange={(v) => updateIbu("no_hp", v)} placeholder="08xxx" required={formData.ibu.status_hidup !== "Sudah Meninggal"} disabled={formData.ibu.status_hidup === "Sudah Meninggal"} />
+              <InputField label="Email" name="email_ibu" value={formData.ibu.email} onChange={(v) => updateIbu("email", v)} type="email" placeholder="email@example.com" disabled={formData.ibu.status_hidup === "Sudah Meninggal"} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Section: Data Wali */}
+      {/* 4. Data Wali */}
       <div className="space-y-4">
+        <div className="flex items-center gap-3 mb-4 px-2">
+          <div className="relative flex items-center">
+            <input
+              type="checkbox"
+              id="wali_ortu"
+              checked={formData.wali_sama_dengan_ortu}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setFormData(prev => ({ ...prev, wali_sama_dengan_ortu: checked }));
+                setOpenSections(prev => ({ ...prev, wali: !checked }));
+              }}
+              disabled={bothParentsDeceased}
+              className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-ink-300 bg-white checked:border-teal-500 checked:bg-teal-500 hover:border-teal-400 focus:outline-none focus:ring-4 focus:ring-teal-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <CheckCircle className="pointer-events-none absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100" />
+          </div>
+          <label htmlFor="wali_ortu" className="text-sm font-bold text-ink-700 cursor-pointer select-none">
+            Data Wali sama dengan Ayah/Ibu
+          </label>
+        </div>
+
         <SectionHeader
           icon={Users}
-          title={bothParentsDeceased ? "Data Wali (WAJIB)" : "Data Wali (Opsional)"}
-          subtitle={bothParentsDeceased
-            ? "Wajib diisi karena kedua orang tua sudah meninggal"
-            : "Isi jika wali berbeda dengan orang tua kandung"}
+          title="Data Wali"
+          subtitle="Diisi jika wali bukan orang tua kandung"
           isOpen={openSections.wali}
           onToggle={() => toggleSection("wali")}
+          isCompleted={false}
         />
 
         {openSections.wali && (
-          <div className="bg-white rounded-xl border-2 border-stone-200 p-6 space-y-4">
-            {/* Show warning if both parents deceased */}
-            {bothParentsDeceased && (
-              <div className="flex items-center gap-3 p-4 bg-amber-50 border border-amber-300 rounded-lg mb-4">
-                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-                <p className="text-sm text-amber-800">
-                  <strong>Perhatian:</strong> Karena kedua orang tua sudah meninggal, data wali wajib diisi lengkap.
-                </p>
-              </div>
-            )}
+          <div className="glass-panel p-6 md:p-8 rounded-[2rem] animate-in slide-in-from-top-4 duration-300">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <InputField label="Hubungan" name="hubungan_wali" value={formData.wali.hubungan} onChange={(v) => updateWali("hubungan", v)} placeholder="Paman, Kakek, dll" required={bothParentsDeceased} />
+              <InputField label="Nama Lengkap" name="nama_lengkap_wali" value={formData.wali.nama_lengkap} onChange={(v) => updateWali("nama_lengkap", v)} placeholder="Sesuai KTP" required={bothParentsDeceased} />
+              <InputField label="NIK" name="nik_wali" value={formData.wali.nik} onChange={(v) => updateWali("nik", v)} placeholder="16 digit NIK" maxLength={16} required={bothParentsDeceased} />
+              <InputField label="No HP" name="no_hp_wali" value={formData.wali.no_hp} onChange={(v) => updateWali("no_hp", v)} placeholder="08xxx" required={bothParentsDeceased} />
+            </div>
 
-            {/* Only show checkbox if both parents are NOT deceased */}
-            {!bothParentsDeceased && (
-              <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mb-4">
-                <input
-                  type="checkbox"
-                  id="wali_sama"
-                  checked={formData.wali_sama_dengan_ortu}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      wali_sama_dengan_ortu: e.target.checked,
-                    }))
-                  }
-                  className="w-5 h-5 text-teal-600 rounded"
-                />
-                <label htmlFor="wali_sama" className="text-sm text-blue-800">
-                  Wali sama dengan orang tua (Ayah/Ibu)
-                </label>
-              </div>
-            )}
-
-            {/* Show wali form if not same as parents OR if both parents deceased */}
-            {(!formData.wali_sama_dengan_ortu || bothParentsDeceased) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <InputField
-                  label="Hubungan dengan Santri"
-                  name="hubungan_wali"
-                  value={formData.wali.hubungan}
-                  onChange={(v) => updateWali("hubungan", v)}
-                  options={[
-                    "Kakek",
-                    "Nenek",
-                    "Paman",
-                    "Bibi",
-                    "Kakak",
-                    "Lainnya",
-                  ]}
-                  required
-                />
-                <InputField
-                  label="Nama Lengkap Wali"
-                  name="nama_lengkap_wali"
-                  value={formData.wali.nama_lengkap}
-                  onChange={(v) => updateWali("nama_lengkap", v)}
-                  placeholder="Sesuai KTP"
-                  required
-                />
-                <InputField
-                  label="NIK Wali"
-                  name="nik_wali"
-                  value={formData.wali.nik}
-                  onChange={(v) => updateWali("nik", v)}
-                  placeholder="16 digit NIK"
-                  maxLength={16}
-                  required={bothParentsDeceased}
-                />
-                {/* Additional fields when both parents deceased */}
-                {bothParentsDeceased && (
-                  <>
-                    <InputField
-                      label="Tempat Lahir"
-                      name="tempat_lahir_wali"
-                      value={formData.wali.tempat_lahir}
-                      onChange={(v) => updateWali("tempat_lahir", v)}
-                      placeholder="Kota/Kabupaten"
-                    />
-                    <InputField
-                      label="Tanggal Lahir"
-                      name="tanggal_lahir_wali"
-                      value={formData.wali.tanggal_lahir}
-                      onChange={(v) => updateWali("tanggal_lahir", v)}
-                      type="date"
-                    />
-                    <InputField
-                      label="Agama"
-                      name="agama_wali"
-                      value={formData.wali.agama}
-                      onChange={(v) => updateWali("agama", v)}
-                      options={AGAMA_OPTIONS}
-                    />
-                    <InputField
-                      label="Pendidikan Terakhir"
-                      name="pendidikan_wali"
-                      value={formData.wali.pendidikan_terakhir}
-                      onChange={(v) => updateWali("pendidikan_terakhir", v)}
-                      options={PENDIDIKAN_OPTIONS}
-                      required
-                    />
-                  </>
-                )}
-                <InputField
-                  label="Pekerjaan Wali"
-                  name="pekerjaan_wali"
-                  value={formData.wali.pekerjaan}
-                  onChange={(v) => updateWali("pekerjaan", v)}
-                  options={PEKERJAAN_OPTIONS}
-                  required={bothParentsDeceased}
-                />
-                {bothParentsDeceased && (
-                  <InputField
-                    label="Penghasilan/Bulan"
-                    name="penghasilan_wali"
-                    value={formData.wali.penghasilan}
-                    onChange={(v) => updateWali("penghasilan", v)}
-                    options={PENGHASILAN_OPTIONS}
-                    required
+            <div className="mt-8 pt-6 border-t border-ink-100">
+              <h5 className="font-bold text-ink-800 mb-4 bg-surface-100 inline-block px-3 py-1 rounded-lg text-sm">Alamat Wali</h5>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2">
+                  <InputField label="Alamat Lengkap" name="alamat_wali" value={formData.wali.alamat} onChange={(v) => updateWali("alamat", v)} type="textarea" placeholder="Jalan..." required={bothParentsDeceased} />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <InputField label="RT" name="rt_wali" value={formData.wali.rt} onChange={(v) => updateWali("rt", v)} placeholder="001" maxLength={3} />
+                  <InputField label="RW" name="rw_wali" value={formData.wali.rw} onChange={(v) => updateWali("rw", v)} placeholder="002" maxLength={3} />
+                </div>
+                <div className="md:col-span-2">
+                  <WilayahSelector
+                    value={{
+                      provinsi: formData.wali.provinsi,
+                      kabupaten: formData.wali.kabupaten,
+                      kecamatan: formData.wali.kecamatan,
+                      kelurahan: formData.wali.kelurahan,
+                      kode_pos: formData.wali.kode_pos
+                    }}
+                    onChange={handleWaliAddressChange}
                   />
-                )}
-                <InputField
-                  label="No HP Wali"
-                  name="no_hp_wali"
-                  value={formData.wali.no_hp}
-                  onChange={(v) => updateWali("no_hp", v)}
-                  placeholder="08xxxxxxxxxx"
-                  required
-                />
-                {bothParentsDeceased && (
-                  <InputField
-                    label="Email Wali"
-                    name="email_wali"
-                    value={formData.wali.email}
-                    onChange={(v) => updateWali("email", v)}
-                    type="email"
-                    placeholder="email@example.com"
-                  />
-                )}
-                {/* Alamat Wali - Hanya muncul jika kedua orang tua meninggal */}
-                {bothParentsDeceased && (
-                  <>
-                    <div className="md:col-span-2 lg:col-span-3 border-t border-stone-200 pt-4 mt-2">
-                      <h5 className="font-bold text-stone-700 mb-2">Alamat Wali</h5>
-                    </div>
-
-                    <div className="md:col-span-2 lg:col-span-3">
-                      <InputField
-                        label="Alamat Lengkap"
-                        name="alamat_wali"
-                        value={formData.wali.alamat}
-                        onChange={(v) => updateWali("alamat", v)}
-                        type="textarea"
-                        placeholder="Jalan, nomor rumah, nama perumahan/kampung"
-                        required={bothParentsDeceased}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <InputField
-                        label="RT"
-                        name="rt_wali"
-                        value={formData.wali.rt}
-                        onChange={(v) => updateWali("rt", v)}
-                        placeholder="001"
-                        maxLength={3}
-                      />
-                      <InputField
-                        label="RW"
-                        name="rw_wali"
-                        value={formData.wali.rw}
-                        onChange={(v) => updateWali("rw", v)}
-                        placeholder="002"
-                        maxLength={3}
-                      />
-                    </div>
-
-                    <div className="md:col-span-2 lg:col-span-3">
-                      <WilayahSelector
-                        value={{
-                          provinsi: formData.wali.provinsi,
-                          kabupaten: formData.wali.kabupaten,
-                          kecamatan: formData.wali.kecamatan,
-                          kelurahan: formData.wali.kelurahan,
-                          kode_pos: formData.wali.kode_pos,
-                        }}
-                        onChange={handleWaliAddressChange}
-                      />
-                    </div>
-                  </>
-                )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end pt-8">
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-xl disabled:opacity-50"
+          className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold text-lg shadow-lg shadow-teal-500/30 hover:shadow-teal-500/40 hover:-translate-y-1 transition-all disabled:opacity-50 disabled:transform-none"
         >
-          {saving ? (
-            <>
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span>Menyimpan...</span>
-            </>
-          ) : (
-            <>
-              <Save className="w-5 h-5" />
-              <span>Simpan Data</span>
-            </>
-          )}
+          {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : isEditMode ? <Send className="w-6 h-6" /> : <Save className="w-6 h-6" />}
+          <span>{saving ? "Menyimpan..." : isEditMode ? "Simpan & Ajukan Verifikasi" : "Simpan Data"}</span>
         </button>
       </div>
+
     </form>
   );
 }

@@ -24,28 +24,16 @@ const PROGRAMS = [
         bgClass: "program-card-brown",
     },
     {
-        title: "I'dadiyah Lughawiy",
-        subtitle: "Program persiapan MA selama 1 tahun untuk memantapkan kemampuan bahasa Arab",
+        title: "I'dad Lughowi",
+        subtitle: "Program pendidikan 4 tahun (Setara SMA) dengan kurikulum kepesantrenan dan umum",
         features: [
-            "Intensif Bahasa Arab",
-            "Persiapan Masuk MA",
-            "Pemantapan Dasar Islam",
+            "Intensif Bahasa Arab & Syar'i",
+            "Tahfidz Al-Qur'an 30 Juz",
+            "Ijazah Formal (Paket C)",
         ],
         quotaPutra: "30 Siswa",
         quotaPutri: "-",
         bgClass: "program-card-gold",
-    },
-    {
-        title: "MA (Madrasah Aliyah)",
-        subtitle: "Jenjang pendidikan setara SMA dengan pembelajaran full bahasa Arab",
-        features: [
-            "Kurikulum Berbahasa Arab",
-            "Kajian Kitab Kuning",
-            "Sains & Keagamaan",
-        ],
-        quotaPutra: "30 Siswa",
-        quotaPutri: "-",
-        bgClass: "program-card-teal",
     },
 ] as const;
 
@@ -119,12 +107,12 @@ export default function ProgramSection() {
                     </div>
                     <h2 className="section-title mb-3">Program Pendidikan</h2>
                     <p className="section-subtitle mx-auto">
-                        Tiga program pendidikan berkualitas dengan kuota terbatas
+                        Dua program pendidikan berkualitas dengan kuota terbatas untuk putra
                     </p>
                 </div>
 
                 {/* Programs Grid */}
-                <div className="grid md:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
                     {PROGRAMS.map((program, idx) => (
                         <ProgramCard key={idx} {...program} />
                     ))}

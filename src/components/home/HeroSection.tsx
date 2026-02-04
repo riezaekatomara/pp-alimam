@@ -2,225 +2,115 @@
 
 import Link from "next/link";
 import Image from "next/image";
-// import ScrollAnimation from "@/components/ui/ScrollAnimation";
 import {
   Phone,
-  Calendar,
-  CheckCircle,
-  GraduationCap,
-  BookOpen,
   Clock,
   School,
-  Sparkles,
   ArrowRight,
+  GraduationCap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
 
-const BENEFITS = [
-  "Pendaftaran Online 24/7",
-  "Biaya Dapat Dicicil",
-  "Kuota Terbatas",
-] as const;
-
-const CONTACT_INFO = {
-  phone: {
-    display: "(0266) 734-5601",
-    href: "tel:+622667345601",
-  },
-} as const;
-
-function HeroBadge() {
-  return (
-    <div className="badge-outline">
-      <School className="w-4 h-4" />
-      <span>Akreditasi A - Berpengalaman Sejak 1995</span>
-    </div>
-  );
-}
-
-function HeroTitle() {
-  return (
-    <div className="space-y-2">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-        <span className="block text-[var(--color-text-900)]">Pesantren</span>
-        <span className="block text-gradient-brown">Al-Imam </span>
-        <span className="block text-gradient-brown">Al-Islami</span>
-        <span className="block text-[var(--color-teal-600)] mt-2">Sukabumi</span>
-      </h1>
-    </div>
-  );
-}
-
-function HeroDescription() {
-  return (
-    <p className="text-base sm:text-lg text-[var(--color-text-600)] leading-relaxed text-center lg:text-left">
-      Membina generasi Qur'ani yang berakhlak mulia, berilmu luas, dan
-      bermanfaat bagi umat dengan kurikulum terpadu Rabbani, Cendekia, dan
-      Mandiri
-    </p>
-  );
-}
-
-function HeroCTA() {
-  return (
-    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-      <Button
-        size="lg"
-        className="group bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] text-white shadow-lg hover:shadow-xl transition-all duration-300"
-        asChild
-      >
-        <Link href="/daftar" className="inline-flex items-center gap-2">
-          <ArrowRight className="w-5 h-5" />
-          <span>Daftar PPDB 2026/2027</span>
-        </Link>
-      </Button>
-
-      <Button
-        size="lg"
-        variant="outline"
-        className="border-2 border-[var(--color-brown-600)] text-[var(--color-brown-700)] hover:bg-[var(--color-brown-50)] transition-all duration-300"
-        asChild
-      >
-        <Link href="/ppdb" className="inline-flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
-          <span>Pelajari Lebih Lanjut</span>
-        </Link>
-      </Button>
-    </div>
-  );
-}
-
-function ContactInfo() {
-  return (
-    <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-[var(--color-text-600)]">
-      <a
-        href={CONTACT_INFO.phone.href}
-        className="flex items-center gap-2 hover:text-[var(--color-brown-700)] transition-colors"
-      >
-        <Phone className="w-4 h-4 text-[var(--color-teal-600)]" />
-        <span>{CONTACT_INFO.phone.display}</span>
-      </a>
-      <span className="flex items-center gap-2">
-        <Clock className="w-4 h-4 text-[var(--color-gold-600)]" />
-        <span>Senin - Sabtu, 08:00 - 16:00</span>
-      </span>
-    </div>
-  );
-}
-
-function RegistrationInfoCard() {
-  return (
-    <div className="bg-white rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-3 md:p-4 w-full">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4">
-        {/* Header - Left */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="w-10 h-10 rounded-xl bg-[var(--color-brown-100)] flex items-center justify-center flex-shrink-0">
-            <GraduationCap className="w-5 h-5 text-[var(--color-brown-700)]" />
-          </div>
-          <div>
-            <h3 className="font-bold text-[var(--color-text-900)] leading-tight text-base">
-              PPDB 2026/2027
-            </h3>
-            <p className="text-xs text-[var(--color-teal-600)] font-bold uppercase tracking-wide flex items-center gap-1.5 align-middle">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse block" />
-              <span>Dibuka!</span>
-            </p>
-          </div>
-        </div>
-
-        {/* Divider (Desktop) */}
-        <div className="hidden md:block w-px h-8 bg-[var(--color-cream-200)]" />
-
-        {/* Period - Middle */}
-        <div className="w-full md:w-auto flex-1 min-w-0 bg-[var(--color-cream-50)] md:bg-transparent rounded-lg p-2 md:p-0 border md:border-0 border-[var(--color-cream-200)] text-center md:text-left">
-          <div className="flex flex-col justify-center h-full">
-            <p className="text-[10px] text-[var(--color-text-500)] font-medium mb-0.5">
-              Periode Pendaftaran
-            </p>
-            <p className="font-bold text-[var(--color-text-900)] text-sm">
-              9 Februari - 31 Juni 2026
-            </p>
-          </div>
-        </div>
-
-        {/* CTA - Right */}
-        <div className="w-full md:w-auto flex-shrink-0">
-          <Button
-            className="w-full md:w-auto bg-[var(--color-brown-700)] hover:bg-[var(--color-brown-800)] text-white px-5 h-10 text-xs font-bold rounded-lg uppercase tracking-wide"
-            asChild
-          >
-            <Link href="/daftar" className="inline-flex items-center justify-center gap-2">
-              <span>Daftar Sekarang</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HeroImage() {
-  return (
-    <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-      <div className="relative w-full aspect-[4/3]">
-        <Image
-          src="/images/hero.jpg"
-          alt="Santri Pondok Pesantren Al-Imam Al-Islami sedang belajar Al-Qur'an"
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-      </div>
-    </div>
-  );
-}
-
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-cream-50)] via-white to-[var(--color-brown-50)] dark:via-[var(--color-cream-50)] dark:to-[var(--color-cream-100)] pt-12 pb-16 md:pt-20 md:pb-20">
-      {/* Decorative Elements - Simplified */}
-      <div
-        className="absolute top-20 right-0 w-[500px] h-[500px] bg-[var(--color-teal-200)] dark:bg-[var(--color-teal-900)] rounded-full blur-[100px] opacity-20 pointer-events-none"
-        aria-hidden="true"
-      />
+    <section className="relative overflow-hidden bg-surface-50 pt-28 pb-20 lg:pt-36 lg:pb-32">
+      {/* Decorative Orbs */}
+      <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brown-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* LEFT COLUMN - Text Content */}
-          <div className="space-y-8">
-            <div className="flex justify-center lg:justify-start">
-              <HeroBadge />
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+          {/* LEFT: Text Content */}
+          <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
+
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-surface-200 shadow-sm text-brown-600 text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-4">
+              <School className="w-4 h-4" />
+              <span>Terakreditasi A • Sejak 1995</span>
             </div>
-            <div className="text-center lg:text-left">
-              <HeroTitle />
+
+            {/* Title */}
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-display font-black text-brown-900 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-6 duration-700">
+              Pondok Pesantren <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brown-600 to-brown-800">Al-Imam Al-Islami</span>
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg md:text-xl text-ink-600 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+              Membangun generasi Rabbani yang berakhlak mulia, hafal Al-Qur'an, dan berwawasan global dengan kurikulum terpadu Syar'i dan Modern.
+            </p>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-150">
+              <Button
+                size="lg"
+                className="h-14 px-8 rounded-xl bg-brown-900 hover:bg-brown-800 text-white text-base font-bold shadow-lg shadow-brown-900/20 w-full sm:w-auto"
+                asChild
+              >
+                <Link href="/daftar">
+                  Daftar Sekarang
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-14 px-8 rounded-xl border-brown-200 text-brown-800 hover:bg-brown-50 text-base font-bold w-full sm:w-auto"
+                asChild
+              >
+                <Link href="/program">
+                  Lihat Program
+                </Link>
+              </Button>
             </div>
-            <div className="mx-auto lg:mx-0 max-w-lg">
-              <HeroDescription />
-            </div>
-            <div className="flex justify-center lg:justify-start">
-              <HeroCTA />
-            </div>
-            <div className="flex justify-center lg:justify-start">
-              <ContactInfo />
+
+            {/* Footer Info */}
+            <div className="flex items-center justify-center lg:justify-start gap-6 text-sm font-bold text-ink-500 animate-in fade-in slide-in-from-bottom-12 duration-700 delay-200">
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-teal-500" />
+                <span>(0266) 734-5601</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-gold-500" />
+                <span>Senin - Sabtu, 08:00 - 16:00</span>
+              </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN - Image + Info Card */}
-          <div className="relative">
-            {/* Image - Visible on all screens, layout optimized */}
-            <div className="relative z-0 block w-full">
-              <HeroImage />
+          {/* RIGHT: Image Composition */}
+          <div className="relative order-1 lg:order-2 animate-in fade-in slide-in-from-right-8 duration-1000">
+            {/* Main Image */}
+            <div className="relative rounded-[2.5rem] overflow-hidden shadow-clay-lg border-8 border-white bg-surface-100 aspect-[4/5] lg:aspect-square">
+              <Image
+                src="/images/hero.jpg"
+                alt="Santri Al-Imam"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
+
+              {/* Floating Card */}
+              <div className="absolute bottom-6 left-6 right-6 lg:left-10 lg:right-10">
+                <div className="card-glass p-5 flex items-center gap-4 bg-white/95 backdrop-blur-xl">
+                  <div className="w-12 h-12 bg-brown-100 rounded-xl flex items-center justify-center text-brown-700">
+                    <GraduationCap className="w-6 h-6" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-xs font-bold text-ink-400 uppercase tracking-wider mb-0.5">Pendaftaran Dibuka</p>
+                    <p className="text-lg font-black text-brown-900">Tahun Ajaran 2026/2027</p>
+                  </div>
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                </div>
+              </div>
             </div>
 
-            {/* Info Card - Landscape below image */}
-            <div className="mt-6 md:mt-8 relative z-10 w-full">
-              <RegistrationInfoCard />
-            </div>
+            {/* Decorative floating elements */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-gold-200/50 rounded-full blur-2xl animate-pulse" />
           </div>
+
         </div>
       </Container>
     </section>
