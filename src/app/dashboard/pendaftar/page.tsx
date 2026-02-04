@@ -96,18 +96,18 @@ export default function DashboardPendaftarPage() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-xl">
-                <p className="text-xs text-emerald-200 mb-1">Nomor Pendaftaran</p>
-                <p className="font-mono text-xl font-bold tracking-wider">{data.nomorPendaftaran}</p>
+              <div className="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-emerald-100">
+                <p className="text-xs text-stone-500 font-bold mb-1">Nomor Pendaftaran</p>
+                <p className="font-mono text-xl font-black text-emerald-950 tracking-wider">{data.nomorPendaftaran}</p>
               </div>
 
               {nextStep && (
-                <div className="bg-emerald-500 text-white px-6 py-3 rounded-xl shadow-lg shadow-emerald-900/20 flex items-center gap-3">
+                <div className="bg-white px-6 py-3 rounded-xl shadow-lg border-2 border-emerald-100 flex items-center gap-3">
                   <div>
-                    <p className="text-xs font-bold opacity-90">Langkah Selanjutnya:</p>
-                    <p className="font-bold">{nextStep.action}</p>
+                    <p className="text-xs font-bold text-stone-500">Langkah Selanjutnya:</p>
+                    <p className="font-bold text-lg text-emerald-950">{nextStep.action}</p>
                   </div>
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-5 h-5 text-emerald-600" />
                 </div>
               )}
             </div>
