@@ -80,7 +80,7 @@ export default function HeroSection() {
           </div>
 
           {/* RIGHT: Image Composition */}
-          <div className="relative order-1 lg:order-2 animate-in fade-in slide-in-from-right-8 duration-1000">
+          <div className="relative order-1 lg:order-2 animate-in fade-in slide-in-from-right-8 duration-700">
             {/* Main Image */}
             <div className="relative rounded-[2.5rem] overflow-hidden shadow-clay-lg border-8 border-white bg-surface-100 aspect-[4/5] lg:aspect-square">
               <Image
@@ -89,6 +89,7 @@ export default function HeroSection() {
                 fill
                 className="object-cover"
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
 

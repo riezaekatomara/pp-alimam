@@ -241,7 +241,7 @@ const ScheduleCard = ({
 }) => (
   <ScrollAnimation
     delay={index * 0.1}
-    className={`group p-4 xs:p-5 sm:p-6 xl:p-8 rounded-xl sm:rounded-2xl ${schedule.bgColor} dark:bg-[var(--color-cream-200)] border border-[var(--color-cream-300)] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2`}
+    className={`group p-4 xs:p-5 sm:p-6 xl:p-8 rounded-xl sm:rounded-2xl ${schedule.bgColor} dark:bg-[var(--color-cream-200)] border border-white/20 dark:border-[var(--color-cream-300)] shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2`}
   >
     <div className="flex items-start gap-3 xs:gap-4 sm:gap-5">
       <div className="w-12 h-12 xs:w-14 xs:h-14 sm:w-16 sm:h-16 bg-white dark:bg-[var(--color-cream-300)] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300 flex-shrink-0">
@@ -658,7 +658,7 @@ export default function KegiatanPage() {
 
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-8 sm:mb-12">
-            <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md text-[var(--color-gold-300)] px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl border border-white/20 mb-3 sm:mb-4">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md text-[var(--color-gold-400)] dark:text-[var(--color-brown-900)] px-4 xs:px-5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs xs:text-sm sm:text-sm font-bold shadow-xl border border-white/20 dark:border-[var(--color-brown-200)] mb-3 sm:mb-4">
               <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               KEDISIPLINAN ADALAH KUNCI
             </span>
