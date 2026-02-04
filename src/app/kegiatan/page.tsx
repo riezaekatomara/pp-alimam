@@ -340,7 +340,7 @@ export default function KegiatanPage() {
   const kegiatanUtama: KegiatanUtama[] = [
     {
       image:
-        "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80",
+        "/images/santri-pembelajaran-kitab.png",
       title: "Pembelajaran Kitab Kuning",
       description:
         "Bukan sekadar hafalan! Santri kami PAHAM isi kitab, bisa berdebat ilmiah, dan siap jadi ulama muda yang membanggakan keluarga",
@@ -371,7 +371,7 @@ export default function KegiatanPage() {
     },
     {
       image:
-        "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=800&q=80",
+        "/images/tahfidz.JPG",
       title: "Program Tahfidz 30 Juz",
       description:
         "Target PASTI tercapai! Dengan metode terbukti, anak Anda bisa hafal 30 juz + PAHAM artinya. Bukan mimpi, ini JAMINAN kami!",
@@ -399,7 +399,7 @@ export default function KegiatanPage() {
     },
     {
       image:
-        "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
+        "/images/ekstra-atau-ekskul.jpg",
       title: "Ekstrakurikuler Prestasi",
       description:
         "Anak Anda TIDAK HANYA pintar ngaji! Mereka juga juara olimpiade, atlet berprestasi, dan public speaker handal. Komplit!",

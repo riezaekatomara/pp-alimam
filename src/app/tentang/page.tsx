@@ -48,12 +48,14 @@ export default function TentangPage() {
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                         {/* Image Column */}
                         <div className="relative group">
-                            <div className="aspect-[4/5] rounded-[2.5rem] bg-brown-200 overflow-hidden shadow-clay-lg relative z-10 transform group-hover:rotate-1 transition-transform duration-500">
-                                {/* Placeholder for real image */}
-                                <div className="w-full h-full bg-gradient-to-br from-brown-200 to-brown-400 flex items-center justify-center relative overflow-hidden">
-                                    <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cube-coat.png')]"></div>
-                                    <span className="text-brown-800 font-bold opacity-30 text-2xl">Foto Pesantren</span>
-                                </div>
+                            <div className="aspect-[4/5] rounded-[2.5rem] overflow-hidden shadow-clay-lg relative z-10 transform group-hover:rotate-1 transition-transform duration-500">
+                                <Image
+                                    src="/images/tentang.png.png"
+                                    alt="Foto Pesantren Al-Imam Al-Islami"
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
                             </div>
 
                             {/* Floating Stats */}

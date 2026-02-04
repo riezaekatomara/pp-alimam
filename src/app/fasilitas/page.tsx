@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import {
   School,
   Home,
@@ -82,15 +84,35 @@ export default function FasilitasPage() {
             </div>
 
             <div className="relative lg:h-[500px] hidden lg:block">
-              {/* Abstract Composition of Images could go here, for now placeholder */}
-              <div className="absolute top-10 right-10 w-64 h-80 bg-brown-800 rounded-[2rem] border-4 border-white/10 shadow-2xl rotate-3 z-10 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-brown-700 to-brown-900 p-6 flex items-end">
-                  <span className="text-white font-black text-xl">Masjid Jami'</span>
+              {/* Masjid Image */}
+              <div className="absolute top-10 right-10 w-64 h-80 rounded-[2rem] border-4 border-white/20 shadow-2xl rotate-3 z-10 overflow-hidden group">
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/masjid.png"
+                    alt="Masjid Jami'"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <span className="text-white font-black text-xl">Masjid Jami'</span>
+                  </div>
                 </div>
               </div>
-              <div className="absolute top-40 right-40 w-64 h-80 bg-teal-800 rounded-[2rem] border-4 border-white/10 shadow-2xl -rotate-6 z-0 overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-br from-teal-700 to-teal-900 p-6 flex items-end">
-                  <span className="text-white font-black text-xl">Lab Komputer</span>
+
+              {/* Asrama Image */}
+              <div className="absolute top-40 right-40 w-64 h-80 rounded-[2rem] border-4 border-white/20 shadow-2xl -rotate-6 z-0 overflow-hidden group">
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/asrama.png"
+                    alt="Asrama Santri"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute bottom-6 left-6">
+                    <span className="text-white font-black text-xl">Asrama Santri</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,9 +165,13 @@ export default function FasilitasPage() {
               <div className="order-1 lg:order-2">
                 <div className="aspect-square rounded-[3rem] bg-brown-200 overflow-hidden shadow-clay-lg relative group">
                   <div className="absolute inset-0 bg-brown-900/20 group-hover:bg-brown-900/10 transition-colors z-10" />
-                  <div className="w-full h-full bg-brown-300 flex items-center justify-center">
-                    <span className="text-brown-800 opacity-20 font-black text-4xl">FOTO MASJID</span>
-                  </div>
+                  <div className="absolute inset-0 bg-brown-900/20 group-hover:bg-brown-900/10 transition-colors z-10" />
+                  <Image
+                    src="/images/masjid.png"
+                    alt="Masjid Jami' Al-Imam"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
               </div>
             </div>
@@ -155,9 +181,13 @@ export default function FasilitasPage() {
               <div className="order-1">
                 <div className="aspect-square rounded-[3rem] bg-teal-50 overflow-hidden shadow-clay-lg relative group">
                   <div className="absolute inset-0 bg-teal-900/20 group-hover:bg-teal-900/10 transition-colors z-10" />
-                  <div className="w-full h-full bg-teal-100 flex items-center justify-center">
-                    <span className="text-teal-800 opacity-20 font-black text-4xl">FOTO ASRAMA</span>
-                  </div>
+                  <div className="absolute inset-0 bg-teal-900/20 group-hover:bg-teal-900/10 transition-colors z-10" />
+                  <Image
+                    src="/images/asrama.png"
+                    alt="Asrama Santri"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
                 </div>
               </div>
               <div className="order-2">
@@ -223,8 +253,54 @@ export default function FasilitasPage() {
               <div className="order-1 lg:order-2">
                 <div className="aspect-square rounded-[3rem] bg-gold-50 overflow-hidden shadow-clay-lg relative group">
                   <div className="absolute inset-0 bg-gold-900/20 group-hover:bg-gold-900/10 transition-colors z-10" />
-                  <div className="w-full h-full bg-gold-100 flex items-center justify-center">
-                    <span className="text-gold-800 opacity-20 font-black text-4xl">FOTO KELAS</span>
+                  <Image
+                    src="/images/dalam-kelas.png"
+                    alt="Ruang Kelas Modern"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Minisoccer */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="order-1">
+                <div className="aspect-square rounded-[3rem] bg-teal-50 overflow-hidden shadow-clay-lg relative group">
+                  <div className="absolute inset-0 bg-teal-900/20 group-hover:bg-teal-900/10 transition-colors z-10" />
+                  <Image
+                    src="/images/lapangan-minisoccer.png"
+                    alt="Lapangan Minisoccer"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+              </div>
+              <div className="order-2">
+                <div className="card-glass p-8 md:p-12 border-t-4 border-t-teal-500 hover:border-t-8 transition-all duration-300">
+                  <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-700 mb-8">
+                    <Trophy className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-3xl font-black text-brown-900 mb-4">Minisoccer Court</h3>
+                  <p className="text-lg text-ink-600 mb-8 leading-relaxed">
+                    Lapangan rumput sintetis standar nasional untuk menyalurkan bakat olahraga santri. Rutin digunakan untuk latihan futsal dan kompetisi antar kelas.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="flex items-start gap-4">
+                      <CheckCircle2 className="w-6 h-6 text-teal-500 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-brown-900">Rumput Sintetis</h4>
+                        <p className="text-sm text-ink-500">Standar FIFA</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <CheckCircle2 className="w-6 h-6 text-teal-500 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-bold text-brown-900">Night Mode</h4>
+                        <p className="text-sm text-ink-500">Penerangan LED</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

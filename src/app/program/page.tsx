@@ -35,7 +35,7 @@ const PROGRAMS = [
             "Kurikulum Nasional (Matematika, IPA, B.Indo, B.Inggris)",
             "Ekstrakurikuler (Pramuka, Silat, Panahan, Futsal)",
         ],
-        image: "/images/hero.jpg", // Placeholder
+        image: "/images/santri-pembelajaran-kitab.png", // Kitab learning image
         theme: "brown",
         gradient: "from-brown-800 to-brown-600",
         accent: "text-brown-600",
@@ -58,7 +58,7 @@ const PROGRAMS = [
             "Kajian Kitab Kuning/Turats",
             "Ijazah Negara (Paket C/Formal)",
         ],
-        image: "/images/hero.jpg", // Placeholder
+        image: "/images/tahfidz.JPG", // Tahfidz image
         theme: "gold",
         gradient: "from-gold-600 to-gold-400",
         accent: "text-gold-600",

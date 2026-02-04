@@ -50,15 +50,15 @@ const REQUIREMENTS = [
 // Step Indicator Component
 function StepIndicator({ currentStep }: { currentStep: number }) {
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-6 mb-8 relative overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-xl border border-surface-200 p-6 mb-8 relative overflow-hidden">
       {/* Decorative background element */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold-50)] rounded-full blur-2xl opacity-50 -mr-10 -mt-10" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gold-50 rounded-full blur-2xl opacity-50 -mr-10 -mt-10" />
 
       <div className="flex items-center justify-between relative z-10">
         {/* Progress Line */}
-        <div className="absolute top-5 left-0 right-0 h-1 bg-[var(--color-cream-200)] hidden sm:block rounded-full">
+        <div className="absolute top-5 left-0 right-0 h-1 bg-surface-200 hidden sm:block rounded-full">
           <div
-            className="h-full bg-gradient-to-r from-[var(--color-brown-600)] to-[var(--color-gold-500)] transition-all duration-500 rounded-full"
+            className="h-full bg-gradient-to-r from-brown-600 to-gold-500 transition-all duration-500 rounded-full"
             style={{ width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
           />
         </div>
@@ -68,10 +68,10 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
           <div key={idx} className="flex flex-col items-center relative z-10">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center border-4 transition-all duration-300 ${idx + 1 < currentStep
-                ? "bg-[var(--color-green-500)] border-[var(--color-green-100)] text-white shadow-lg scale-105"
+                ? "bg-teal-500 border-teal-100 text-white shadow-lg scale-105"
                 : idx + 1 === currentStep
-                  ? "bg-[var(--color-gold-500)] border-[var(--color-gold-100)] text-white shadow-lg scale-110"
-                  : "bg-white border-[var(--color-cream-200)] text-[var(--color-text-400)]"
+                  ? "bg-gold-500 border-gold-100 text-white shadow-lg scale-110"
+                  : "bg-white border-surface-200 text-ink-400"
                 }`}
             >
               {idx + 1 < currentStep ? (
@@ -80,11 +80,11 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
                 <span className="font-bold text-sm">{step.number}</span>
               )}
             </div>
-            <span className={`text-xs sm:text-sm font-bold mt-2 text-center transition-colors ${idx + 1 === currentStep ? "text-[var(--color-brown-900)]" : "text-[var(--color-text-500)]"
+            <span className={`text-xs sm:text-sm font-bold mt-2 text-center transition-colors ${idx + 1 === currentStep ? "text-brown-900" : "text-ink-500"
               }`}>
               {step.label}
             </span>
-            <span className="text-[10px] text-[var(--color-text-400)] hidden sm:block font-medium">
+            <span className="text-[10px] text-ink-400 hidden sm:block font-medium">
               {step.sublabel}
             </span>
           </div>
@@ -99,19 +99,18 @@ function PricingSidebar() {
   return (
     <div className="space-y-6">
       {/* Pricing Card */}
-      {/* Pricing Card */}
-      <div className="bg-white rounded-2xl shadow-xl border-2 border-[var(--color-gold-200)] overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-gold-50)] rounded-full blur-[50px] opacity-50 -mr-16 -mt-16 pointer-events-none" />
+      <div className="bg-white rounded-2xl shadow-xl border-2 border-gold-200 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gold-50 rounded-full blur-[50px] opacity-50 -mr-16 -mt-16 pointer-events-none" />
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-[var(--color-cream-50)] to-white p-6 border-b border-[var(--color-gold-100)] relative z-10">
+        <div className="bg-gradient-to-r from-surface-50 to-white p-6 border-b border-gold-100 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white shadow-md border border-[var(--color-gold-200)] flex items-center justify-center">
-              <School className="w-5 h-5 text-[var(--color-brown-600)]" />
+            <div className="w-10 h-10 rounded-xl bg-white shadow-md border border-gold-200 flex items-center justify-center">
+              <School className="w-5 h-5 text-brown-600" />
             </div>
             <div>
-              <h3 className="font-bold text-lg text-[var(--color-brown-900)] leading-tight">Informasi Biaya</h3>
-              <p className="text-xs font-bold text-[var(--color-gold-600)] uppercase tracking-wide">PPDB 2026/2027</p>
+              <h3 className="font-bold text-lg text-brown-900 leading-tight">Informasi Biaya</h3>
+              <p className="text-xs font-bold text-gold-600 uppercase tracking-wide">PPDB 2026/2027</p>
             </div>
           </div>
         </div>
@@ -120,26 +119,26 @@ function PricingSidebar() {
         <div className="p-6 space-y-6 relative z-10">
           <div className="space-y-4">
             {PRICING.map((item, idx) => (
-              <div key={idx} className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 pb-4 border-b border-dashed border-[var(--color-cream-300)] last:border-0 last:pb-0">
+              <div key={idx} className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 pb-4 border-b border-dashed border-surface-300 last:border-0 last:pb-0">
                 <div>
-                  <p className="text-sm font-semibold text-[var(--color-text-800)]">{item.label}</p>
-                  <p className="text-[10px] text-[var(--color-text-500)]">{item.note}</p>
+                  <p className="text-sm font-semibold text-ink-800">{item.label}</p>
+                  <p className="text-[10px] text-ink-500">{item.note}</p>
                 </div>
-                <p className="font-bold text-[var(--color-brown-700)] text-base whitespace-nowrap bg-[var(--color-cream-50)] px-2 py-0.5 rounded border border-[var(--color-cream-200)] w-fit">{item.amount}</p>
+                <p className="font-bold text-brown-700 text-base whitespace-nowrap bg-surface-50 px-2 py-0.5 rounded border border-surface-200 w-fit">{item.amount}</p>
               </div>
             ))}
           </div>
 
-          <div className="bg-[var(--color-teal-50)] rounded-xl p-4 border border-[var(--color-teal-200)]">
+          <div className="bg-teal-50 rounded-xl p-4 border border-teal-200">
             <div className="flex items-start gap-3">
-              <CheckCircle className="w-5 h-5 text-[var(--color-teal-600)] mt-0.5 flex-shrink-0" />
+              <CheckCircle className="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-xs font-bold text-[var(--color-teal-800)] mb-1.5 uppercase tracking-wide">Fasilitas All-In:</p>
+                <p className="text-xs font-bold text-teal-800 mb-1.5 uppercase tracking-wide">Fasilitas All-In:</p>
                 <div className="grid grid-cols-2 gap-x-2 gap-y-1">
                   {["SPP Bulanan", "Makan 3x sehari", "Asrama & Laundry", "Seragam & Buku"].map((item, i) => (
                     <div key={i} className="flex items-center gap-1.5">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-teal-400)]" />
-                      <span className="text-[11px] font-medium text-[var(--color-teal-700)] leading-tight">{item}</span>
+                      <div className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                      <span className="text-[11px] font-medium text-teal-700 leading-tight">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -150,20 +149,20 @@ function PricingSidebar() {
       </div>
 
       {/* Requirements Card */}
-      <div className="bg-white rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-20 h-20 bg-[var(--color-teal-50)] rounded-full blur-xl opacity-50 -mr-5 -mt-5" />
+      <div className="bg-white rounded-2xl shadow-xl border border-surface-200 p-6 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-20 h-20 bg-teal-50 rounded-full blur-xl opacity-50 -mr-5 -mt-5" />
 
-        <h4 className="font-black text-[var(--color-text-900)] mb-5 flex items-center gap-2 relative z-10">
-          <div className="w-8 h-8 rounded-lg bg-[var(--color-brown-100)] flex items-center justify-center text-[var(--color-brown-700)]">
+        <h4 className="font-black text-ink-900 mb-5 flex items-center gap-2 relative z-10">
+          <div className="w-8 h-8 rounded-lg bg-brown-100 flex items-center justify-center text-brown-700">
             <IdCard className="w-5 h-5" />
           </div>
           Persyaratan Berkas
         </h4>
         <ul className="space-y-3 relative z-10">
           {REQUIREMENTS.map((req, idx) => (
-            <li key={idx} className="flex items-start gap-3 text-sm text-[var(--color-text-700)] group">
-              <div className="w-5 h-5 rounded-full bg-[var(--color-teal-50)] flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[var(--color-teal-100)] transition-colors">
-                <CheckCircle className="w-3.5 h-3.5 text-[var(--color-teal-600)]" />
+            <li key={idx} className="flex items-start gap-3 text-sm text-ink-700 group">
+              <div className="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-teal-100 transition-colors">
+                <CheckCircle className="w-3.5 h-3.5 text-teal-600" />
               </div>
               <span className="font-medium">{req}</span>
             </li>
@@ -274,29 +273,29 @@ export default function DaftarPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[var(--color-brown-50)] via-[var(--color-cream-100)] to-[var(--color-gold-50)] pt-20 pb-12 relative overflow-hidden">
+    <main className="min-h-screen bg-surface-100 pt-20 pb-12 relative overflow-hidden">
       {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-brown-200)] rounded-full blur-[100px] opacity-20 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[var(--color-gold-200)] rounded-full blur-[100px] opacity-20 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brown-200/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gold-200/20 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header */}
       <div className="relative pt-6 pb-6 mb-8 text-center px-4">
         <Container>
-          <div className="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-[var(--color-brown-200)] px-4 py-2 rounded-full shadow-sm mb-6 animate-fadeIn">
-            <GraduationCap className="w-4 h-4 text-[var(--color-brown-700)]" />
-            <span className="text-xs font-bold text-[var(--color-brown-800)] tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 bg-white/50 backdrop-blur-md border border-brown-200 px-4 py-2 rounded-full shadow-sm mb-6 animate-in fade-in slide-in-from-bottom-4">
+            <GraduationCap className="w-4 h-4 text-brown-700" />
+            <span className="text-xs font-bold text-brown-800 tracking-wide uppercase">
               PPDB TAHUN AJARAN 2026/2027
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-5xl font-black text-[var(--color-brown-900)] mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-black text-brown-900 mb-4 leading-tight">
             Formulir Pendaftaran
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brown-600)] to-[var(--color-gold-600)]">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-brown-600 to-gold-600">
               Calon Santri Baru
             </span>
           </h1>
 
-          <p className="text-[var(--color-brown-700)] text-lg max-w-2xl mx-auto font-medium">
+          <p className="text-brown-700 text-lg max-w-2xl mx-auto font-medium">
             Lengkapi data diri Anda di bawah ini. Pastikan data yang dimasukkan valid dan sesuai dokumen resmi.
           </p>
         </Container>
@@ -310,13 +309,13 @@ export default function DaftarPage() {
 
             {/* Saved Data Notice */}
             {(formData.nik || formData.nama_lengkap || formData.no_hp) && (
-              <div className="bg-[var(--color-teal-50)] border border-[var(--color-teal-200)] rounded-xl p-4 mb-6 flex items-start gap-3">
-                <CheckCircle className="w-5 h-5 text-[var(--color-teal-600)] flex-shrink-0 mt-0.5" />
+              <div className="bg-teal-50 border border-teal-200 rounded-xl p-4 mb-6 flex items-start gap-3">
+                <CheckCircle className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-[var(--color-teal-800)]">
+                  <p className="text-sm font-bold text-teal-800">
                     Data Anda Tersimpan
                   </p>
-                  <p className="text-xs text-[var(--color-teal-700)]">
+                  <p className="text-xs text-teal-700">
                     Form sudah terisi otomatis dari sesi sebelumnya.
                   </p>
                 </div>
@@ -336,7 +335,7 @@ export default function DaftarPage() {
                       setFieldErrors({});
                     }
                   }}
-                  className="text-xs font-semibold text-[var(--color-teal-600)] hover:underline"
+                  className="text-xs font-semibold text-teal-600 hover:underline"
                 >
                   Hapus
                 </button>
@@ -345,12 +344,12 @@ export default function DaftarPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Data Calon Santri Card */}
-              <div className="bg-white rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-6 sm:p-8 animate-fadeInUp delay-100">
-                <div className="flex items-center gap-3 mb-6 border-b border-[var(--color-cream-200)] pb-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--color-brown-50)] flex items-center justify-center border border-[var(--color-brown-100)]">
-                    <User className="w-5 h-5 text-[var(--color-brown-600)]" />
+              <div className="bg-white rounded-2xl shadow-xl border border-surface-200 p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
+                <div className="flex items-center gap-3 mb-6 border-b border-surface-200 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-brown-50 flex items-center justify-center border border-brown-100">
+                    <User className="w-5 h-5 text-brown-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-900)]">
+                  <h3 className="text-xl font-bold text-ink-900">
                     Data Calon Santri
                   </h3>
                 </div>
@@ -358,11 +357,11 @@ export default function DaftarPage() {
                 <div className="space-y-5">
                   {/* Nama Lengkap */}
                   <div data-error={!!fieldErrors.nama_lengkap}>
-                    <label className="block text-sm font-semibold text-[var(--color-text-800)] mb-2">
+                    <label className="block text-sm font-semibold text-ink-800 mb-2">
                       Nama Lengkap <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-text-400)]" />
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
                       <input
                         type="text"
                         value={formData.nama_lengkap}
@@ -385,11 +384,11 @@ export default function DaftarPage() {
                   <div className="grid sm:grid-cols-2 gap-5">
                     {/* NIK */}
                     <div data-error={!!fieldErrors.nik}>
-                      <label className="block text-sm font-semibold text-[var(--color-text-800)] mb-2">
+                      <label className="block text-sm font-semibold text-ink-800 mb-2">
                         NIK <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
-                        <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-text-400)]" />
+                        <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
                         <input
                           type="text"
                           inputMode="numeric"
@@ -415,7 +414,7 @@ export default function DaftarPage() {
 
                     {/* Jenis Kelamin */}
                     <div data-error={!!fieldErrors.jenis_kelamin}>
-                      <label className="block text-sm font-semibold text-[var(--color-text-800)] mb-2">
+                      <label className="block text-sm font-semibold text-ink-800 mb-2">
                         Jenis Kelamin <span className="text-red-500">*</span>
                       </label>
                       <div className="grid grid-cols-2 gap-3">
@@ -423,8 +422,8 @@ export default function DaftarPage() {
                           type="button"
                           onClick={() => setFormData((prev) => ({ ...prev, jenis_kelamin: "L" }))}
                           className={`py-3 px-4 rounded-xl border-2 font-semibold text-sm transition-all ${formData.jenis_kelamin === "L"
-                            ? "bg-[var(--color-brown-700)] text-white border-[var(--color-brown-700)]"
-                            : "bg-white text-[var(--color-text-700)] border-[var(--color-cream-300)] hover:border-[var(--color-brown-400)]"
+                            ? "bg-brown-700 text-white border-brown-700"
+                            : "bg-white text-ink-700 border-surface-200 hover:border-brown-400"
                             }`}
                         >
                           Laki-laki
@@ -433,8 +432,8 @@ export default function DaftarPage() {
                           type="button"
                           onClick={() => setFormData((prev) => ({ ...prev, jenis_kelamin: "P" }))}
                           className={`py-3 px-4 rounded-xl border-2 font-semibold text-sm transition-all ${formData.jenis_kelamin === "P"
-                            ? "bg-[var(--color-brown-700)] text-white border-[var(--color-brown-700)]"
-                            : "bg-white text-[var(--color-text-700)] border-[var(--color-cream-300)] hover:border-[var(--color-brown-400)]"
+                            ? "bg-brown-700 text-white border-brown-700"
+                            : "bg-white text-ink-700 border-surface-200 hover:border-brown-400"
                             }`}
                         >
                           Perempuan
@@ -451,11 +450,11 @@ export default function DaftarPage() {
 
                   {/* Tempat & Tanggal Lahir */}
                   <div data-error={!!fieldErrors.tanggal_lahir}>
-                    <label className="block text-sm font-semibold text-[var(--color-text-800)] mb-2">
+                    <label className="block text-sm font-semibold text-ink-800 mb-2">
                       Tanggal Lahir <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--color-text-400)]" />
+                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-ink-400" />
                       <input
                         type="date"
                         value={formData.tanggal_lahir}
@@ -516,20 +515,20 @@ export default function DaftarPage() {
               </div>
 
               {/* Jenjang Pendidikan Card */}
-              <div className="bg-white rounded-2xl shadow-xl border border-[var(--color-cream-200)] p-6 sm:p-8 animate-fadeInUp delay-300">
-                <div className="flex items-center gap-3 mb-6 border-b border-[var(--color-cream-200)] pb-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--color-brown-50)] flex items-center justify-center border border-[var(--color-brown-100)]">
-                    <GraduationCap className="w-5 h-5 text-[var(--color-brown-600)]" />
+              <div className="bg-white rounded-2xl shadow-xl border border-surface-200 p-6 sm:p-8 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-300">
+                <div className="flex items-center gap-3 mb-6 border-b border-surface-200 pb-4">
+                  <div className="w-10 h-10 rounded-xl bg-brown-50 flex items-center justify-center border border-brown-100">
+                    <GraduationCap className="w-5 h-5 text-brown-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-900)]">
+                  <h3 className="text-xl font-bold text-ink-900">
                     Pilih Jenjang Pendidikan
                   </h3>
                 </div>
 
-                <div data-error={!!fieldErrors.jenjang} className="grid sm:grid-cols-3 gap-4">
+                <div data-error={!!fieldErrors.jenjang} className="flex flex-col sm:flex-row justify-center gap-4">
                   {[
-                    { value: "MTs", label: "MTs", sublabel: "Madrasah Tsanawiyah" },
-                    { value: "IL", label: "I'dad Lughowi", sublabel: "Setara SMA (4 Tahun)" },
+                    { value: "MTs", title: "MTs", subtitle: "Madrasah Tsanawiyah", desc: "Setara SMP" },
+                    { value: "IL", title: "IL", subtitle: "I'dad Lughowi", desc: "Setara SMA" },
                   ].map((option) => (
                     <button
                       key={option.value}
@@ -537,25 +536,30 @@ export default function DaftarPage() {
                       onClick={() =>
                         setFormData((prev) => ({ ...prev, jenjang: option.value as FormData["jenjang"] }))
                       }
-                      className={`p-4 rounded-xl border-2 text-center transition-all ${formData.jenjang === option.value
-                        ? "bg-[var(--color-brown-700)] text-white border-[var(--color-brown-700)]"
-                        : "bg-white text-[var(--color-text-700)] border-[var(--color-cream-300)] hover:border-[var(--color-brown-400)]"
+                      className={`p-4 rounded-xl border-2 text-center transition-all w-full sm:w-48 ${formData.jenjang === option.value
+                        ? "bg-brown-700 text-white border-brown-700"
+                        : "bg-white text-ink-700 border-surface-200 hover:border-brown-400"
                         }`}
                     >
                       <GraduationCap
                         className={`w-8 h-8 mx-auto mb-2 ${formData.jenjang === option.value
                           ? "text-white"
-                          : "text-[var(--color-brown-600)]"
+                          : "text-brown-600"
                           }`}
                       />
-                      <p className={`font-bold ${formData.jenjang === option.value ? "text-white" : ""}`}>{option.label}</p>
+                      <p className={`font-bold text-lg mb-0.5 ${formData.jenjang === option.value ? "text-white" : ""}`}>
+                        {option.title}
+                      </p>
+                      <p className={`text-sm font-medium mb-1 ${formData.jenjang === option.value ? "text-white/90" : "text-ink-600"}`}>
+                        {option.subtitle}
+                      </p>
                       <p
                         className={`text-xs ${formData.jenjang === option.value
                           ? "text-white/70"
-                          : "text-[var(--color-text-500)]"
+                          : "text-ink-500"
                           }`}
                       >
-                        {option.sublabel}
+                        {option.desc}
                       </p>
                     </button>
                   ))}

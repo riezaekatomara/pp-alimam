@@ -18,25 +18,25 @@ import { Container } from "@/components/layout/Container";
 
 const GALLERY_ITEMS = [
   {
-    image: "/images/kitab.JPG",
+    image: "/images/santri-pembelajaran-kitab.png",
     title: "Pembelajaran Kitab",
     description: "Kajian kitab kuning dengan metode bandongan dan sorogan",
     icon: BookOpen,
   },
   {
-    image: "/images/tahfiz.JPG",
+    image: "/images/tahfidz.JPG",
     title: "Program Tahfidz",
     description: "Menghafal 30 juz dengan sistem setoran harian",
     icon: BookMarked,
   },
   {
-    image: "/images/ekstra.jpg",
+    image: "/images/ekstra-atau-ekskul.jpg",
     title: "Ekstrakurikuler",
     description: "Pramuka, bela diri, dan seni Islami",
     icon: Target,
   },
   {
-    image: "/images/fasilitas.jpeg",
+    image: "/images/masjid.png",
     title: "Fasilitas Pesantren",
     description: "Masjid, asrama nyaman, dan perpustakaan",
     icon: School,
