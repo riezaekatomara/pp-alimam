@@ -341,7 +341,7 @@ export default function FasilitasPage() {
                 <div className="aspect-square rounded-[3rem] bg-blue-50 overflow-hidden shadow-clay-lg relative group">
                   <div className="absolute inset-0 bg-blue-900/20 group-hover:bg-blue-900/10 transition-colors z-10" />
                   <Image
-                    src="/images/fasilitas-depot-galon-gratis.png"
+                    src="/images/depot-galon-gratis.png"
                     alt="Depot Air Minum Gratis"
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
