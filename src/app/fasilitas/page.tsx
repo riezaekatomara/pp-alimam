@@ -51,7 +51,7 @@ export default function FasilitasPage() {
   return (
     <main className="bg-surface-50 min-h-screen">
       {/* 1. Hero Section - Deep Brown */}
-      <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden bg-brown-900">
+      <section className="relative pt-20 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-brown-900">
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
         {/* Glow Effects */}
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-gold-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -66,7 +66,7 @@ export default function FasilitasPage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-display font-black mb-6 text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
-                Fasilitas <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Modern</span>
+                Fasilitas Modern
                 <br /> Berbasis Pesantren
               </h1>
 

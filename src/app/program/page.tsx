@@ -95,19 +95,19 @@ export default function ProgramPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Brown Aesthetic */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-brown-900">
+            <section className="relative pt-12 pb-20 md:pt-16 overflow-hidden bg-brown-900">
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
 
                 <Container className="relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-4 animate-in fade-in slide-in-from-bottom-4">
                         <GraduationCap className="w-4 h-4" />
                         <span>Jenjang Pendidikan</span>
                     </div>
 
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black mb-6 text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
                         Program Pendidikan <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Al-Imam Al-Islami</span>
+                        <span className="text-white">Al-Imam Al-Islami</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-brown-100 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">

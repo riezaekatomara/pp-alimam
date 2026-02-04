@@ -19,21 +19,21 @@ export default function TentangPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Deep Brown & Gold */}
-            <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-brown-900 text-white">
+            <section className="relative pt-12 pb-20 md:pt-16 md:pb-32 overflow-hidden bg-brown-900 text-white">
                 {/* Decorative Background Elements */}
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brown-700/20 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
                 <Container className="relative z-10 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
                         <History className="w-4 h-4" />
                         <span>Tentang Kami</span>
                     </div>
 
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-8 tracking-tight leading-tight animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-8 tracking-tight leading-tight animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-100 text-white">
                         Mengenal Lebih Dekat<br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-600">Al-Imam Al-Islami</span>
+                        <span className="text-white">Al-Imam Al-Islami</span>
                     </h1>
 
                     <p className="text-lg md:text-xl text-brown-100 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
@@ -205,7 +205,7 @@ export default function TentangPage() {
                         <Button size="lg" className="bg-gold-500 text-white hover:bg-gold-600 rounded-full px-10 h-14 text-lg shadow-lg shadow-gold-500/20" asChild>
                             <Link href="/daftar">Daftar Sekarang</Link>
                         </Button>
-                        <Button size="lg" variant="outline" className="border-brown-400 text-brown-100 hover:bg-white/10 hover:text-white rounded-full px-10 h-14 text-lg" asChild>
+                        <Button size="lg" variant="outline" className="bg-transparent border-brown-400 text-brown-100 hover:bg-white/10 hover:text-white rounded-full px-10 h-14 text-lg" asChild>
                             <Link href="/kontak">Hubungi Kami</Link>
                         </Button>
                     </div>

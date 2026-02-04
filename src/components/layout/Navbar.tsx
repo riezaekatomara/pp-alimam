@@ -104,16 +104,13 @@ export default function Navbar() {
     { href: "/", label: "Beranda", icon: "fa-home" },
     { href: "/tentang", label: "Tentang", icon: "fa-info-circle" },
     { href: "/program", label: "Program", icon: "fa-graduation-cap" },
+    { href: "/kegiatan", label: "Kegiatan", icon: "fa-book" },
     { href: "/fasilitas", label: "Fasilitas", icon: "fa-building" },
     { href: "/agenda", label: "Kalender", icon: "fa-calendar-alt" },
     { href: "/kontak", label: "Kontak", icon: "fa-phone" },
   ];
 
-  const jenjangLinks = [
-    { href: "/program#mts", label: "MTs Al-Imam", icon: "fa-school" },
-    { href: "/program#il", label: "I'dad Lughowi", icon: "fa-book-open" },
-    { href: "/program#ma", label: "MA Al-Imam", icon: "fa-university" },
-  ];
+
 
   const isActive = (href: string, sectionId?: string) => {
     if (href === "/") {
@@ -129,8 +126,8 @@ export default function Navbar() {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white/90 backdrop-blur-xl shadow-clay-sm border-b border-surface-200"
-          : "bg-transparent"
+          ? "bg-white/80 backdrop-blur-xl border-b border-surface-200 shadow-sm py-2"
+          : "bg-transparent py-3"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,27 +177,7 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              {/* Jenjang Dropdown */}
-              <div className="relative group ml-1">
-                <button
-                  className={`flex items-center gap-1.5 px-4 py-2 font-bold text-sm transition-all duration-300 rounded-full hover:bg-surface-100 text-ink-600`}
-                >
-                  Jenjang
-                  <ChevronDown className="w-3.5 h-3.5 ml-1 transition-transform duration-300 group-hover:rotate-180" />
-                </button>
 
-                <div className="absolute top-full right-0 mt-2 w-56 p-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-clay-lg border border-surface-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 origin-top-right scale-95 group-hover:scale-100 z-50">
-                  {jenjangLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="block px-4 py-3 rounded-xl hover:bg-surface-50 text-sm font-bold text-ink-600 hover:text-brown-700 transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
             </nav>
 
             {/* CTA Buttons */}

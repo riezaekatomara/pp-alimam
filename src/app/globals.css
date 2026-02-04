@@ -1,5 +1,5 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES v3.0 (Ultra-Premium)
+   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES v4.1 (Authentic Brown & Cream)
    Aesthetic: Superlist / Clay.global (Glassmorphism + Neo-Brutalism)
    Tailwind CSS v4 Optimized
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -15,17 +15,16 @@
   --font-display: "Poppins", sans-serif;
   --font-arabic: "Amiri", serif;
 
-  /* Colors - Clay/Superlist Palette (Al-Imam Edition: Brown & White) */
-  /* Base: Warm Whites & Cream */
+  /* Colors - Authentic Al-Imam Palette */
+
+  /* Base: Warm Cream Whites */
   --color-white: #ffffff;
   --color-surface-50: #fafaf9;
-  /* Warm off-white */
   --color-surface-100: #f5f5f4;
-  /* Warm Stone */
   --color-surface-200: #e7e5e4;
   --color-surface-300: #d6d3d1;
 
-  /* Brand Core: Al-Imam Iconic Brown */
+  /* Brand Core: Al-Imam Iconic Brown (Restored) */
   --color-brown-50: #fdf8f6;
   --color-brown-100: #f2e8e5;
   --color-brown-200: #eaddd7;
@@ -34,12 +33,19 @@
   --color-brown-500: #a18072;
   --color-brown-600: #8d6e63;
   --color-brown-700: #5d4037;
-  /* Primary Brand */
   --color-brown-800: #4e342e;
+  /* Primary Brand Dark */
   --color-brown-900: #3e2723;
   --color-brown-950: #2b1b18;
 
-  /* Accents */
+  /* Secondary: Cream & Gold Accents */
+  /* Cream - Warm backgrounds & soft highlights */
+  --color-cream-50: #fefdfb;
+  --color-cream-100: #fdf8f3;
+  --color-cream-200: #f5ebe0;
+  --color-cream-300: #ebe0d1;
+  --color-cream-400: #d4b06e;
+
   /* Gold: Excellence/Tahfidz */
   --color-gold-50: #fffbeb;
   --color-gold-100: #fef3c7;
@@ -57,29 +63,24 @@
   --color-teal-700: #0f766e;
   --color-teal-900: #134e4a;
 
-  /* Cream - Warm backgrounds */
-  --color-cream-50: #fefdfb;
-  --color-cream-100: #fdf8f3;
-  --color-cream-200: #f5ebe0;
-
   /* Text colors (aliases for ink) */
-  --color-text-900: #111827;
-  --color-text-800: #1f2937;
-  --color-text-700: #374151;
-  --color-text-600: #4b5563;
-  --color-text-500: #6b7280;
+  --color-text-900: #1c1917;
+  --color-text-800: #292524;
+  --color-text-700: #44403c;
+  --color-text-600: #57534e;
+  --color-text-500: #78716c;
 
   /* Text: High Contrast & Soft Secondary */
-  --color-ink-900: #111827;
-  /* Near Black */
-  --color-ink-800: #1f2937;
-  --color-ink-600: #4b5563;
-  --color-ink-400: #9ca3af;
-  --color-ink-300: #d1d5db;
-  /* Disabled/Placeholder */
-  --color-ink-200: #e5e7eb;
-  /* Borders */
-  --color-ink-100: #f3f4f6;
+  --color-ink-900: #1c1917;
+  --color-ink-800: #292524;
+  --color-ink-700: #44403c;
+  /* Fixed: Added missing ink-700 */
+  --color-ink-600: #57534e;
+  --color-ink-500: #78716c;
+  --color-ink-400: #a8a29e;
+  --color-ink-300: #d6d3d1;
+  --color-ink-200: #e7e5e4;
+  --color-ink-100: #f5f5f4;
 
   /* Superlist Blue (Modern Tech Feel) */
   --color-blue-500: #3b82f6;
@@ -87,29 +88,28 @@
 
   /* Shadows - The "Clay" Magic */
   --shadow-clay-sm:
-    0 1px 2px rgba(0, 0, 0, 0.02),
+    0 1px 2px rgba(0, 0, 0, 0.04),
     0 1px 1px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(0, 0, 0, 0.03);
-  /* Subtle Border-shadow */
+    0 0 0 1px rgba(0, 0, 0, 0.04);
 
   --shadow-clay-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 4px 6px -1px rgba(0, 0, 0, 0.04),
     0 2px 4px -1px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 1);
-  /* Top Highlight */
 
   --shadow-clay-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.03),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(0, 0, 0, 0.02),
-    0 20px 40px -4px rgba(0, 0, 0, 0.04);
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.03),
+    0 20px 40px -4px rgba(0, 0, 0, 0.06);
 
   --shadow-glass:
-    0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    0 8px 32px 0 rgba(78, 52, 46, 0.1);
 
-  --shadow-glow-teal: 0 0 20px rgba(20, 184, 166, 0.4);
-  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.4);
+  --shadow-glow-teal: 0 0 20px rgba(20, 184, 166, 0.3);
+  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.3);
+  --shadow-glow-brown: 0 0 20px rgba(78, 52, 46, 0.3);
 
   /* Radius - Friendly & Soft */
   --radius-xl: 1rem;
@@ -131,10 +131,11 @@
 
   body {
     @apply bg-surface-100 text-ink-900 font-sans antialiased;
-    /* Optional: Subtle Mesh Gradient Background */
+    /* Subtle Mesh Gradient Background: Cream Secondary */
     background-image:
       radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.03) 0px, transparent 50%);
+      radial-gradient(at 100% 0%, rgba(161, 128, 114, 0.05) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.8) 0px, transparent 50%);
   }
 
   /* Typography Scale */
@@ -176,13 +177,13 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-ink-200 rounded-full;
+    @apply bg-ink-300 rounded-full;
     border: 2px solid transparent;
     background-clip: content-box;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-ink-400;
+    @apply bg-brown-400;
   }
 }
 
@@ -193,11 +194,11 @@
 
   /* 1. Glass Card - The core building block */
   .card-glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-clay-md rounded-2xl transition-all duration-300;
+    @apply bg-white/70 backdrop-blur-xl border border-white/60 shadow-clay-md rounded-2xl transition-all duration-300;
   }
 
   .card-glass:hover {
-    @apply shadow-clay-lg bg-white/80 -translate-y-[2px];
+    @apply shadow-clay-lg bg-white/90 -translate-y-[2px] border-brown-200/30;
   }
 
   /* 2. Glass Panel - For Sidebars/Modals */
@@ -206,23 +207,34 @@
   }
 
   /* 3. Buttons - Pill Shaped, Gradient Borders */
+
+  /* Primary Button - Brown (Original Brand) */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white bg-gradient-to-r from-brown-700 to-brown-900 shadow-lg shadow-brown-900/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
+
+    /* Premium shine effect */
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 4px 10px rgba(78, 52, 46, 0.2);
 
     &:hover {
-      @apply shadow-teal-500/30 -translate-y-0.5;
+      @apply from-brown-800 to-brown-950 -translate-y-0.5;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 8px 20px rgba(78, 52, 46, 0.3);
     }
 
     &:active {
-      @apply translate-y-0;
+      @apply translate-y-0 shadow-sm;
     }
   }
 
+  /* Secondary Button - Cream/Soft */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium text-ink-600 bg-white border border-ink-200 shadow-sm transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium text-ink-700 bg-white border border-ink-200 shadow-sm transition-all duration-200;
 
     &:hover {
-      @apply bg-surface-50 border-ink-300 text-ink-900;
+      @apply bg-surface-50 border-brown-300 text-ink-900;
     }
   }
 
@@ -234,9 +246,13 @@
     }
   }
 
+  .btn-action {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
+  }
+
   /* 4. Inputs - Clean & Airy */
   .input-clean {
-    @apply w-full px-4 py-3 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-teal-500/50 focus:ring-4 focus:ring-teal-500/10 focus:outline-none transition-all duration-300;
+    @apply w-full px-4 py-3 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brown-400/50 focus:ring-4 focus:ring-brown-400/10 focus:outline-none transition-all duration-300;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
   }
 
@@ -246,11 +262,11 @@
   }
 
   .badge.badge-success {
-    @apply bg-teal-50 text-teal-600 border border-teal-100;
+    @apply bg-teal-50 text-teal-700 border border-teal-100;
   }
 
   .badge.badge-warning {
-    @apply bg-gold-50 text-gold-600 border border-gold-100;
+    @apply bg-gold-50 text-gold-700 border border-gold-100;
   }
 
   .badge.badge-neutral {
@@ -267,7 +283,7 @@
   }
 
   .nav-link.active {
-    @apply bg-white text-teal-600 shadow-clay-sm;
+    @apply bg-white text-brown-700 shadow-clay-sm;
   }
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -277,12 +293,13 @@
   /* Section Gradient Background */
   .section-gradient-brown {
     @apply py-16 md:py-20;
+    /* Cream Secondary Gradient */
     background: linear-gradient(135deg, var(--color-brown-50) 0%, var(--color-cream-50) 100%);
   }
 
   /* Section Title */
   .section-title {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-ink-900;
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brown-900;
   }
 
   /* Section Subtitle */
@@ -312,17 +329,25 @@
   /* Program Cards */
   .program-card-brown {
     @apply rounded-2xl p-6 md:p-8;
-    background: linear-gradient(135deg, var(--color-brown-700) 0%, var(--color-brown-900) 100%);
+    background: linear-gradient(135deg, var(--color-brown-800) 0%, var(--color-brown-950) 100%);
+    @apply text-white;
+  }
+
+  .program-card-brown h3,
+  .program-card-brown p {
+    @apply text-white/90;
   }
 
   .program-card-gold {
     @apply rounded-2xl p-6 md:p-8;
     background: linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-600) 100%);
+    @apply text-white;
   }
 
   .program-card-teal {
     @apply rounded-2xl p-6 md:p-8;
     background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-600) 100%);
+    @apply text-white;
   }
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -338,7 +363,7 @@
   }
 
   .badge-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-brown-100 text-brown-700 border border-brown-200;
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-brown-100 text-brown-800 border border-brown-200;
   }
 
   .badge-accent {
@@ -358,7 +383,8 @@
 
   /* Gradients */
   .bg-gradient-mesh {
-    background-image: radial-gradient(at 40% 20%, rgba(20, 184, 166, 0.1) 0px, transparent 50%),
+    background-image:
+      radial-gradient(at 40% 20%, rgba(20, 184, 166, 0.1) 0px, transparent 50%),
       radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
       radial-gradient(at 0% 50%, rgba(255, 255, 255, 0.5) 0px, transparent 50%);
   }
@@ -385,6 +411,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

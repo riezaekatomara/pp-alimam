@@ -91,7 +91,7 @@ export default function ContactPage() {
                     </div>
 
                     <h1 className="text-4xl md:text-6xl font-display font-black mb-6 text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
-                        Kami Siap <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Membantu</span>
+                        Kami Siap <span className="text-white">Membantu</span>
                     </h1>
                     <p className="text-lg md:text-xl text-brown-100 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
                         Silakan hubungi kami untuk informasi lebih lanjut mengenai pendaftaran, program pendidikan, atau kunjungan ke pesantren.

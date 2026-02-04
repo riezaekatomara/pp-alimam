@@ -602,7 +602,7 @@ export default function KegiatanPage() {
           <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 sm:mb-6 leading-tight px-4 sm:px-0 font-display">
             Membangun Generasi
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-gold-300)] to-[var(--color-gold-500)]">
+            <span className="text-white">
               Qur'ani & Berwawasan Luas
             </span>
           </h1>

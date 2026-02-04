@@ -81,7 +81,7 @@ export default function AgendaPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Brown Aesthetic */}
-            <section className="relative pt-32 pb-20 overflow-hidden bg-brown-900 border-b border-white/5">
+            <section className="relative pt-12 pb-20 md:pt-16 overflow-hidden bg-brown-900 border-b border-white/5">
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -94,7 +94,7 @@ export default function AgendaPage() {
                             </div>
 
                             <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-black text-white tracking-tight animate-in fade-in slide-in-from-bottom-6 duration-700">
-                                Kalender <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-300 to-gold-500">Akademik</span>
+                                Kalender <span className="text-white">Akademik</span>
                             </h1>
                         </div>
 

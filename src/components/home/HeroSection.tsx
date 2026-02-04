@@ -14,19 +14,19 @@ import { Container } from "@/components/layout/Container";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-surface-50 pt-28 pb-20 lg:pt-36 lg:pb-32">
+    <section className="relative overflow-hidden bg-surface-50 pt-12 pb-20 lg:pt-16 lg:pb-32">
       {/* Decorative Orbs */}
       <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brown-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start pt-10 lg:pt-0">
 
           {/* LEFT: Text Content */}
           <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-surface-200 shadow-sm text-brown-600 text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-surface-200 shadow-sm text-brown-600 text-xs font-bold uppercase tracking-widest animate-in fade-in slide-in-from-bottom-4 mb-4">
               <School className="w-4 h-4" />
               <span>Terakreditasi A • Sejak 1995</span>
             </div>

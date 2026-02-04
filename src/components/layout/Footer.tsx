@@ -19,8 +19,7 @@ export default function Footer() {
 
   const programLinks = [
     { href: "/program#mts", label: "MTs Al-Imam", desc: "Setara SMP + Tahfidz" },
-    { href: "/program#ma", label: "MA Al-Imam", desc: "Setara SMA + Tahfidz" },
-    { href: "/program#il", label: "I'dad Lughowi", desc: "Persiapan Bahasa Arab" },
+    { href: "/program#il", label: "I'dad Lughowi", desc: "Setara SMA + Tahfidz (4 Tahun)" },
   ];
 
   const socialLinks = [
