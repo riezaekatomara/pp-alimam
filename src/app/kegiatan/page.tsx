@@ -632,13 +632,13 @@ export default function KegiatanPage() {
               <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               PROGRAM PENDIDIKAN
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto px-4 sm:px-0 text-[var(--color-brown-900)] dark:text-white font-display">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto px-4 sm:px-0 text-[var(--color-brown-900)] dark:text-[var(--color-brown-900)] font-display">
               Kurikulum{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-gold-600)] to-[var(--color-gold-700)]">
                 Terpadu & Komprehensif
               </span>
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-[var(--color-text-700)] dark:text-[var(--color-text-300)] max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
+            <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-[var(--color-text-700)] dark:text-[var(--color-text-700)] max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
               Kami menyelenggarakan pendidikan yang seimbang antara ilmu din (agama) dan ilmu dunia.
             </p>
           </ScrollAnimation>
@@ -662,10 +662,10 @@ export default function KegiatanPage() {
               <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               KEDISIPLINAN ADALAH KUNCI
             </span>
-            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto px-4 sm:px-0 font-display">
+            <h2 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-black text-white dark:text-[var(--color-brown-900)] mb-4 sm:mb-6 leading-tight max-w-4xl mx-auto px-4 sm:px-0 font-display">
               Rutinitas Harian <span className="text-[var(--color-gold-400)]">Santri</span>
             </h2>
-            <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-[var(--color-cream-200)] max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
+            <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-[var(--color-cream-200)] dark:text-[var(--color-text-700)] max-w-3xl mx-auto leading-relaxed px-4 sm:px-0">
               Membangun kebiasaan positif melalui jadwal yang teratur, mulai dari
               bangun tidur hingga istirahat malam.
             </p>
