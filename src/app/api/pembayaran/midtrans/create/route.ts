@@ -88,6 +88,10 @@ export async function POST(request: NextRequest) {
     };
 
     // NOTE: Jangan blokir pembuatan transaksi berdasarkan deadline pendaftaran.
+    const now = new Date();
+    // Gunakan tanggal tutup pendaftaran sebagai deadline, atau default 7 hari jika tidak ada
+    const deadlineStr = tahunAjaran.tanggal_tutup_pendaftaran;
+    const deadline = deadlineStr ? new Date(deadlineStr) : new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
     // 5. Cek apakah sudah ada pembayaran yang verified
     const { data: existingPayment } = await supabaseAdmin
