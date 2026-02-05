@@ -209,7 +209,8 @@ export type UserRole =
   | 'admin_berkas'    // Dashboard Admin Berkas dan Pendaftaran Umum - verifikasi dokumen & data pendaftaran
   | 'admin_keuangan'  // Dashboard Keuangan - verifikasi pembayaran & keuangan
   | 'penguji'         // Dashboard Penguji - input nilai ujian
-  | 'admin_super';    // Dashboard Admin Super - akses penuh ke semua fitur
+  | 'admin_super'     // Dashboard Admin Super - akses penuh ke semua fitur
+  | 'admin';          // Legacy Admin Role
 
 // Role display names
 export const ROLE_LABELS: Record<UserRole, string> = {
@@ -218,6 +219,7 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   admin_keuangan: 'Admin Keuangan',
   penguji: 'Penguji',
   admin_super: 'Admin Super',
+  admin: 'Administrator (Legacy)',
 };
 
 // Role descriptions
@@ -227,6 +229,7 @@ export const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
   admin_keuangan: 'Mengelola verifikasi pembayaran dan keuangan',
   penguji: 'Melakukan penilaian ujian seleksi santri',
   admin_super: 'Akses penuh ke seluruh fitur dan data sistem',
+  admin: 'Administrator (Legacy - Full Access)',
 };
 
 // Role permissions
@@ -278,6 +281,27 @@ export const ROLE_PERMISSIONS: Record<UserRole, string[]> = {
     'manage_users',
     'manage_settings',
     'export_all_data',
+    'export_all_data',
+    'view_dashboard_stats',
+  ],
+  admin: [
+    'view_pendaftar_list',
+    'view_pendaftar_detail',
+    'edit_pendaftar_data',
+    'delete_pendaftar',
+    'verify_documents',
+    'view_document_status',
+    'view_payment_list',
+    'verify_payment',
+    'view_financial_reports',
+    'view_exam_schedule',
+    'manage_exam_schedule',
+    'input_exam_scores',
+    'view_exam_results',
+    'publish_announcement',
+    'manage_users',
+    'manage_settings',
+    'export_all_data',
     'view_dashboard_stats',
   ],
 };
@@ -289,6 +313,7 @@ export const DASHBOARD_ROUTES: Record<UserRole, string> = {
   admin_keuangan: '/dashboard/admin',
   penguji: '/dashboard/penguji',
   admin_super: '/dashboard/admin',
+  admin: '/dashboard/admin',
 };
 
 // Check if role has permission
@@ -298,7 +323,7 @@ export function hasPermission(role: UserRole, permission: string): boolean {
 
 // Check if role is admin type (can access admin dashboard)
 export function isAdminRole(role: UserRole): boolean {
-  return ['admin_berkas', 'admin_keuangan', 'admin_super'].includes(role);
+  return ['admin_berkas', 'admin_keuangan', 'admin_super', 'admin'].includes(role);
 }
 
 // Check if role can verify documents
@@ -344,6 +369,18 @@ export function getMenuItemsForRole(role: UserRole): { name: string; href: strin
       { name: 'Verifikasi Dokumen', href: '/dashboard/admin/verifikasi-dokumen', icon: 'FileCheck' },
       { name: 'Jadwal Ujian', href: '/dashboard/admin/jadwal-ujian', icon: 'Calendar' },
       { name: 'Pengumuman', href: '/dashboard/admin/pengumuman', icon: 'Trophy' },
+      { name: 'Manajemen User', href: '/dashboard/admin/users', icon: 'UserCog' },
+      { name: 'Pengaturan', href: '/dashboard/admin/pengaturan', icon: 'Settings' },
+    ],
+    admin: [
+      { name: 'Dashboard', href: '/dashboard/admin', icon: 'LayoutDashboard' },
+      { name: 'Daftar Pendaftar', href: '/dashboard/admin/pendaftar', icon: 'Users' },
+      { name: 'Verifikasi Pembayaran', href: '/dashboard/admin/verifikasi-pembayaran', icon: 'CreditCard' },
+      { name: 'Data Lengkap', href: '/dashboard/admin/pendaftar?filter=data', icon: 'FileText' },
+      { name: 'Verifikasi Dokumen', href: '/dashboard/admin/verifikasi-dokumen', icon: 'FileCheck' },
+      { name: 'Jadwal Ujian', href: '/dashboard/admin/jadwal-ujian', icon: 'Calendar' },
+      { name: 'Pengumuman', href: '/dashboard/admin/pengumuman', icon: 'Trophy' },
+      { name: 'Manajemen User', href: '/dashboard/admin/users', icon: 'UserCog' },
       { name: 'Pengaturan', href: '/dashboard/admin/pengaturan', icon: 'Settings' },
     ],
     pendaftar: [], // Pendaftar uses tab-based navigation
@@ -383,7 +420,7 @@ export async function getUserRole(supabase: SupabaseClient, userId: string): Pro
 // Validate role access to a route
 export function canAccessRoute(role: UserRole, route: string): boolean {
   // Admin super can access everything
-  if (role === 'admin_super') return true;
+  if (role === 'admin_super' || role === 'admin') return true;
 
   // Pendaftar can only access pendaftar routes
   if (role === 'pendaftar') {

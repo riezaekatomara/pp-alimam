@@ -20,7 +20,7 @@ function getSessionFromCookie(request: NextRequest): {
   id: string | null;
 } {
   const sessionCookie = request.cookies.get("app_session");
-  
+
   if (!sessionCookie) {
     console.log("🍪 [Middleware] No app_session cookie found");
     return { role: null, id: null };
@@ -152,7 +152,8 @@ export async function middleware(request: NextRequest) {
   // PROTECT: /dashboard/admin
   // ═══════════════════════════════════════════
   if (pathname.startsWith("/dashboard/admin")) {
-    if (!userRole || userRole !== "admin") {
+    const allowedAdminRoles = ["admin_berkas", "admin_keuangan", "admin_super", "admin"]; // 'admin' kept for legacy safety
+    if (!userRole || !allowedAdminRoles.includes(userRole)) {
       console.log(`❌ [Protect] Access denied to /dashboard/admin (role: ${userRole})`);
       const loginUrl = new URL("/login", request.url);
       return NextResponse.redirect(loginUrl);
@@ -163,8 +164,11 @@ export async function middleware(request: NextRequest) {
   // ═══════════════════════════════════════════
   // PROTECT: /dashboard/penguji
   // ═══════════════════════════════════════════
+  // ═══════════════════════════════════════════
+  // PROTECT: /dashboard/penguji
+  // ═══════════════════════════════════════════
   if (pathname.startsWith("/dashboard/penguji")) {
-    if (!userRole || userRole !== "penguji") {
+    if (!userRole || (userRole !== "penguji" && userRole !== "admin_super")) {
       console.log(`❌ [Protect] Access denied to /dashboard/penguji (role: ${userRole})`);
       const loginUrl = new URL("/login", request.url);
       return NextResponse.redirect(loginUrl);
@@ -177,7 +181,7 @@ export async function middleware(request: NextRequest) {
   // ═══════════════════════════════════════════
   if (pathname === "/dashboard" || pathname === "/dashboard/") {
     console.log(`📍 [Middleware] At /dashboard, userRole: ${userRole}`);
-    
+
     if (!userRole) {
       console.log(`❌ [Redirect] /dashboard → /login (no role)`);
       const loginUrl = new URL("/login", request.url);
@@ -190,7 +194,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL("/dashboard/pendaftar", request.url)
       );
-    } else if (userRole === "admin") {
+    } else if (["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(userRole)) {
       console.log(`➡️ [Redirect] /dashboard → /dashboard/admin`);
       return NextResponse.redirect(new URL("/dashboard/admin", request.url));
     } else if (userRole === "penguji") {
@@ -212,7 +216,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(
         new URL("/dashboard/pendaftar", request.url)
       );
-    } else if (userRole === "admin") {
+    } else if (["admin_berkas", "admin_keuangan", "admin_super", "admin"].includes(userRole)) {
       return NextResponse.redirect(new URL("/dashboard/admin", request.url));
     } else if (userRole === "penguji") {
       return NextResponse.redirect(new URL("/dashboard/penguji", request.url));

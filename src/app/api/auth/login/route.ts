@@ -148,8 +148,9 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Check role
-      if (profile.role !== "admin" && profile.role !== "penguji") {
+      // Check role - Allow all 5 roles + legacy admin
+      const allowedRoles = ["admin", "penguji", "admin_super", "admin_berkas", "admin_keuangan"];
+      if (!allowedRoles.includes(profile.role)) {
         console.log(`   ❌ Invalid role: ${profile.role}`);
         return NextResponse.json(
           { error: "Akun ini tidak memiliki akses admin/penguji" },

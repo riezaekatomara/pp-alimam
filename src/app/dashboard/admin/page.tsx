@@ -22,6 +22,7 @@ import {
   FileText
 } from "lucide-react";
 import Link from "next/link";
+import { getMenuItemsForRole, UserRole } from "@/lib/access-control";
 
 // Interfaces (Unchanged)
 interface JenjangStat {
@@ -73,6 +74,7 @@ const JENJANG_LABELS: Record<string, string> = {
 export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [stats, setStats] = useState<DashboardStats>({
     total_pendaftar: 0,
     belum_bayar: 0,
@@ -101,9 +103,19 @@ export default function AdminDashboardPage() {
   const [activeTahunAjaran, setActiveTahunAjaran] = useState<{ nama: string } | null>(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
+
+        // 1. Fetch Session for Role
+        const sessionRes = await fetch("/api/auth/session");
+        if (sessionRes.ok) {
+          const sessionData = await sessionRes.json();
+          if (sessionData.user?.user_metadata?.role) {
+            setRole(sessionData.user.user_metadata.role as UserRole);
+          }
+        }
+
         const response = await fetch("/api/admin/stats");
         if (response.ok) {
           const data = await response.json();
@@ -124,7 +136,7 @@ export default function AdminDashboardPage() {
       }
     };
 
-    fetchStats();
+    fetchData();
   }, []);
 
   const handleExportPembayaran = async (type: "all" | "lunas" | "pending") => {
@@ -150,6 +162,11 @@ export default function AdminDashboardPage() {
       setExporting(null);
     }
   };
+
+  // Helper to check if user can view section
+  const canViewKeuangan = !role || role === 'admin_keuangan' || role === 'admin_super' || role === 'admin';
+  const canViewBerkas = !role || role === 'admin_berkas' || role === 'admin_super' || role === 'admin';
+  const canViewSeleksi = !role || role === 'admin_super' || role === 'admin' || role === 'penguji';
 
   if (loading) {
     return (
@@ -179,7 +196,9 @@ export default function AdminDashboardPage() {
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
-            Overview
+            {role === 'admin_keuangan' ? 'Dashboard Keuangan' :
+              role === 'admin_berkas' ? 'Dashboard Berkas' :
+                'Overview'}
           </h1>
           <p className="text-ink-500 mt-2 text-lg">
             Monitor perkembangan PPDB secara real-time.
@@ -191,14 +210,16 @@ export default function AdminDashboardPage() {
             <Users className="w-5 h-5" />
             <span>Data Pendaftar</span>
           </Link>
-          <button
-            onClick={() => handleExportPembayaran("all")}
-            className="btn-secondary"
-            disabled={exporting !== null}
-          >
-            {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-            <span>Export</span>
-          </button>
+          {canViewKeuangan && (
+            <button
+              onClick={() => handleExportPembayaran("all")}
+              className="btn-secondary"
+              disabled={exporting !== null}
+            >
+              {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+              <span>Export</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -227,61 +248,67 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Keuangan Card */}
-        <div className="card-glass p-6 relative overflow-hidden group hover:border-teal-200">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-teal-50 rounded-2xl text-teal-600">
-              <Wallet className="w-6 h-6" />
+        {canViewKeuangan && (
+          <div className="card-glass p-6 relative overflow-hidden group hover:border-teal-200">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-teal-50 rounded-2xl text-teal-600">
+                <Wallet className="w-6 h-6" />
+              </div>
+              <span className="badge badge-neutral">Keuangan</span>
             </div>
-            <span className="badge badge-neutral">Keuangan</span>
-          </div>
-          <p className="text-ink-500 text-sm font-medium">Pembayaran Lunas</p>
-          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_bayar}</h3>
-          <p className="text-sm text-ink-400 mb-4">{lunasPersen}% dari total pendaftar</p>
+            <p className="text-ink-500 text-sm font-medium">Pembayaran Lunas</p>
+            <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_bayar}</h3>
+            <p className="text-sm text-ink-400 mb-4">{lunasPersen}% dari total pendaftar</p>
 
-          <div className="flex gap-2">
-            <Link href="/dashboard/admin/verifikasi-pembayaran" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-teal-50 text-teal-700">
-              Verifikasi ({stats.menunggu_verifikasi_pembayaran})
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/dashboard/admin/verifikasi-pembayaran" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-teal-50 text-teal-700">
+                Verifikasi ({stats.menunggu_verifikasi_pembayaran})
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Dokumen Card */}
-        <div className="card-glass p-6 relative overflow-hidden group hover:border-gold-200">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-gold-50 rounded-2xl text-gold-600">
-              <FileCheck className="w-6 h-6" />
+        {canViewBerkas && (
+          <div className="card-glass p-6 relative overflow-hidden group hover:border-gold-200">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-gold-50 rounded-2xl text-gold-600">
+                <FileCheck className="w-6 h-6" />
+              </div>
+              <span className="badge badge-neutral">Berkas</span>
             </div>
-            <span className="badge badge-neutral">Berkas</span>
-          </div>
-          <p className="text-ink-500 text-sm font-medium">Dokumen Lengkap</p>
-          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_isi_data}</h3>
-          <p className="text-sm text-ink-400 mb-4">Siap diverifikasi</p>
+            <p className="text-ink-500 text-sm font-medium">Dokumen Lengkap</p>
+            <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_isi_data}</h3>
+            <p className="text-sm text-ink-400 mb-4">Siap diverifikasi</p>
 
-          <div className="flex gap-2">
-            <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-gold-50 text-gold-700">
-              Cek Berkas ({stats.menunggu_verifikasi_dokumen})
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-gold-50 text-gold-700">
+                Cek Berkas ({stats.menunggu_verifikasi_dokumen})
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Seleksi Card */}
-        <div className="card-glass p-6 relative overflow-hidden group hover:border-blue-200">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
-              <GraduationCap className="w-6 h-6" />
+        {canViewSeleksi && (
+          <div className="card-glass p-6 relative overflow-hidden group hover:border-blue-200">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <span className="badge badge-neutral">Seleksi</span>
             </div>
-            <span className="badge badge-neutral">Seleksi</span>
-          </div>
-          <p className="text-ink-500 text-sm font-medium">Siswa Diterima</p>
-          <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1 text-blue-600">{stats.diterima}</h3>
-          <p className="text-sm text-ink-400 mb-4">Dari {stats.sudah_ujian} peserta ujian</p>
+            <p className="text-ink-500 text-sm font-medium">Siswa Diterima</p>
+            <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1 text-blue-600">{stats.diterima}</h3>
+            <p className="text-sm text-ink-400 mb-4">Dari {stats.sudah_ujian} peserta ujian</p>
 
-          <div className="flex gap-2">
-            <Link href="/dashboard/admin/jadwal-ujian" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-blue-50 text-blue-700">
-              Jadwal Ujian
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/dashboard/admin/jadwal-ujian" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-blue-50 text-blue-700">
+                Jadwal Ujian
+              </Link>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* 3. Main Content Grid - Floating Tables */}
@@ -371,69 +398,77 @@ export default function AdminDashboardPage() {
           <div className="card-glass p-6">
             <h3 className="text-lg font-bold text-ink-900 mb-4">Aksi Cepat</h3>
             <div className="space-y-3">
-              <Link href="/dashboard/admin/verifikasi-pembayaran"
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-amber-50 rounded-lg text-amber-600 group-hover:scale-110 transition-transform">
-                    <CreditCard className="w-5 h-5" />
+              {canViewKeuangan && (
+                <Link href="/dashboard/admin/verifikasi-pembayaran"
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-50 rounded-lg text-amber-600 group-hover:scale-110 transition-transform">
+                      <CreditCard className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-ink-900">Verifikasi Pembayaran</p>
+                      <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_pembayaran} pending</p>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <p className="text-sm font-bold text-ink-900">Verifikasi Pembayaran</p>
-                    <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_pembayaran} pending</p>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-amber-500" />
-              </Link>
+                  <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-amber-500" />
+                </Link>
+              )}
 
-              <Link href="/dashboard/admin/verifikasi-dokumen"
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
-                    <FileCheck className="w-5 h-5" />
+              {canViewBerkas && (
+                <Link href="/dashboard/admin/verifikasi-dokumen"
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-50 rounded-lg text-blue-600 group-hover:scale-110 transition-transform">
+                      <FileCheck className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-ink-900">Verifikasi Dokumen</p>
+                      <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_dokumen} pending</p>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <p className="text-sm font-bold text-ink-900">Verifikasi Dokumen</p>
-                    <p className="text-xs text-ink-400">{stats.menunggu_verifikasi_dokumen} pending</p>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-blue-500" />
-              </Link>
+                  <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-blue-500" />
+                </Link>
+              )}
 
-              <Link href="/dashboard/admin/jadwal-ujian"
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:scale-110 transition-transform">
-                    <Calendar className="w-5 h-5" />
+              {canViewSeleksi && (
+                <Link href="/dashboard/admin/jadwal-ujian"
+                  className="flex items-center justify-between p-3 rounded-xl hover:bg-surface-50 border border-transparent hover:border-ink-200 transition-all group">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-50 rounded-lg text-purple-600 group-hover:scale-110 transition-transform">
+                      <Calendar className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <p className="text-sm font-bold text-ink-900">Atur Jadwal Ujian</p>
+                      <p className="text-xs text-ink-400">{stats.belum_ujian} siswa belum dapat jadwal</p>
+                    </div>
                   </div>
-                  <div className="text-left">
-                    <p className="text-sm font-bold text-ink-900">Atur Jadwal Ujian</p>
-                    <p className="text-xs text-ink-400">{stats.belum_ujian} siswa belum dapat jadwal</p>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-purple-500" />
-              </Link>
+                  <ArrowUpRight className="w-4 h-4 text-ink-300 group-hover:text-purple-500" />
+                </Link>
+              )}
             </div>
           </div>
 
           {/* Download Report Card */}
-          <div className="card-glass p-6 bg-gradient-to-br from-teal-500 to-teal-700 text-white border-0 shadow-xl shadow-teal-500/20">
-            <div className="flex items-start justify-between mb-4">
-              <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
-                <FileText className="w-6 h-6 text-white" />
+          {canViewKeuangan && (
+            <div className="card-glass p-6 bg-gradient-to-br from-teal-500 to-teal-700 text-white border-0 shadow-xl shadow-teal-500/20">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <span className="px-2 py-1 bg-white/20 rounded-lg text-xs font-medium text-white/90">Monthly</span>
               </div>
-              <span className="px-2 py-1 bg-white/20 rounded-lg text-xs font-medium text-white/90">Monthly</span>
-            </div>
-            <h3 className="text-xl font-bold mb-1">Laporan Keuangan</h3>
-            <p className="text-teal-100 text-sm mb-6">Download rekap pembayaran bulan ini.</p>
+              <h3 className="text-xl font-bold mb-1">Laporan Keuangan</h3>
+              <p className="text-teal-100 text-sm mb-6">Download rekap pembayaran bulan ini.</p>
 
-            <button
-              onClick={() => handleExportPembayaran("all")}
-              className="w-full py-3 bg-white text-teal-700 font-bold rounded-xl shadow-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2"
-            >
-              <Download className="w-4 h-4" />
-              Download CSV
-            </button>
-          </div>
+              <button
+                onClick={() => handleExportPembayaran("all")}
+                className="w-full py-3 bg-white text-teal-700 font-bold rounded-xl shadow-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                Download CSV
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
