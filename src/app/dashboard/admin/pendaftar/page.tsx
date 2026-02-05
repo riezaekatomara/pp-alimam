@@ -23,6 +23,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import Link from "next/link";
+import { UserRole } from "@/lib/access-control";
 
 // Filter labels for dashboard categories
 const FILTER_LABELS: Record<string, string> = {
@@ -115,6 +116,9 @@ export default function AdminPendaftarPage() {
   const [bulkStatus, setBulkStatus] = useState("");
   const [bulkUpdating, setBulkUpdating] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [role, setRole] = useState<UserRole | null>(null);
+  const [isRoleLoading, setIsRoleLoading] = useState(true);
+
   const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
     limit: 20,
@@ -196,6 +200,29 @@ export default function AdminPendaftarPage() {
       }
     };
     fetchProvinsi();
+
+    // Fetch Role
+    const fetchRole = async () => {
+      try {
+        setIsRoleLoading(true);
+        const sessionRes = await fetch("/api/auth/session");
+        if (sessionRes.ok) {
+          const sessionData = await sessionRes.json();
+          // Fix: Read from session.role based on API structure
+          if (sessionData.session?.role) {
+            setRole(sessionData.session.role as UserRole);
+          } else if (sessionData.user?.user_metadata?.role) {
+            // Fallback for standard supabase session
+            setRole(sessionData.user.user_metadata.role as UserRole);
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching role", e);
+      } finally {
+        setIsRoleLoading(false);
+      }
+    };
+    fetchRole();
   }, []);
 
   useEffect(() => {
@@ -376,6 +403,13 @@ export default function AdminPendaftarPage() {
     }
   };
 
+  // Role Helpers
+  // Default to false if loading or no role found, to prevent unauthorized view
+  const canViewKeuangan = !isRoleLoading && role !== null && (role === 'admin_keuangan' || role === 'admin_super' || role === 'admin');
+  const canViewBerkas = !isRoleLoading && role !== null && (role === 'admin_berkas' || role === 'admin_super' || role === 'admin');
+  const canViewSeleksi = !isRoleLoading && role !== null && (role === 'admin_super' || role === 'admin' || role === 'penguji');
+  // Note: If role is null after loading, user shouldn't see sensitive columns.
+
   const formatStatus = (status: string) => {
     const statusMap: Record<string, { label: string; color: string }> = {
       draft: { label: "Draft", color: "bg-stone-100 text-stone-700" },
@@ -516,37 +550,55 @@ export default function AdminPendaftarPage() {
               className="w-full px-4 py-2 border-2 border-stone-200 rounded-lg focus:border-blue-500 focus:outline-none"
             >
               <option value="">Semua Status</option>
-              <optgroup label="--- Pembayaran ---">
-                <option value="belum_bayar">Belum Bayar</option>
-                <option value="menunggu_verifikasi_pembayaran">Menunggu Verifikasi Pembayaran</option>
-                <option value="sudah_bayar">Sudah Bayar</option>
-                <option value="pembayaran_ditolak">Pembayaran Ditolak</option>
-              </optgroup>
-              <optgroup label="--- Data Lengkap ---">
-                <option value="belum_isi_data">Belum Isi Data Lengkap</option>
-                <option value="sudah_isi_data">Sudah Isi Data Lengkap</option>
-              </optgroup>
-              <optgroup label="--- Dokumen ---">
-                <option value="belum_upload_dokumen">Belum Upload Dokumen</option>
-                <option value="menunggu_verifikasi_dokumen">Menunggu Verifikasi Dokumen</option>
-                <option value="dokumen_terverifikasi">Dokumen Terverifikasi</option>
-                <option value="dokumen_ditolak">Dokumen Ditolak</option>
-              </optgroup>
-              <optgroup label="--- Ujian & Wawancara ---">
-                <option value="terjadwal_ujian">Terjadwal Ujian</option>
-                <option value="belum_ujian">Belum Ujian</option>
-                <option value="sudah_ujian">Sudah Ujian</option>
-                <option value="hasil_ujian">Hasil Ujian</option>
-              </optgroup>
-              <optgroup label="--- Penerimaan ---">
-                <option value="diterima">Diterima</option>
-                <option value="belum_daftar_ulang">Belum Daftar Ulang</option>
-                <option value="sudah_daftar_ulang">Sudah Daftar Ulang</option>
-              </optgroup>
+
+              {canViewKeuangan && (
+                <optgroup label="--- Pembayaran ---">
+                  <option value="belum_bayar">Belum Bayar</option>
+                  <option value="menunggu_verifikasi_pembayaran">Menunggu Verifikasi Pembayaran</option>
+                  <option value="sudah_bayar">Sudah Bayar</option>
+                  <option value="pembayaran_ditolak">Pembayaran Ditolak</option>
+                </optgroup>
+              )}
+
+              {canViewBerkas && (
+                <>
+                  <optgroup label="--- Data Lengkap ---">
+                    <option value="belum_isi_data">Belum Isi Data Lengkap</option>
+                    <option value="sudah_isi_data">Sudah Isi Data Lengkap</option>
+                  </optgroup>
+                  <optgroup label="--- Dokumen ---">
+                    <option value="belum_upload_dokumen">Belum Upload Dokumen</option>
+                    <option value="menunggu_verifikasi_dokumen">Menunggu Verifikasi Dokumen</option>
+                    <option value="dokumen_terverifikasi">Dokumen Terverifikasi</option>
+                    <option value="dokumen_ditolak">Dokumen Ditolak</option>
+                  </optgroup>
+                </>
+              )}
+
+              {canViewSeleksi && (
+                <>
+                  <optgroup label="--- Ujian & Wawancara ---">
+                    <option value="terjadwal_ujian">Terjadwal Ujian</option>
+                    <option value="belum_ujian">Belum Ujian</option>
+                    <option value="sudah_ujian">Sudah Ujian</option>
+                    <option value="hasil_ujian">Hasil Ujian</option>
+                  </optgroup>
+                  <optgroup label="--- Penerimaan ---">
+                    <option value="diterima">Diterima</option>
+                    <option value="belum_daftar_ulang">Belum Daftar Ulang</option>
+                    <option value="sudah_daftar_ulang">Sudah Daftar Ulang</option>
+                  </optgroup>
+                </>
+              )}
+
               <optgroup label="--- Status Individual ---">
                 <option value="draft">Draft</option>
-                <option value="payment_verification">Verifikasi Pembayaran</option>
-                <option value="paid">Sudah Bayar (paid)</option>
+                {canViewKeuangan && (
+                  <>
+                    <option value="payment_verification">Verifikasi Pembayaran</option>
+                    <option value="paid">Sudah Bayar (paid)</option>
+                  </>
+                )}
                 <option value="data_completed">Data Lengkap</option>
                 <option value="docs_uploaded">Dokumen Terupload</option>
                 <option value="docs_verified">Dokumen Terverifikasi</option>
@@ -820,6 +872,11 @@ export default function AdminPendaftarPage() {
                     <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Status
                     </th>
+                    {canViewKeuangan && (
+                      <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
+                        Pembayaran
+                      </th>
+                    )}
                     <th className="px-4 py-3 text-left text-xs font-bold text-blue-900 uppercase tracking-wider">
                       Kontak
                     </th>
@@ -881,6 +938,27 @@ export default function AdminPendaftarPage() {
                       <td className="px-4 py-3">
                         {formatStatus(item.status_pendaftaran)}
                       </td>
+                      {canViewKeuangan && (
+                        <td className="px-4 py-3">
+                          {/* @ts-ignore */}
+                          {item.pembayaran?.length > 0 ? (
+                            <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+                              /* @ts-ignore */
+                              item.pembayaran[0].status_pembayaran === 'verified' ? 'bg-green-100 text-green-700' :
+                                /* @ts-ignore */
+                                item.pembayaran[0].status_pembayaran === 'pending' ? 'bg-amber-100 text-amber-700' :
+                                  'bg-stone-100 text-stone-700'
+                              }`}>
+                              {/* @ts-ignore */}
+                              {item.pembayaran[0].status_pembayaran === 'verified' ? 'Lunas' :
+                                /* @ts-ignore */
+                                item.pembayaran[0].status_pembayaran === 'pending' ? 'Cek' : 'Belum'}
+                            </span>
+                          ) : (
+                            <span className="text-stone-400 text-xs">-</span>
+                          )}
+                        </td>
+                      )}
                       <td className="px-4 py-3">
                         <div className="text-sm space-y-1">
                           {item.no_hp && (

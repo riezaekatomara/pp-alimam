@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import ExcelJS from 'exceljs';
 
 export async function GET(request: NextRequest) {
   try {
     // Validate session
     const cookieStore = await cookies();
+    // ... (rest of code logic remains but imports are moved)
+
     const sessionCookie = cookieStore.get("app_session");
 
     if (!sessionCookie) {
@@ -18,8 +21,9 @@ export async function GET(request: NextRequest) {
     } catch {
       return NextResponse.json({ error: "Invalid session" }, { status: 401 });
     }
-
-    if (session.role !== "admin") {
+    // Check custom role
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -99,7 +103,52 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Generate CSV
+    // Generate Excel
+    if (format === 'excel' || format === 'xlsx') {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Data Pembayaran');
+
+      // Define columns
+      worksheet.columns = [
+        { header: 'No. Pendaftaran', key: 'nomor_pendaftaran', width: 20 },
+        { header: 'Nama Lengkap', key: 'nama_lengkap', width: 30 },
+        { header: 'NIK', key: 'nik', width: 20 },
+        { header: 'Jenis Kelamin', key: 'jenis_kelamin', width: 15 },
+        { header: 'Jenjang', key: 'jenjang', width: 10 },
+        { header: 'No. HP', key: 'no_hp', width: 15 },
+        { header: 'Email', key: 'email', width: 25 },
+        { header: 'Provinsi', key: 'provinsi', width: 20 },
+        { header: 'Kabupaten', key: 'kabupaten', width: 20 },
+        { header: 'Status Pendaftaran', key: 'status_pendaftaran', width: 20 },
+        { header: 'Tanggal Daftar', key: 'tanggal_daftar', width: 15 },
+        { header: 'Jumlah Pembayaran', key: 'jumlah_pembayaran', width: 20 },
+        { header: 'Metode Pembayaran', key: 'metode_pembayaran', width: 20 },
+        { header: 'Status Pembayaran', key: 'status_pembayaran', width: 20 },
+        { header: 'Tanggal Pembayaran', key: 'tanggal_pembayaran', width: 15 },
+        { header: 'Tanggal Verifikasi', key: 'tanggal_verifikasi', width: 20 },
+      ];
+
+      // Add rows
+      worksheet.addRows(filteredData);
+
+      // Style header
+      worksheet.getRow(1).font = { bold: true };
+
+      // Buffer
+      const buffer = await workbook.xlsx.writeBuffer();
+
+      const filename = `pembayaran_ppdb_${type}_${new Date().toISOString().split("T")[0]}.xlsx`;
+
+      return new NextResponse(buffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'Content-Disposition': `attachment; filename="${filename}"`
+        }
+      });
+    }
+
+    // Default: Generate CSV
     const headers = [
       "No. Pendaftaran",
       "Nama Lengkap",

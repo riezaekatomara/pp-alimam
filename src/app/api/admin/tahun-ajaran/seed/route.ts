@@ -21,6 +21,12 @@ export async function POST() {
       .single();
 
     if (existing) {
+      // Force update price to 200000
+      await supabase
+        .from("tahun_ajaran")
+        .update({ biaya_pendaftaran: 200000 })
+        .eq("id", existing.id);
+
       // If exists but not active, activate it
       if (!existing.is_active) {
         // Deactivate all others first
@@ -41,15 +47,15 @@ export async function POST() {
 
         return NextResponse.json({
           success: true,
-          message: "Tahun Ajaran 2026/2027 diaktifkan",
-          data: { ...existing, is_active: true },
+          message: "Tahun Ajaran 2026/2027 diaktifkan & harga diupdate ke 200.000",
+          data: { ...existing, is_active: true, biaya_pendaftaran: 200000 },
         });
       }
 
       return NextResponse.json({
         success: true,
-        message: "Tahun Ajaran 2026/2027 sudah ada dan aktif",
-        data: existing,
+        message: "Tahun Ajaran 2026/2027 harga diupdate ke 200.000",
+        data: { ...existing, biaya_pendaftaran: 200000 },
       });
     }
 
@@ -69,7 +75,7 @@ export async function POST() {
         is_active: true,
         tanggal_buka_pendaftaran: "2026-01-01",
         tanggal_tutup_pendaftaran: "2026-07-31",
-        biaya_pendaftaran: 250000,
+        biaya_pendaftaran: 200000,
       })
       .select()
       .single();

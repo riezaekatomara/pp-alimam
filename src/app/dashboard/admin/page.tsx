@@ -111,7 +111,10 @@ export default function AdminDashboardPage() {
         const sessionRes = await fetch("/api/auth/session");
         if (sessionRes.ok) {
           const sessionData = await sessionRes.json();
-          if (sessionData.user?.user_metadata?.role) {
+          // Fix: Read from session.role for accuracy
+          if (sessionData.session?.role) {
+            setRole(sessionData.session.role as UserRole);
+          } else if (sessionData.user?.user_metadata?.role) {
             setRole(sessionData.user.user_metadata.role as UserRole);
           }
         }
@@ -142,7 +145,7 @@ export default function AdminDashboardPage() {
   const handleExportPembayaran = async (type: "all" | "lunas" | "pending") => {
     try {
       setExporting(type);
-      const response = await fetch(`/api/admin/export/pembayaran?type=${type}`);
+      const response = await fetch(`/api/admin/export/pembayaran?type=${type}&format=excel`);
       if (!response.ok) throw new Error("Failed to export");
 
       const blob = await response.blob();
@@ -150,14 +153,14 @@ export default function AdminDashboardPage() {
       const a = document.createElement("a");
       a.href = url;
       const typeLabel = type === "all" ? "semua" : type === "lunas" ? "lunas" : "pending";
-      a.download = `pembayaran_ppdb_${typeLabel}_${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `pembayaran_ppdb_${typeLabel}_${new Date().toISOString().split("T")[0]}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error exporting:", error);
-      alert("Gagal export data pembayaran");
+      alert("Gagal mengekspor data pembayaran");
     } finally {
       setExporting(null);
     }
@@ -167,6 +170,11 @@ export default function AdminDashboardPage() {
   const canViewKeuangan = !role || role === 'admin_keuangan' || role === 'admin_super' || role === 'admin';
   const canViewBerkas = !role || role === 'admin_berkas' || role === 'admin_super' || role === 'admin';
   const canViewSeleksi = !role || role === 'admin_super' || role === 'admin' || role === 'penguji';
+
+  // Specific role checks for exclusive views
+  const isKeuanganOnly = role === 'admin_keuangan';
+  const isBerkasOnly = role === 'admin_berkas';
+  const isPengujiOnly = role === 'penguji';
 
   if (loading) {
     return (
@@ -195,10 +203,10 @@ export default function AdminDashboardPage() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-ink-900 whitespace-nowrap">
             {role === 'admin_keuangan' ? 'Dashboard Keuangan' :
               role === 'admin_berkas' ? 'Dashboard Berkas' :
-                'Overview'}
+                'Ringkasan'}
           </h1>
           <p className="text-ink-500 mt-2 text-lg">
             Monitor perkembangan PPDB secara real-time.
@@ -217,7 +225,7 @@ export default function AdminDashboardPage() {
               disabled={exporting !== null}
             >
               {exporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-              <span>Export</span>
+              <span>Unduh Excel</span>
             </button>
           )}
         </div>
@@ -225,71 +233,85 @@ export default function AdminDashboardPage() {
 
       {/* 2. Hero KPI Cards - "Clay" Style */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Total Pendaftar - Featured Card */}
-        <div className="card-glass p-6 md:p-8 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Users className="w-24 h-24 text-teal-600" />
-          </div>
-          <p className="text-ink-500 font-medium mb-2">Total Pendaftar</p>
-          <div className="flex items-baseline gap-2">
-            <h2 className="text-5xl font-bold text-ink-900 tracking-tight">
-              {stats.total_pendaftar}
-            </h2>
-            <span className="text-sm font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">
-              +12
-            </span>
-          </div>
-          <div className="mt-4 pt-4 border-t border-ink-100 flex items-center justify-between text-sm">
-            <span className="text-ink-400">Target: 500</span>
-            <div className="w-24 h-1.5 bg-ink-100 rounded-full overflow-hidden">
-              <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(stats.total_pendaftar / 500) * 100}%` }}></div>
+
+        {/* TOTAL PENDAFTAR - Default / Super Admin / Berkas */}
+        {(!isKeuanganOnly && !isPengujiOnly) && (
+          <div className="card-glass p-6 md:p-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Users className="w-24 h-24 text-teal-600" />
+            </div>
+            <p className="text-ink-500 font-medium mb-2">Total Pendaftar</p>
+            <div className="flex items-baseline gap-2">
+              <h2 className="text-5xl font-bold text-ink-900 tracking-tight">
+                {stats.total_pendaftar}
+              </h2>
+              <span className="text-sm font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full">
+                Calon Santri
+              </span>
+            </div>
+            <div className="mt-4 pt-4 border-t border-ink-100 flex items-center justify-between text-sm">
+              <span className="text-ink-400">Target: 500</span>
+              <div className="w-24 h-1.5 bg-ink-100 rounded-full overflow-hidden">
+                <div className="h-full bg-teal-500 rounded-full" style={{ width: `${(stats.total_pendaftar / 500) * 100}%` }}></div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Keuangan Card */}
+        {/* KEUANGAN HERO - Admin Keuangan gets a bigger card or first slot */}
         {canViewKeuangan && (
-          <div className="card-glass p-6 relative overflow-hidden group hover:border-teal-200">
+          <div className={`card-glass p-6 relative overflow-hidden group hover:border-teal-200 ${isKeuanganOnly ? 'col-span-2 bg-gradient-to-br from-teal-50 to-white' : ''}`}>
+            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Wallet className="w-32 h-32 text-teal-600" />
+            </div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-teal-50 rounded-2xl text-teal-600">
+              <div className="p-3 bg-teal-100 rounded-2xl text-teal-600">
                 <Wallet className="w-6 h-6" />
               </div>
               <span className="badge badge-neutral">Keuangan</span>
             </div>
             <p className="text-ink-500 text-sm font-medium">Pembayaran Lunas</p>
-            <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_bayar}</h3>
+            <h3 className="text-4xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_bayar} <span className="text-lg text-ink-400 font-normal">Siswa</span></h3>
             <p className="text-sm text-ink-400 mb-4">{lunasPersen}% dari total pendaftar</p>
 
-            <div className="flex gap-2">
-              <Link href="/dashboard/admin/verifikasi-pembayaran" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-teal-50 text-teal-700">
-                Verifikasi ({stats.menunggu_verifikasi_pembayaran})
+            <div className="flex gap-2 relative z-10">
+              <Link href="/dashboard/admin/verifikasi-pembayaran" className="flex-1 btn-secondary text-xs">
+                Verifikasi Pending ({stats.menunggu_verifikasi_pembayaran})
               </Link>
             </div>
           </div>
         )}
 
-        {/* Dokumen Card */}
+        {/* BERKAS HERO - Admin Berkas Focus */}
         {canViewBerkas && (
-          <div className="card-glass p-6 relative overflow-hidden group hover:border-gold-200">
+          <div className={`card-glass p-6 relative overflow-hidden group hover:border-gold-200 ${isBerkasOnly ? 'col-span-2 bg-gold-50/30' : ''}`}>
+            <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+              <FileCheck className="w-32 h-32 text-gold-600" />
+            </div>
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-gold-50 rounded-2xl text-gold-600">
+              <div className="p-3 bg-gold-100 rounded-2xl text-gold-600">
                 <FileCheck className="w-6 h-6" />
               </div>
               <span className="badge badge-neutral">Berkas</span>
             </div>
             <p className="text-ink-500 text-sm font-medium">Dokumen Lengkap</p>
-            <h3 className="text-3xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_isi_data}</h3>
-            <p className="text-sm text-ink-400 mb-4">Siap diverifikasi</p>
+            <h3 className="text-4xl font-bold text-ink-900 mt-1 mb-1">{stats.sudah_isi_data} <span className="text-lg text-ink-400 font-normal">Siswa</span></h3>
+            <p className="text-sm text-ink-400 mb-4">Siap diverifikasi & seleksi</p>
 
-            <div className="flex gap-2">
-              <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-gold-50 text-gold-700">
-                Cek Berkas ({stats.menunggu_verifikasi_dokumen})
+            <div className="flex gap-2 relative z-10">
+              <Link href="/dashboard/admin/verifikasi-dokumen" className="flex-1 btn-secondary text-xs border-gold-200 text-gold-800 hover:bg-gold-50">
+                Cek Dokumen ({stats.menunggu_verifikasi_dokumen})
               </Link>
+              {isBerkasOnly && (
+                <Link href="/dashboard/admin/pendaftar?filter=belum_upload_dokumen" className="btn-ghost bg-white/50 hover:bg-white text-gold-700">
+                  <TrendingUp className="w-4 h-4" /> Cek Data
+                </Link>
+              )}
             </div>
           </div>
         )}
 
-        {/* Seleksi Card */}
+        {/* SELEKSI CARD - Penguji Focus */}
         {canViewSeleksi && (
           <div className="card-glass p-6 relative overflow-hidden group hover:border-blue-200">
             <div className="flex justify-between items-start mb-4">
@@ -304,7 +326,7 @@ export default function AdminDashboardPage() {
 
             <div className="flex gap-2">
               <Link href="/dashboard/admin/jadwal-ujian" className="flex-1 btn-ghost text-xs bg-ink-50 hover:bg-blue-50 text-blue-700">
-                Jadwal Ujian
+                Jadwal Ujian {stats.terjadwal_ujian > 0 && `(${stats.terjadwal_ujian})`}
               </Link>
             </div>
           </div>
@@ -447,28 +469,6 @@ export default function AdminDashboardPage() {
               )}
             </div>
           </div>
-
-          {/* Download Report Card */}
-          {canViewKeuangan && (
-            <div className="card-glass p-6 bg-gradient-to-br from-teal-500 to-teal-700 text-white border-0 shadow-xl shadow-teal-500/20">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-3 bg-white/20 backdrop-blur-md rounded-xl">
-                  <FileText className="w-6 h-6 text-white" />
-                </div>
-                <span className="px-2 py-1 bg-white/20 rounded-lg text-xs font-medium text-white/90">Monthly</span>
-              </div>
-              <h3 className="text-xl font-bold mb-1">Laporan Keuangan</h3>
-              <p className="text-teal-100 text-sm mb-6">Download rekap pembayaran bulan ini.</p>
-
-              <button
-                onClick={() => handleExportPembayaran("all")}
-                className="w-full py-3 bg-white text-teal-700 font-bold rounded-xl shadow-lg hover:bg-teal-50 transition-colors flex items-center justify-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Download CSV
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

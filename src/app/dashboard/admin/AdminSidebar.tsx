@@ -56,7 +56,7 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
     const menuItems = rawMenuItems.map(item => ({
         ...item,
         icon: ICON_MAP[item.icon] || LayoutDashboard, // Fallback icon
-        active: pathname === item.href || (item.name === "Data Lengkap" && pathname.includes("filter=data"))
+        active: pathname === item.href || (item.name === "Cek Data Pendaftar" && pathname.includes("filter=belum_upload_dokumen"))
     }));
 
     const NavLink = ({ item }: { item: (typeof menuItems)[0] }) => {
@@ -64,8 +64,8 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
             <Link
                 href={item.href}
                 className={`nav-link group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${item.active
-                        ? "active bg-white text-teal-600 shadow-clay-sm"
-                        : "text-ink-500 hover:bg-surface-50 hover:text-ink-900"
+                    ? "active bg-white text-teal-600 shadow-clay-sm"
+                    : "text-ink-500 hover:bg-surface-50 hover:text-ink-900"
                     }`}
             >
                 <item.icon className={`w-5 h-5 transition-colors ${item.active ? 'text-teal-500' : 'text-ink-400 group-hover:text-ink-600'}`} />
@@ -97,7 +97,7 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
                     <Menu className="w-6 h-6" />
                 </button>
 
-                <span className="font-bold text-ink-900">Admin Panel</span>
+                <span className="font-bold text-ink-900">Panel Admin</span>
 
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
                     {adminName.charAt(0)}
@@ -115,7 +115,7 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
                                     <Shield className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h1 className="font-bold text-lg text-ink-900 leading-tight">Admin<span className="text-teal-600">Panel</span></h1>
+                                    <h1 className="font-bold text-lg text-ink-900 leading-tight">Panel <span className="text-teal-600">Admin</span></h1>
                                     <p className="text-xs text-ink-400 font-medium tracking-wide">Al-Imam PPDB</p>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
                                 <Search className="absolute left-3 top-2.5 w-4 h-4 text-ink-400 group-focus-within:text-teal-500 transition-colors" />
                                 <input
                                     type="text"
-                                    placeholder="Search menu..."
+                                    placeholder="Cari menu..."
                                     className="w-full bg-surface-50 border-0 rounded-xl pl-9 pr-4 py-2 text-sm text-ink-800 placeholder:text-ink-400 focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all shadow-inner"
                                 />
                             </div>
@@ -133,12 +133,12 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
 
                         {/* Navigation */}
                         <nav className="flex-1 overflow-y-auto px-4 space-y-1 scrollbar-hide py-2">
-                            <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-2">Main Menu</p>
+                            <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-2">Menu Utama</p>
                             {menuItems.slice(0, 3).map((item) => (
                                 <NavLink key={item.name} item={item} />
                             ))}
 
-                            <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-6">Management</p>
+                            <p className="px-4 text-xs font-bold text-ink-400 uppercase tracking-wider mb-2 mt-6">Manajemen</p>
                             {menuItems.slice(3).map((item) => (
                                 <NavLink key={item.name} item={item} />
                             ))}
@@ -211,7 +211,7 @@ export default function AdminSidebar({ children, userRole, adminName }: AdminSid
                                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
                             </button>
                             <div className="flex items-center gap-3 pl-4 border-l border-ink-100">
-                                <Link href="/" className="text-sm font-medium text-teal-600 hover:underline">View Site</Link>
+                                <Link href="/" className="text-sm font-medium text-teal-600 hover:underline">Lihat Website</Link>
                             </div>
                         </div>
                     </header>

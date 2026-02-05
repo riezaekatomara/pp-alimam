@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Check custom role
-    if (session.role !== "admin") {
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -97,7 +98,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Check custom role
-    if (session.role !== "admin") {
+    const allowedRoles = ["admin", "admin_super", "admin_berkas", "admin_keuangan", "penguji"];
+    if (!allowedRoles.includes(session.role)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

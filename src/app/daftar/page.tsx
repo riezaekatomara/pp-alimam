@@ -34,7 +34,7 @@ const STEPS = [
 ];
 
 const PRICING = [
-  { label: "Uang Pendaftaran", amount: "Rp 300.000", note: "Tidak dapat dikembalikan" },
+  { label: "Uang Pendaftaran", amount: "Rp 200.000", note: "Tidak dapat dikembalikan" },
   { label: "Uang Pangkal", amount: "Rp 9.800.000", note: "Pembayaran dapat dicicil" },
   { label: "Iuran Taawun/Tahun", amount: "Rp 13.200.000", note: "All in (SPP + Makan + Asrama)" },
   { label: "Cicilan per Bulan", amount: "Rp 1.100.000", note: "Jika memilih sistem cicilan" },

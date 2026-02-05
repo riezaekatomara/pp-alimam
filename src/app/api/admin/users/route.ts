@@ -145,7 +145,7 @@ export async function POST(request: Request) {
                     email,
                     password,
                     email_confirm: true,
-                    user_metadata: { role }, // Only role
+                    user_metadata: { role, phone: "-" }, // Only role
                 });
 
                 authData = resultMinimal.data;
@@ -174,6 +174,7 @@ export async function POST(request: Request) {
                 email,
                 full_name,
                 role,
+                phone: "-", // Default phone to satisfy constraint
                 updated_at: new Date().toISOString(),
             });
 
