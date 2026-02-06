@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   AlertCircle,
   User,
@@ -175,8 +175,17 @@ function PricingSidebar() {
 
 export default function DaftarPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const jenjangFromUrl = searchParams.get('jenjang');
+  const [jenjangFromUrl, setJenjangFromUrl] = useState<"MTs" | "IL" | "">("");
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const jenjang = params.get('jenjang') as "MTs" | "IL" | null;
+      if (jenjang) {
+        setJenjangFromUrl(jenjang);
+      }
+    }
+  }, []);
 
   const [formData, setFormData] = useState<FormData>({
     nik: "",
@@ -184,7 +193,7 @@ export default function DaftarPage() {
     tanggal_lahir: "",
     no_hp: "",
     jenis_kelamin: "",
-    jenjang: jenjangFromUrl as "MTs" | "IL" || "",
+    jenjang: jenjangFromUrl,
   });
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -199,7 +208,7 @@ export default function DaftarPage() {
             ...prev,
             ...parsed,
             // Keep jenjang from URL if it exists, otherwise use saved data
-            jenjang: jenjangFromUrl as "MTs" | "IL" || parsed.jenjang || ""
+            jenjang: jenjangFromUrl || parsed.jenjang || ""
           }));
         } catch (error) {
           console.error("Error parsing saved data:", error);
@@ -208,7 +217,7 @@ export default function DaftarPage() {
         // If no saved data but jenjang exists in URL, update form
         setFormData(prev => ({
           ...prev,
-          jenjang: jenjangFromUrl as "MTs" | "IL"
+          jenjang: jenjangFromUrl
         }));
       }
     }
