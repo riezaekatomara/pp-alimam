@@ -585,7 +585,7 @@ export default function KegiatanPage() {
   return (
     <>
       {/* Hero Section - Fully Responsive */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-brown-900)] via-[var(--color-brown-800)] to-[var(--color-brown-950)] flex items-center min-h-screen py-12 xs:py-16 sm:py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-brown-900)] via-[var(--color-brown-800)] to-[var(--color-brown-950)] flex items-center min-h-screen py-12 md:py-16">
         {/* Decorative Elements - Hidden on mobile */}
         <div className="hidden sm:block absolute top-20 left-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-gold-500)] rounded-full blur-3xl opacity-10 animate-float" />
         <div className="hidden sm:block absolute bottom-20 right-10 w-64 h-64 sm:w-96 sm:h-96 bg-[var(--color-brown-700)] rounded-full blur-3xl opacity-10 animate-float delay-500" />
