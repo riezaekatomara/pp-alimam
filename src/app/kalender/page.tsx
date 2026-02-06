@@ -1,48 +1,7 @@
 "use client";
 
 import { Container } from "@/components/layout/Container";
-import { Calendar, Clock, MapPin, BookOpen } from "lucide-react";
-
-const academicCalendar = [
-  {
-    month: "Juli",
-    events: [
-      { date: "10-15", title: "Pendaftaran Santri Baru", type: "pendaftaran" },
-      { date: "20", title: "Tes Masuk Santri Baru", type: "ujian" },
-    ],
-  },
-  {
-    month: "Agustus",
-    events: [
-      { date: "1-5", title: "Pengumuman Kelulusan", type: "pengumuman" },
-      { date: "15", title: "Pembukaan Tahun Ajaran Baru", type: "pembukaan" },
-      { date: "17", title: "Upacara Kemerdekaan RI", type: "kegiatan" },
-    ],
-  },
-  {
-    month: "September",
-    events: [
-      { date: "Setiap Sabtu", title: "Kajian Kitab Kuning", type: "rutin" },
-      { date: "Minggu ke-2", title: "Ujian Tengah Semester", type: "ujian" },
-    ],
-  },
-  {
-    month: "Oktober",
-    events: [
-      { date: "Setiap Jumat", title: "Khotbah Jumat", type: "rutin" },
-      { date: "Akhir Bulan", title: "Pekan Olahraga", type: "kegiatan" },
-    ],
-  },
-];
-
-const eventColors: Record<string, string> = {
-  pendaftaran: "bg-blue-100 text-blue-700 border-blue-200",
-  ujian: "bg-red-100 text-red-700 border-red-200",
-  pengumuman: "bg-green-100 text-green-700 border-green-200",
-  pembukaan: "bg-purple-100 text-purple-700 border-purple-200",
-  kegiatan: "bg-gold-100 text-gold-700 border-gold-200",
-  rutin: "bg-brown-100 text-brown-700 border-brown-200",
-};
+import { Calendar, Clock, Wrench } from "lucide-react";
 
 export default function KalenderPage() {
   return (
@@ -66,83 +25,64 @@ export default function KalenderPage() {
       </section>
 
       <Container>
-        {/* Info Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white rounded-2xl p-6 shadow-clay-sm border border-surface-200">
-            <div className="w-12 h-12 rounded-xl bg-brown-100 flex items-center justify-center mb-4">
-              <Clock className="w-6 h-6 text-brown-600" />
-            </div>
-            <h3 className="text-lg font-bold text-ink-900 mb-2">Jam Belajar</h3>
-            <p className="text-ink-600 text-sm">
-              Senin - Jumat: 06.00 - 16.00 WIB<br />
-              Sabtu: 06.00 - 12.00 WIB
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-clay-sm border border-surface-200">
-            <div className="w-12 h-12 rounded-xl bg-gold-100 flex items-center justify-center mb-4">
-              <BookOpen className="w-6 h-6 text-gold-600" />
-            </div>
-            <h3 className="text-lg font-bold text-ink-900 mb-2">Tahun Ajaran</h3>
-            <p className="text-ink-600 text-sm">
-              Tahun Ajaran 2025/2026<br />
-              Dimulai 15 Agustus 2025
-            </p>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 shadow-clay-sm border border-surface-200">
-            <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mb-4">
-              <MapPin className="w-6 h-6 text-teal-600" />
-            </div>
-            <h3 className="text-lg font-bold text-ink-900 mb-2">Lokasi</h3>
-            <p className="text-ink-600 text-sm">
-              Cikembar, Sukabumi<br />
-              Jawa Barat 43157
-            </p>
-          </div>
-        </div>
-
-        {/* Calendar Grid */}
-        <div className="space-y-8">
-          {academicCalendar.map((monthData, idx) => (
-            <div key={idx} className="bg-white rounded-2xl shadow-clay-sm border border-surface-200 overflow-hidden">
-              <div className="bg-brown-50 px-6 py-4 border-b border-brown-100">
-                <h2 className="text-xl font-bold text-brown-800">{monthData.month}</h2>
-              </div>
-              <div className="p-6">
-                <div className="space-y-4">
-                  {monthData.events.map((event, eventIdx) => (
-                    <div
-                      key={eventIdx}
-                      className="flex items-start gap-4 p-4 rounded-xl border transition-all hover:shadow-clay-sm"
-                    >
-                      <div className={`px-3 py-2 rounded-lg font-bold text-sm whitespace-nowrap ${eventColors[event.type] || "bg-surface-100 text-ink-600 border-surface-200"}`}>
-                        {event.date}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-ink-900">{event.title}</h3>
-                        <p className="text-sm text-ink-500 capitalize">{event.type}</p>
-                      </div>
-                    </div>
-                  ))}
+        {/* Development Notice */}
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-clay-lg border border-surface-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-brown-50 to-cream-50 px-8 py-6 border-b border-brown-100">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-brown-100 flex items-center justify-center">
+                  <Wrench className="w-7 h-7 text-brown-600" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-brown-900">Sedang dalam Pengembangan</h2>
+                  <p className="text-brown-600 mt-1">Halaman kalender akademik sedang disiapkan</p>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+            
+            <div className="p-8">
+              <div className="prose prose-brown max-w-none">
+                <p className="text-ink-600 text-lg leading-relaxed mb-6">
+                  Kami sedang mempersiapkan halaman kalender akademik yang komprehensif untuk Anda. 
+                  Halaman ini akan menampilkan:
+                </p>
+                
+                <ul className="space-y-3 text-ink-600 mb-8">
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-brown-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Calendar className="w-3 h-3 text-brown-600" />
+                    </div>
+                    <span>Jadwal akademik tahun ajaran 2025/2026</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-gold-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Clock className="w-3 h-3 text-gold-600" />
+                    </div>
+                    <span>Jadwal kegiatan rutin pondok pesantren</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Wrench className="w-3 h-3 text-teal-600" />
+                    </div>
+                    <span>Informasi ujian dan kegiatan penting lainnya</span>
+                  </li>
+                </ul>
 
-        {/* Note */}
-        <div className="mt-12 bg-gold-50 border border-gold-200 rounded-2xl p-6">
-          <div className="flex items-start gap-4">
-            <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center flex-shrink-0">
-              <Calendar className="w-5 h-5 text-gold-600" />
-            </div>
-            <div>
-              <h3 className="font-bold text-gold-900 mb-2">Catatan Penting</h3>
-              <p className="text-gold-700 text-sm leading-relaxed">
-                Jadwal dapat berubah sesuai dengan kebijakan pimpinan pondok pesantren. 
-                Untuk informasi terbaru, silakan cek dashboard santri atau hubungi bagian administrasi.
-              </p>
+                <div className="bg-gold-50 border border-gold-200 rounded-2xl p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-full bg-gold-100 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-gold-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gold-900 mb-2">Perkiraan Selesai</h3>
+                      <p className="text-gold-700 text-sm leading-relaxed">
+                        Halaman ini dijadwalkan akan selesai dalam beberapa hari ke depan. 
+                        Untuk informasi sementara, silakan hubungi bagian administrasi.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
