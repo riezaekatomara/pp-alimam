@@ -585,10 +585,12 @@ export default function KegiatanPage() {
   return (
     <>
       {/* Hero Section - Fully Responsive */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--color-brown-900)] via-[var(--color-brown-800)] to-[var(--color-brown-950)] flex items-center min-h-screen py-12 md:py-16">
-        {/* Decorative Elements - Hidden on mobile */}
-        <div className="hidden sm:block absolute top-20 left-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-gold-500)] rounded-full blur-3xl opacity-10 animate-float" />
-        <div className="hidden sm:block absolute bottom-20 right-10 w-64 h-64 sm:w-96 sm:h-96 bg-[var(--color-brown-700)] rounded-full blur-3xl opacity-10 animate-float delay-500" />
+      <section className="relative overflow-hidden bg-brown-900 flex items-center min-h-[400px] md:min-h-[500px] py-12 md:py-16">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
+      {/* Decorative Elements - Hidden on mobile */}
+      <div className="hidden sm:block absolute top-20 left-10 w-48 h-48 sm:w-72 sm:h-72 bg-[var(--color-gold-500)] rounded-full blur-3xl opacity-10 animate-float" />
+      <div className="hidden sm:block absolute bottom-20 right-10 w-64 h-64 sm:w-96 sm:h-96 bg-[var(--color-brown-700)] rounded-full blur-3xl opacity-10 animate-float delay-500" />
 
         <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="mb-4 sm:mb-6">
