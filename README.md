@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏫 PPDB Al-Imam Islamic Boarding School
 
-## Getting Started
+A modern PPDB (Penerimaan Peserta Didik Baru) registration system built for Al-Imam Islamic Boarding School. This project showcases a complete student registration workflow with form validation, OTP verification, and responsive design.
 
-First, run the development server:
+## 🚀 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+🌐 **[View Live Application](https://pp-alimam.vercel.app)**
+
+## 📋 Project Overview
+
+This is a custom-built PPDB system that streamlines the new student registration process for Islamic boarding schools. The system features a multi-step registration form, document management, and automated verification processes.
+
+### ✨ Key Features
+
+- 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile devices
+- 📝 **Multi-step Registration** - Guided registration process with progress tracking
+- 🔐 **OTP Verification** - Secure WhatsApp-based verification system
+- 💾 **Auto-save Forms** - Data persistence using sessionStorage
+- 🎨 **Modern UI/UX** - Beautiful interface with Tailwind CSS
+- ⚡ **Performance Optimized** - Built with Next.js 16 and TypeScript
+- 📊 **Program Selection** - Dynamic program selection (MTs & I'dad Lughowi)
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 16, React 19, TypeScript
+- **Styling**: Tailwind CSS, Lucide Icons
+- **Deployment**: Vercel
+- **Version Control**: Git
+
+## 📱 Screenshots
+
+### Registration Flow
+1. **Program Selection** → Choose educational program
+2. **PPDB Information** → View requirements and benefits  
+3. **Registration Form** → Complete student data
+4. **OTP Verification** → WhatsApp verification
+5. **Document Upload** → Submit required documents
+
+## 🏗️ Project Structure
+
+```
+src/
+├── app/
+│   ├── daftar/          # Registration page
+│   ├── program/         # Program selection
+│   ├── ppdb/           # PPDB information
+│   └── verifikasi-otp/ # OTP verification
+├── components/
+│   └── layout/         # Reusable layout components
+└── styles/             # Global styles and themes
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Clone the repository
+git clone https://github.com/riezaekatomara/pp-alimam.git
+cd pp-alimam
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Install dependencies
+npm install
+# or
+pnpm install
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run development server
+npm run dev
+# or
+pnpm dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📝 Development Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Key Implementations
+
+- **URL Parameter Flow**: Program → PPDB → Registration with `jenjang` parameter
+- **Form Validation**: Client-side validation with real-time error handling
+- **Data Persistence**: SessionStorage for form data across page refreshes
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **TypeScript**: Full type safety throughout the application
+
+### Environment Variables
+
+Create a `.env.local` file for local development:
+
+```env
+# Add your environment variables here
+```
+
+## 🤝 Contributing
+
+This is a client project. For contributions or issues, please contact the development team.
+
+## 📄 License
+
+This project is proprietary software developed for Al-Imam Islamic Boarding School.
+
+## 👨‍💻 About Developer
+
+**Developed by: Rieza Eka Tomara**
+- 📧 Email: riezaekatomara@gmail.com
+- 🌐 GitHub: [riezaekatomara](https://github.com/riezaekatomara)
+- 💼 LinkedIn: [Your LinkedIn Profile]
+
+### Services Provided
+
+- 🎨 UI/UX Design & Development
+- 💻 Full-stack Web Development
+- 📱 Responsive Design Implementation
+- ⚡ Performance Optimization
+- 🚀 Deployment & DevOps
+
+---
+
+**Note**: This project demonstrates expertise in modern web development, React ecosystem, and building production-ready applications for educational institutions.
