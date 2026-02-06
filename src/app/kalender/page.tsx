@@ -5,9 +5,9 @@ import { Calendar, Clock, Wrench } from "lucide-react";
 
 export default function KalenderPage() {
   return (
-    <main className="min-h-screen bg-surface-50 pt-24 pb-16">
+    <main className="min-h-screen bg-surface-50 pb-16">
       {/* Header */}
-      <section className="bg-brown-900 py-12 md:py-16 min-h-[400px] md:min-h-[500px] mb-12">
+      <section className="bg-brown-900 py-12 md:py-16 mb-12">
         <Container>
           <div className="text-center">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-400 text-xs font-bold uppercase tracking-widest mb-4">
