@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Calendar,
   Users,
@@ -24,6 +25,8 @@ import ScrollAnimation from "@/components/ui/ScrollAnimation";
 import { Container } from "@/components/layout/Container";
 
 export default function PPDBPage() {
+  const searchParams = useSearchParams();
+  const jenjang = searchParams.get('jenjang');
   const requirements = [
     {
       icon: CheckCircle,
@@ -223,7 +226,7 @@ export default function PPDBPage() {
             </div>
 
             <a
-              href="/daftar"
+              href={`/daftar${jenjang ? `?jenjang=${jenjang}` : ''}`}
               className="inline-flex items-center justify-center gap-2 sm:gap-3 shadow-xl hover:shadow-2xl text-white font-bold text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-12 py-4 xs:py-5 rounded-xl transition-all duration-300 hover:-translate-y-1 bg-[var(--color-brown-800)] hover:bg-[var(--color-brown-900)] dark:bg-[var(--color-gold-600)] dark:hover:bg-[var(--color-gold-700)] group w-full sm:w-auto"
             >
               <Sparkles className="w-5 h-5 flex-shrink-0" />
@@ -420,7 +423,7 @@ export default function PPDBPage() {
               Pendaftaran dibuka <span className="text-[var(--color-brown-900)] dark:text-white">10 Februari - 30 Mei 2026</span>
             </p>
             <a
-              href="/daftar"
+              href={`/daftar${jenjang ? `?jenjang=${jenjang}` : ''}`}
               className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--color-brown-700)] to-[var(--color-brown-800)] hover:from-[var(--color-brown-800)] hover:to-[var(--color-brown-900)] dark:from-[var(--color-gold-600)] dark:to-[var(--color-gold-700)] dark:hover:from-[var(--color-gold-700)] dark:hover:to-[var(--color-gold-800)] text-white font-black text-sm xs:text-base sm:text-lg px-8 xs:px-10 sm:px-10 py-4 xs:py-5 sm:py-6 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 w-full sm:w-auto active:scale-95"
             >
               <Target className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />

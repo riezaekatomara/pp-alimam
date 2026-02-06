@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   AlertCircle,
   User,
@@ -175,6 +175,8 @@ function PricingSidebar() {
 
 export default function DaftarPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const jenjangFromUrl = searchParams.get('jenjang');
 
   const [formData, setFormData] = useState<FormData>({
     nik: "",
@@ -182,24 +184,35 @@ export default function DaftarPage() {
     tanggal_lahir: "",
     no_hp: "",
     jenis_kelamin: "",
-    jenjang: "",
+    jenjang: jenjangFromUrl as "MTs" | "IL" || "",
   });
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  // Load saved data on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedData = sessionStorage.getItem("pendaftaran_form");
       if (savedData) {
         try {
-          setFormData(JSON.parse(savedData));
-        } catch (e) {
-          console.error("Error parsing saved form data:", e);
+          const parsed = JSON.parse(savedData);
+          setFormData(prev => ({
+            ...prev,
+            ...parsed,
+            // Keep jenjang from URL if it exists, otherwise use saved data
+            jenjang: jenjangFromUrl as "MTs" | "IL" || parsed.jenjang || ""
+          }));
+        } catch (error) {
+          console.error("Error parsing saved data:", error);
         }
+      } else if (jenjangFromUrl) {
+        // If no saved data but jenjang exists in URL, update form
+        setFormData(prev => ({
+          ...prev,
+          jenjang: jenjangFromUrl as "MTs" | "IL"
+        }));
       }
     }
-  }, []);
+  }, [jenjangFromUrl]);
 
   // Save data on change
   useEffect(() => {

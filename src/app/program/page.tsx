@@ -209,7 +209,7 @@ export default function ProgramPage() {
                                         `}
                                         asChild
                                     >
-                                        <Link href={`/daftar?jenjang=${program.id.toUpperCase()}`}>
+                                        <Link href={`/ppdb?jenjang=${program.id.toUpperCase()}`}>
                                             <span className="mr-2">Daftar {program.name}</span>
                                             <ArrowRight className="w-4 h-4" />
                                         </Link>
