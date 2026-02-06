@@ -34,7 +34,9 @@ export default function Navbar() {
     { href: "/", label: "Beranda" },
     { href: "/tentang", label: "Tentang" },
     { href: "/program", label: "Program" },
+    { href: "/kegiatan", label: "Kegiatan" },
     { href: "/fasilitas", label: "Fasilitas" },
+    { href: "/kalender", label: "Kalender" },
     { href: "/kontak", label: "Kontak" },
   ];
 
