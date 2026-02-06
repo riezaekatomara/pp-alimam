@@ -1,6 +1,6 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES v4.1 (Authentic Brown & Cream)
-   Aesthetic: Superlist / Clay.global (Glassmorphism + Neo-Brutalism)
+   PONPES AL-IMAM - NEXT.JS GLOBAL STYLES v5.0 (Wablas Aesthetic)
+   Aesthetic: Clean, Modern, "Airy" (White Dominant + Brown Accents)
    Tailwind CSS v4 Optimized
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
@@ -12,19 +12,19 @@
 @theme {
   /* Typography - Clean, Geometric, Airy */
   --font-sans: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-  --font-display: "Poppins", sans-serif;
+  --font-display: "Plus Jakarta Sans", "Poppins", sans-serif;
   --font-arabic: "Amiri", serif;
 
-  /* Colors - Authentic Al-Imam Palette */
+  /* Colors - Authentic Al-Imam Palette (Wablas Style Refinement) */
 
-  /* Base: Warm Cream Whites */
+  /* Base: Pure Clean White */
   --color-white: #ffffff;
-  --color-surface-50: #fafaf9;
-  --color-surface-100: #f5f5f4;
-  --color-surface-200: #e7e5e4;
-  --color-surface-300: #d6d3d1;
+  --color-surface-50: #f8fafc; /* Very subtle cool gray for section bg */
+  --color-surface-100: #f1f5f9;
+  --color-surface-200: #e2e8f0;
+  --color-surface-300: #cbd5e1;
 
-  /* Brand Core: Al-Imam Iconic Brown (Restored) */
+  /* Brand Core: Al-Imam Iconic Brown (High Contrast) */
   --color-brown-50: #fdf8f6;
   --color-brown-100: #f2e8e5;
   --color-brown-200: #eaddd7;
@@ -32,15 +32,13 @@
   --color-brown-400: #d2bab0;
   --color-brown-500: #a18072;
   --color-brown-600: #8d6e63;
-  --color-brown-700: #5d4037;
+  --color-brown-700: #5d4037; /* Primary Action */
   --color-brown-800: #4e342e;
-  /* Primary Brand Dark */
-  --color-brown-900: #3e2723;
-  --color-brown-950: #2b1b18;
+  --color-brown-900: #3e2723; /* Dark Text */
+  --color-brown-950: #2b1b18; /* Nearly Black */
 
-  /* Secondary: Cream & Gold Accents */
-  /* Cream - Warm backgrounds & soft highlights */
-  --color-cream-50: #fefdfb;
+  /* Secondary: Cream & Gold Accents (Subtle) */
+  --color-cream-50: #fffcf5;
   --color-cream-100: #fdf8f3;
   --color-cream-200: #f5ebe0;
   --color-cream-300: #ebe0d1;
@@ -54,7 +52,7 @@
   --color-gold-600: #d97706;
   --color-gold-700: #b45309;
 
-  /* Teal: Functionality/Success (Secondary) */
+  /* Teal: Functionality/Success (Wablas Green-ish vibe) */
   --color-teal-50: #f0fdfa;
   --color-teal-100: #ccfbf1;
   --color-teal-400: #2dd4bf;
@@ -63,59 +61,53 @@
   --color-teal-700: #0f766e;
   --color-teal-900: #134e4a;
 
-  /* Text colors (aliases for ink) */
-  --color-text-900: #1c1917;
-  --color-text-800: #292524;
-  --color-text-700: #44403c;
-  --color-text-600: #57534e;
-  --color-text-500: #78716c;
+  /* Text colors (High Readability) */
+  --color-ink-900: #0f172a; /* Slate 900 - Crisp Black */
+  --color-ink-800: #1e293b;
+  --color-ink-700: #334155;
+  --color-ink-600: #475569; /* Body Text */
+  --color-ink-500: #64748b;
+  --color-ink-400: #94a3b8;
+  --color-ink-300: #cbd5e1;
+  --color-ink-200: #e2e8f0;
+  --color-ink-100: #f1f5f9;
 
-  /* Text: High Contrast & Soft Secondary */
-  --color-ink-900: #1c1917;
-  --color-ink-800: #292524;
-  --color-ink-700: #44403c;
-  /* Fixed: Added missing ink-700 */
-  --color-ink-600: #57534e;
-  --color-ink-500: #78716c;
-  --color-ink-400: #a8a29e;
-  --color-ink-300: #d6d3d1;
-  --color-ink-200: #e7e5e4;
-  --color-ink-100: #f5f5f4;
-
-  /* Superlist Blue (Modern Tech Feel) */
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-
-  /* Shadows - The "Clay" Magic */
+  /* Shadows - The "Wablas/Clay" Magic */
+  /* Soft, diffused shadows for white cards on white/gray bg */
   --shadow-clay-sm:
     0 1px 2px rgba(0, 0, 0, 0.04),
     0 1px 1px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(0, 0, 0, 0.04);
+    0 0 0 1px rgba(0, 0, 0, 0.02);
 
   --shadow-clay-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
 
   --shadow-clay-lg:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.03),
+    0 10px 15px -3px rgba(0, 0, 0, 0.08),
+    0 4px 6px -2px rgba(0, 0, 0, 0.04),
     0 0 0 1px rgba(0, 0, 0, 0.03),
-    0 20px 40px -4px rgba(0, 0, 0, 0.06);
+    0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    
+  --shadow-clay-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.08),
+    0 10px 10px -5px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.03);
 
   --shadow-glass:
-    0 8px 32px 0 rgba(78, 52, 46, 0.1);
+    0 8px 32px 0 rgba(78, 52, 46, 0.08);
 
-  --shadow-glow-teal: 0 0 20px rgba(20, 184, 166, 0.3);
-  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.3);
-  --shadow-glow-brown: 0 0 20px rgba(78, 52, 46, 0.3);
+  --shadow-glow-teal: 0 0 20px rgba(20, 184, 166, 0.2);
+  --shadow-glow-gold: 0 0 20px rgba(245, 158, 11, 0.2);
+  --shadow-glow-brown: 0 0 20px rgba(78, 52, 46, 0.2);
 
-  /* Radius - Friendly & Soft */
+  /* Radius - Pill Shape Dominance */
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
   --radius-full: 9999px;
+  --radius-pill: 9999px;
 }
 
 :root {
@@ -130,37 +122,29 @@
   }
 
   body {
-    @apply bg-surface-100 text-ink-900 font-sans antialiased;
-    /* Subtle Mesh Gradient Background: Cream Secondary */
-    background-image:
-      radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.03) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(161, 128, 114, 0.05) 0px, transparent 50%),
-      radial-gradient(at 50% 100%, rgba(255, 255, 255, 0.8) 0px, transparent 50%);
+    /* Wablas Style: Clean White/Slate Background */
+    @apply bg-white text-ink-900 font-sans antialiased;
+    background-image: none; /* Removed mesh gradient for cleaner look */
   }
 
   /* Typography Scale */
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-display font-medium tracking-tight text-ink-900;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight text-ink-900;
   }
 
   h1 {
     @apply text-4xl sm:text-5xl md:text-6xl;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   h2 {
     @apply text-3xl sm:text-4xl md:text-5xl;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
   }
 
   h3 {
     @apply text-2xl sm:text-3xl;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
   }
 
   p {
@@ -177,9 +161,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-ink-300 rounded-full;
-    border: 2px solid transparent;
-    background-clip: content-box;
+    @apply bg-ink-200 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -189,190 +171,116 @@
 
 @layer components {
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     SUPERLIST / CLAY COMPONENTS
+     WABLAS-INSPIRED COMPONENTS
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* 1. Glass Card - The core building block */
+  /* 1. Modern Card - White, Clean, Soft Shadow */
+  .card-wablas {
+    @apply bg-white rounded-3xl shadow-clay-md border border-surface-200/60 transition-all duration-300;
+  }
+
+  .card-wablas:hover {
+    @apply shadow-clay-lg -translate-y-1;
+  }
+  
+  /* 2. Glass Card - For overlays */
   .card-glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/60 shadow-clay-md rounded-2xl transition-all duration-300;
+    @apply bg-white/80 backdrop-blur-xl border border-white/60 shadow-clay-md rounded-2xl transition-all duration-300;
   }
 
   .card-glass:hover {
-    @apply shadow-clay-lg bg-white/90 -translate-y-[2px] border-brown-200/30;
+    @apply shadow-clay-lg bg-white/95 -translate-y-[2px];
   }
 
-  /* 2. Glass Panel - For Sidebars/Modals */
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-2xl border-r border-ink-200/50;
-  }
+  /* 3. Buttons - Strictly Pill Shaped */
 
-  /* 3. Buttons - Pill Shaped, Gradient Borders */
-
-  /* Primary Button - Brown (Original Brand) */
+  /* Primary Button - Brown Gradient */
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white bg-gradient-to-r from-brown-700 to-brown-900 shadow-lg shadow-brown-900/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
-
-    /* Premium shine effect */
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 4px 10px rgba(78, 52, 46, 0.2);
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-pill font-bold text-white bg-brown-700 shadow-lg shadow-brown-900/10 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
+    
+    background: linear-gradient(135deg, var(--color-brown-700) 0%, var(--color-brown-800) 100%);
 
     &:hover {
-      @apply from-brown-800 to-brown-950 -translate-y-0.5;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        0 8px 20px rgba(78, 52, 46, 0.3);
+      @apply -translate-y-0.5 shadow-xl shadow-brown-900/20 brightness-110;
     }
 
     &:active {
-      @apply translate-y-0 shadow-sm;
+      @apply translate-y-0 shadow-sm scale-[0.98];
     }
   }
 
-  /* Secondary Button - Cream/Soft */
+  /* Secondary Button - Outline/Ghost */
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium text-ink-700 bg-white border border-ink-200 shadow-sm transition-all duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-pill font-semibold text-ink-700 bg-white border border-ink-200 shadow-sm transition-all duration-200;
 
     &:hover {
-      @apply bg-surface-50 border-brown-300 text-ink-900;
+      @apply bg-surface-50 border-brown-300 text-brown-700 shadow-clay-sm;
+    }
+  }
+  
+  /* Accent Button - Teal/Wablas Style */
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-pill font-bold text-white bg-teal-500 shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
+    
+    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-600) 100%);
+    
+    &:hover {
+      @apply -translate-y-0.5 shadow-xl shadow-teal-500/30 brightness-110;
     }
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-ink-600 transition-colors duration-200;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-pill font-medium text-ink-600 transition-colors duration-200;
 
     &:hover {
-      @apply bg-ink-100/50 text-ink-900;
+      @apply bg-ink-100 text-ink-900;
     }
   }
 
-  .btn-action {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-teal-500 to-teal-600 shadow-lg shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300;
-  }
 
-  /* 4. Inputs - Clean & Airy */
+  /* 4. Inputs - Cleanest Possible */
   .input-clean {
-    @apply w-full px-4 py-3 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brown-400/50 focus:ring-4 focus:ring-brown-400/10 focus:outline-none transition-all duration-300;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    @apply w-full px-5 py-3.5 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brown-400/50 focus:ring-4 focus:ring-brown-400/10 focus:outline-none transition-all duration-300 font-medium;
   }
 
   .form-input-with-icon {
-    @apply w-full px-4 py-3 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brown-400/50 focus:ring-4 focus:ring-brown-400/10 focus:outline-none transition-all duration-300 pl-12;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+     @apply w-full px-5 py-3.5 rounded-xl bg-surface-50 border border-transparent text-ink-900 placeholder-ink-400 focus:bg-white focus:border-brown-400/50 focus:ring-4 focus:ring-brown-400/10 focus:outline-none transition-all duration-300 pl-12 font-medium;
   }
 
-  /* 5. Badges - Soft & Pill */
-  .badge {
-    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide;
-  }
-
-  .badge.badge-success {
-    @apply bg-teal-50 text-teal-700 border border-teal-100;
-  }
-
-  .badge.badge-warning {
-    @apply bg-gold-50 text-gold-700 border border-gold-100;
-  }
-
-  .badge.badge-neutral {
-    @apply bg-surface-200 text-ink-600 border border-surface-300;
-  }
-
-  /* 6. Navigation Link */
+  /* 5. Navigation Link */
   .nav-link {
     @apply flex items-center gap-3 px-4 py-3 rounded-xl text-ink-600 font-medium transition-all duration-200;
   }
 
   .nav-link:hover {
-    @apply bg-surface-100 text-ink-900;
+    @apply bg-surface-50 text-brown-700;
   }
 
   .nav-link.active {
-    @apply bg-white text-brown-700 shadow-clay-sm;
+    @apply bg-brown-50 text-brown-800 shadow-sm font-semibold;
   }
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     SECTION COMPONENTS
+     SECTION UTILITIES
      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-  /* Section Gradient Background */
-  .section-gradient-brown {
-    @apply py-16 md:py-20;
-    /* Cream Secondary Gradient */
-    background: linear-gradient(135deg, var(--color-brown-50) 0%, var(--color-cream-50) 100%);
+  /* Section Standard */
+  .section-std {
+    @apply py-20 md:py-24 bg-white relative overflow-hidden;
+  }
+  
+  .section-alt {
+    @apply py-20 md:py-24 bg-surface-50 relative overflow-hidden;
   }
 
   /* Section Title */
   .section-title {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold text-brown-900;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-ink-900 mb-4 tracking-tight;
   }
 
   /* Section Subtitle */
   .section-subtitle {
-    @apply text-base md:text-lg text-ink-600 max-w-2xl;
-  }
-
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     CARD COMPONENTS
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-  /* Modern Card */
-  .card-modern {
-    @apply bg-white rounded-2xl border border-surface-200 shadow-clay-sm;
-  }
-
-  /* Stat Card */
-  .stat-card {
-    @apply bg-white rounded-2xl p-6 text-center border border-surface-200 shadow-clay-sm;
-  }
-
-  /* Testimonial Card */
-  .testimonial-card {
-    @apply bg-white rounded-2xl p-6 border border-surface-200 shadow-clay-sm;
-  }
-
-  /* Program Cards */
-  .program-card-brown {
-    @apply rounded-2xl p-6 md:p-8;
-    background: linear-gradient(135deg, var(--color-brown-800) 0%, var(--color-brown-950) 100%);
-    @apply text-white;
-  }
-
-  .program-card-brown h3,
-  .program-card-brown p {
-    @apply text-white/90;
-  }
-
-  .program-card-gold {
-    @apply rounded-2xl p-6 md:p-8;
-    background: linear-gradient(135deg, var(--color-gold-500) 0%, var(--color-gold-600) 100%);
-    @apply text-white;
-  }
-
-  .program-card-teal {
-    @apply rounded-2xl p-6 md:p-8;
-    background: linear-gradient(135deg, var(--color-teal-500) 0%, var(--color-teal-600) 100%);
-    @apply text-white;
-  }
-
-  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-     BADGE VARIANTS
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-  .badge-outline {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border border-surface-300 text-ink-600 bg-white;
-  }
-
-  .badge-teal {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-teal-50 text-teal-700 border border-teal-100;
-  }
-
-  .badge-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-brown-100 text-brown-800 border border-brown-200;
-  }
-
-  .badge-accent {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-gold-100 text-gold-700 border border-gold-100;
+    @apply text-lg md:text-xl text-ink-500 max-w-2xl mx-auto leading-relaxed;
   }
 }
 
@@ -380,49 +288,25 @@
   .text-balance {
     text-wrap: balance;
   }
-
-  /* Glass Utilities */
+  
   .glass {
-    @apply bg-white/60 backdrop-blur-lg;
+    @apply bg-white/70 backdrop-blur-xl border border-white/50;
   }
-
-  /* Gradients */
-  .bg-gradient-mesh {
-    background-image:
-      radial-gradient(at 40% 20%, rgba(20, 184, 166, 0.1) 0px, transparent 50%),
-      radial-gradient(at 80% 0%, rgba(245, 158, 11, 0.1) 0px, transparent 50%),
-      radial-gradient(at 0% 50%, rgba(255, 255, 255, 0.5) 0px, transparent 50%);
+  
+  .text-glow {
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
   }
 
   /* Text Gradients */
-  .text-gradient-gold {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-500 to-gold-600;
-  }
-
-  .text-gradient-teal {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-teal-600;
-  }
-
   .text-gradient-brown {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brown-600 to-brown-800;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brown-600 to-brown-900;
   }
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ANIMATIONS
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  
+  .text-gradient-teal {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-teal-700;
   }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .text-gradient-gold {
+     @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-500 to-gold-700;
   }
-}
-
-.animate-fadeInUp {
-  animation: fadeInUp 0.5s ease-out forwards;
 }

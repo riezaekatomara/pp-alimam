@@ -95,7 +95,7 @@ export default function ProgramPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Brown Aesthetic */}
-            <section className="relative pt-12 pb-20 md:pt-16 overflow-hidden bg-brown-900">
+            <section className="relative pt-8 pb-10 md:pt-10 md:pb-12 overflow-hidden bg-brown-900">
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -140,36 +140,36 @@ export default function ProgramPage() {
             </div>
 
             {/* 3. Program Sections */}
-            <div className="space-y-20 py-20">
+            <div className="space-y-10 py-10">
                 {PROGRAMS.map((program, idx) => (
-                    <section key={program.id} id={program.id} className="scroll-mt-40">
+                    <section key={program.id} id={program.id} className="scroll-mt-36">
                         <Container>
-                            <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center group ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+                            <div className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center group ${idx % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
 
                                 {/* Text Content */}
                                 <div className={idx % 2 === 1 ? 'lg:col-start-2' : ''}>
-                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg mb-6 font-bold text-xs uppercase tracking-widest
+                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-lg mb-4 font-bold text-[10px] uppercase tracking-widest
                                         ${program.theme === 'brown' ? 'bg-brown-100 text-brown-700' :
                                             program.theme === 'gold' ? 'bg-gold-100 text-gold-700' :
                                                 'bg-teal-100 text-teal-700'}
                                     `}>
-                                        <Star className="w-4 h-4" />
+                                        <Star className="w-3.5 h-3.5" />
                                         <span>Program Unggulan</span>
                                     </div>
 
-                                    <h2 className="text-3xl md:text-5xl font-black text-brown-900 mb-6 font-display">
+                                    <h2 className="text-2xl md:text-4xl font-black text-brown-900 mb-4 font-display">
                                         {program.fullName}
                                     </h2>
-                                    <p className="text-ink-600 text-lg leading-relaxed mb-8">
+                                    <p className="text-ink-600 text-base leading-relaxed mb-6">
                                         {program.description}
                                     </p>
 
                                     {/* Stats Grid */}
-                                    <div className="grid grid-cols-3 gap-4 mb-10">
+                                    <div className="grid grid-cols-3 gap-3 mb-6">
                                         {program.stats.map((stat, statIdx) => (
-                                            <div key={statIdx} className="bg-white p-4 rounded-2xl border border-surface-200 text-center shadow-clay-sm hover:shadow-clay-md transition-shadow">
-                                                <p className="text-[10px] text-ink-400 uppercase font-extrabold tracking-widest mb-1.5">{stat.label}</p>
-                                                <p className={`text-lg font-bold
+                                            <div key={statIdx} className="bg-white p-3 rounded-xl border border-surface-200 text-center shadow-clay-sm hover:shadow-clay-md transition-shadow">
+                                                <p className="text-[9px] text-ink-400 uppercase font-extrabold tracking-widest mb-1">{stat.label}</p>
+                                                <p className={`text-base font-bold
                                                     ${program.theme === 'brown' ? 'text-brown-700' :
                                                         program.theme === 'gold' ? 'text-gold-600' :
                                                             'text-teal-600'}
@@ -179,22 +179,22 @@ export default function ProgramPage() {
                                     </div>
 
                                     {/* Curriculum */}
-                                    <div className={`rounded-3xl p-8 mb-10 border ${program.bg} ${program.theme === 'brown' ? 'border-brown-200' : program.theme === 'gold' ? 'border-gold-200' : 'border-teal-200'}`}>
-                                        <h3 className="text-xl font-bold text-brown-900 mb-6 flex items-center gap-3">
-                                            <BookOpen className={`w-6 h-6 ${program.accent}`} />
+                                    <div className={`rounded-2xl p-5 mb-6 border ${program.bg} ${program.theme === 'brown' ? 'border-brown-200' : program.theme === 'gold' ? 'border-gold-200' : 'border-teal-200'}`}>
+                                        <h3 className="text-base font-bold text-brown-900 mb-4 flex items-center gap-2">
+                                            <BookOpen className={`w-5 h-5 ${program.accent}`} />
                                             Kurikulum & Materi
                                         </h3>
-                                        <ul className="space-y-4">
+                                        <ul className="space-y-2.5">
                                             {program.curriculum.map((item, cIdx) => (
-                                                <li key={cIdx} className="flex items-start gap-4">
-                                                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
+                                                <li key={cIdx} className="flex items-start gap-3">
+                                                    <div className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5
                                                         ${program.theme === 'brown' ? 'bg-brown-200 text-brown-700' :
                                                             program.theme === 'gold' ? 'bg-gold-200 text-gold-700' :
                                                                 'bg-teal-200 text-teal-700'}
                                                     `}>
-                                                        <CheckCircle className="w-3.5 h-3.5" />
+                                                        <CheckCircle className="w-3 h-3" />
                                                     </div>
-                                                    <span className="text-ink-700 font-medium">{item}</span>
+                                                    <span className="text-ink-700 text-sm font-medium">{item}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -202,7 +202,7 @@ export default function ProgramPage() {
 
                                     <Button
                                         size="lg"
-                                        className={`w-full sm:w-auto text-white rounded-xl h-14 px-8 text-base shadow-lg transition-all hover:scale-105
+                                        className={`w-full sm:w-auto text-white rounded-xl h-11 px-6 text-sm shadow-lg transition-all hover:scale-105
                                             ${program.theme === 'brown' ? 'bg-brown-600 hover:bg-brown-700 shadow-brown-500/20' :
                                                 program.theme === 'gold' ? 'bg-gold-500 hover:bg-gold-600 shadow-gold-500/20' :
                                                     'bg-teal-600 hover:bg-teal-700 shadow-teal-500/20'}
@@ -211,14 +211,14 @@ export default function ProgramPage() {
                                     >
                                         <Link href={`/daftar?jenjang=${program.id.toUpperCase()}`}>
                                             <span className="mr-2">Daftar {program.name}</span>
-                                            <ArrowRight className="w-5 h-5" />
+                                            <ArrowRight className="w-4 h-4" />
                                         </Link>
                                     </Button>
                                 </div>
 
-                                {/* Image Card */}
-                                <div className={idx % 2 === 1 ? 'lg:col-start-1' : ''}>
-                                    <div className="relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-clay-lg group-hover:rotate-1 transition-transform duration-700">
+                                {/* Image Card - FIXED */}
+                                <div className={`relative ${idx % 2 === 1 ? 'lg:col-start-1' : ''}`}>
+                                    <div className="relative aspect-[4/5] lg:aspect-square rounded-[2rem] overflow-hidden shadow-clay-lg group-hover:rotate-1 transition-transform duration-700">
                                         {/* Gambar program */}
                                         <Image
                                             src={program.image}
@@ -229,21 +229,30 @@ export default function ProgramPage() {
                                             priority={idx === 0}
                                         />
                                         {/* Overlay: gelap di bawah agar teks terbaca + tint warna program */}
-                                        <div className={`absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent z-10`} />
+                                        <div className={`absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent z-10`} />
                                         <div className={`absolute inset-0 bg-gradient-to-br ${program.gradient} opacity-40 z-10 mix-blend-multiply`} />
                                         <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-10 z-10 mix-blend-overlay" />
 
-                                        <div className="absolute inset-0 z-20 p-10 flex flex-col justify-end text-white">
-                                            <div className="w-24 h-24 rounded-3xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-auto border border-white/30">
-                                                <GraduationCap className="w-12 h-12 text-white" />
+                                        <div className="absolute inset-0 z-20 p-6 lg:p-8 flex flex-col justify-end text-white">
+                                            <div className="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-auto border border-white/30">
+                                                <GraduationCap className="w-8 h-8 lg:w-10 lg:h-10 text-white" />
                                             </div>
 
-                                            <h3 className="text-4xl font-display font-black mb-2">{program.name}</h3>
-                                            <p className="text-white/90 text-lg font-medium">Mencetak Generasi Rabbani</p>
+                                            {/* FIXED: Tambah text shadow dan outline untuk visibility lebih baik */}
+                                            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                                                <h3 className="text-2xl lg:text-3xl font-display font-black mb-1 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]" 
+                                                    style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5)' }}>
+                                                    {program.name}
+                                                </h3>
+                                                <p className="text-white/90 text-sm lg:text-base font-medium drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]" 
+                                                   style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.9)' }}>
+                                                    Mencetak Generasi Rabbani
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    {/* Decorative Blob specific to section */}
+                                    {/* Decorative Blob specific to section - FIXED: Added to parent with relative */}
                                     <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] rounded-full blur-3xl -z-10 opacity-40
                                          ${program.theme === 'brown' ? 'bg-brown-300' :
                                             program.theme === 'gold' ? 'bg-gold-300' :

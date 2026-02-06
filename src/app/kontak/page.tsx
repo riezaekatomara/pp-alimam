@@ -80,7 +80,7 @@ export default function ContactPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Brown Aesthetic */}
-            <section className="relative pt-32 pb-20 bg-brown-900 border-b border-white/5">
+            <section className="relative pt-8 pb-10 md:pt-10 md:pb-12 bg-brown-900 border-b border-white/5">
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -100,7 +100,7 @@ export default function ContactPage() {
             </section>
 
             {/* 2. Main Content */}
-            <section className="py-20 relative">
+            <section className="py-12 relative">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-brown-900 -z-10" />
 
                 <Container>

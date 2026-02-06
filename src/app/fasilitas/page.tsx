@@ -54,7 +54,7 @@ export default function FasilitasPage() {
   return (
     <main className="bg-surface-50 min-h-screen">
       {/* 1. Hero Section - Deep Brown */}
-      <section className="relative pt-20 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-brown-900">
+      <section className="relative pt-8 pb-12 md:pt-10 md:pb-16 overflow-hidden bg-brown-900">
         <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
         {/* Glow Effects */}
         <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-gold-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -122,7 +122,7 @@ export default function FasilitasPage() {
       </section>
 
       {/* 2. Main Facilities - Big Cards */}
-      <section className="py-20 md:py-32 relative">
+      <section className="py-12 md:py-16 relative">
         <Container>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-gold-600 font-bold tracking-widest uppercase text-sm mb-3 block">Fasilitas Utama</span>
@@ -132,7 +132,7 @@ export default function FasilitasPage() {
             </p>
           </div>
 
-          <div className="space-y-24">
+          <div className="space-y-16">
             {/* Masjid */}
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="order-2 lg:order-1">
@@ -354,7 +354,7 @@ export default function FasilitasPage() {
       </section>
 
       {/* 3. Supporting Facilities - Grid */}
-      <section className="py-20 bg-brown-50">
+      <section className="py-12 bg-brown-50">
         <Container>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-black text-brown-900 mb-6">Fasilitas Penunjang</h2>
@@ -387,7 +387,7 @@ export default function FasilitasPage() {
       </section>
 
       {/* 4. CTA */}
-      <section className="py-24 bg-brown-900 relative overflow-hidden text-center">
+      <section className="py-12 md:py-16 bg-brown-900 relative overflow-hidden text-center">
         <Container className="relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ingin Melihat Langsung?</h2>
           <p className="text-brown-200 mb-10 max-w-2xl mx-auto text-lg">

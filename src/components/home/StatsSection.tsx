@@ -41,28 +41,28 @@ interface StatCardProps {
 function StatCard({ icon: Icon, value, label, sublabel, index }: StatCardProps) {
   return (
     <div
-      className="stat-card hover:-translate-y-1 transition-all duration-300"
+      className="card-wablas p-4 md:p-5 flex flex-col items-center text-center group"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <div className="w-12 h-12 mx-auto mb-3 rounded-xl bg-[var(--color-brown-100)] flex items-center justify-center">
-        <Icon className="w-6 h-6 text-[var(--color-brown-700)]" />
+      <div className="w-10 h-10 mb-2 rounded-xl bg-surface-50 group-hover:bg-brown-50 flex items-center justify-center transition-colors">
+        <Icon className="w-5 h-5 text-ink-400 group-hover:text-brown-600 transition-colors" />
       </div>
-      <p className="text-3xl md:text-4xl font-black text-[var(--color-brown-700)]">
+      <p className="text-2xl lg:text-3xl font-black text-ink-900 mb-0.5 tracking-tight">
         {value}
       </p>
-      <p className="text-sm font-bold text-[var(--color-text-800)] mt-1">
+      <p className="text-xs font-bold text-ink-600 mb-0.5">
         {label}
       </p>
-      <p className="text-xs text-[var(--color-text-500)]">{sublabel}</p>
+      <p className="text-[10px] text-ink-400 font-medium">{sublabel}</p>
     </div>
   );
 }
 
 export default function StatsSection() {
   return (
-    <section className="section-gradient-brown">
+    <section className="py-8 bg-white relative z-10 -mt-4 lg:-mt-8">
       <Container>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {STATS_DATA.map((stat, idx) => (
             <StatCard key={idx} {...stat} index={idx} />
           ))}

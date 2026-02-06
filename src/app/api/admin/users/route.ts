@@ -48,7 +48,7 @@ async function checkSuperAdmin() {
     return null;
 }
 
-// GET: List all admin/staff users
+// GET: List all admin/staff users 
 export async function GET() {
     const admin = await checkSuperAdmin();
     if (!admin) {

@@ -6,115 +6,105 @@ import {
     BookOpen,
     CheckCircle,
     ArrowRight,
+    School
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/Container";
 
 const PROGRAMS = [
     {
-        title: "MTs (Madrasah Tsanawiyah)",
-        subtitle: "Program pendidikan setara SMP dengan kurikulum pesantren terpadu",
+        title: "MTs Al-Imam",
+        subtitle: "Madrasah Tsanawiyah (Setara SMP)",
+        desc: "Program pendidikan 3 tahun dengan kurikulum terpadu (Umum & Kepesantrenan). Fokus pada tahfidz dan dasar ilmu syar'i.",
         features: [
-            "Tahfidz Al-Qur'an",
-            "Kajian Kitab Kuning",
-            "Bahasa Arab & Inggris",
+            "Target Hafalan 15 Juz",
+            "Bahasa Arab Harian",
+            "Kurikulum Diknas & Pesantren",
+            "Ekstrakurikuler Pilihan"
         ],
-        quotaPutra: "30 Siswa",
-        quotaPutri: "-",
-        bgClass: "program-card-brown",
+        quota: "32 Kursi",
+        color: "brown",
+        icon: School
     },
     {
         title: "I'dad Lughowi",
-        subtitle: "Program pendidikan 4 tahun (Setara SMA) dengan kurikulum kepesantrenan dan umum",
+        subtitle: "Persiapan Bahasa & Syar'i (Setara SMA)",
+        desc: "Program intensif 4 tahun untuk mencetak kader dai dan ulama. Fokus pada penguasaan kitab kuning dan bahasa Arab mendalam.",
         features: [
-            "Intensif Bahasa Arab & Syar'i",
-            "Tahfidz Al-Qur'an 30 Juz",
-            "Ijazah Formal (Paket C)",
+            "Target Hafalan 30 Juz (Mutqin)",
+            "Kajian Kitab Kuning Gundul",
+            "Sanad Al-Qur'an Bersambung",
+            "Pengabdian Masyarakat (Khomis)"
         ],
-        quotaPutra: "30 Siswa",
-        quotaPutri: "-",
-        bgClass: "program-card-gold",
+        quota: "32 Kursi",
+        color: "gold",
+        icon: BookOpen
     },
 ] as const;
 
-function ProgramCard({
-    title,
-    subtitle,
-    features,
-    quotaPutra,
-    quotaPutri,
-    bgClass,
-}: (typeof PROGRAMS)[number]) {
-    return (
-        <div className={`${bgClass} h-full`}>
-            <div className="w-16 h-16 rounded-2xl bg-white/20 flex items-center justify-center mb-6">
-                <GraduationCap className="w-8 h-8 text-white" />
-            </div>
-
-            <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">{title}</h3>
-            <p className="text-white/80 text-sm mb-6">{subtitle}</p>
-
-            <div className="space-y-2 mb-6">
-                {features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-white/80 flex-shrink-0" />
-                        <span className="text-sm text-white/90">{feature}</span>
-                    </div>
-                ))}
-            </div>
-
-            <div className="flex gap-4 pt-4 border-t border-white/20">
-                <div>
-                    <p className="text-xs text-white/90 font-medium">Kuota Putra</p>
-                    <p className="text-sm font-bold bg-black/20 text-white px-3 py-1 rounded-full mt-1 border border-white/10">
-                        {quotaPutra}
-                    </p>
-                </div>
-                <div>
-                    <p className="text-xs text-white/90 font-medium">Kuota Putri</p>
-                    <p className="text-sm font-bold bg-black/20 text-white px-3 py-1 rounded-full mt-1 border border-white/10">
-                        {quotaPutri}
-                    </p>
-                </div>
-            </div>
-
-            {/* Link to Program Detail Page */}
-            <div className="mt-6 pt-4 border-t border-white/20">
-                <Button
-                    variant="secondary"
-                    className="w-full bg-white/10 hover:bg-white/20 text-white border-0"
-                    asChild
-                >
-                    <Link href="/program">
-                        <span>Pelajari Lebih Lanjut</span>
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                    </Link>
-                </Button>
-            </div>
-        </div>
-    );
-}
-
 export default function ProgramSection() {
     return (
-        <section id="program" className="py-16 md:py-20 bg-white">
-            <Container>
+        <section id="program" className="py-12 md:py-16 bg-white relative overflow-hidden">
+            {/* Decorative Background */}
+            <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-surface-50 to-transparent opacity-50 pointer-events-none" />
+
+            <Container className="relative z-10">
                 {/* Section Header */}
-                <div className="text-center mb-12">
-                    <div className="badge-teal inline-flex mb-4">
-                        <BookOpen className="w-4 h-4" />
-                        <span>Program Unggulan</span>
+                <div className="text-center mb-16 max-w-3xl mx-auto">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brown-50 text-brown-700 text-xs font-bold uppercase tracking-widest mb-4">
+                        <GraduationCap className="w-3.5 h-3.5" />
+                        <span>Jenjang Pendidikan</span>
                     </div>
-                    <h2 className="section-title mb-3">Program Pendidikan</h2>
-                    <p className="section-subtitle mx-auto">
-                        Dua program pendidikan berkualitas dengan kuota terbatas untuk putra
+                    <h2 className="text-3xl md:text-5xl font-bold text-ink-900 mb-6 tracking-tight">
+                        Program Pendidikan <span className="text-gradient-brown">Unggulan</span>
+                    </h2>
+                    <p className="section-subtitle">
+                        Kami menyediakan jenjang pendidikan berkesinambungan untuk membentuk kepribadian santri yang utuh (kaffah).
                     </p>
                 </div>
 
                 {/* Programs Grid */}
-                <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
                     {PROGRAMS.map((program, idx) => (
-                        <ProgramCard key={idx} {...program} />
+                        <div key={idx} className="card-wablas bg-white p-8 md:p-10 hover:-translate-y-2 transition-transform duration-300 border-t-4 border-t-brown-600 flex flex-col h-full relative group overflow-hidden">
+                            {/* Hover Gradient */}
+                            <div className="absolute inset-0 bg-gradient-to-b from-brown-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+                            <div className="relative z-10 flex flex-col h-full">
+                                {/* Header */}
+                                <div className="flex items-start justify-between mb-6">
+                                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm ${program.color === 'brown' ? 'bg-brown-100 text-brown-700' : 'bg-gold-100 text-gold-700'}`}>
+                                        <program.icon className="w-8 h-8" />
+                                    </div>
+                                    <div className="bg-surface-50 border border-surface-200 px-3 py-1 rounded-lg">
+                                        <span className="text-xs font-bold text-ink-500">Kuota: {program.quota}</span>
+                                    </div>
+                                </div>
+
+                                <h3 className="text-2xl font-bold text-ink-900 mb-1">{program.title}</h3>
+                                <p className="text-sm font-bold text-brown-600 mb-4">{program.subtitle}</p>
+                                <p className="text-ink-500 text-sm leading-relaxed mb-8 flex-grow">
+                                    {program.desc}
+                                </p>
+
+                                {/* Features List */}
+                                <ul className="space-y-3 mb-8 bg-surface-50/50 p-5 rounded-xl border border-surface-100">
+                                    {program.features.map((feature, fIdx) => (
+                                        <li key={fIdx} className="flex items-start gap-3">
+                                            <CheckCircle className={`w-4 h-4 mt-0.5 flex-shrink-0 ${program.color === 'brown' ? 'text-brown-500' : 'text-gold-500'}`} />
+                                            <span className="text-sm font-medium text-ink-700">{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {/* Action */}
+                                <Link
+                                    href="/program"
+                                    className="btn-primary w-full text-center justify-center"
+                                >
+                                    Detail Program
+                                </Link>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </Container>

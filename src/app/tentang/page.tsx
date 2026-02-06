@@ -19,7 +19,7 @@ export default function TentangPage() {
     return (
         <main className="bg-surface-50 min-h-screen">
             {/* 1. Hero Section - Deep Brown & Gold */}
-            <section className="relative pt-12 pb-20 md:pt-16 md:pb-32 overflow-hidden bg-brown-900 text-white">
+            <section className="relative pt-8 pb-12 md:pt-10 md:pb-16 overflow-hidden bg-brown-900 text-white">
                 {/* Decorative Background Elements */}
                 <div className="absolute inset-0 bg-[url('/images/pattern.png')] bg-repeat opacity-5 mix-blend-overlay" />
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -43,7 +43,7 @@ export default function TentangPage() {
             </section>
 
             {/* 2. History & Profile - Glass Panel */}
-            <section className="py-20 md:py-32 relative">
+            <section className="py-12 md:py-16 relative">
                 <Container>
                     <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
                         {/* Image Column */}
@@ -120,7 +120,7 @@ export default function TentangPage() {
             </section>
 
             {/* 3. Vision Mission - Clay Cards */}
-            <section className="py-20 md:py-32 bg-surface-100 relative overflow-hidden">
+            <section className="py-12 md:py-16 bg-surface-100 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent opacity-50 pointer-events-none" />
 
                 <Container className="relative z-10">
@@ -193,7 +193,7 @@ export default function TentangPage() {
             </section>
 
             {/* 4. CTA Section - Brown Aesthetic */}
-            <section className="py-24 bg-brown-900 relative overflow-hidden">
+            <section className="py-12 md:py-16 bg-brown-900 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] pointer-events-none" />
 
                 <Container className="relative z-10 text-center">

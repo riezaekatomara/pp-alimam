@@ -1,151 +1,107 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Award, Users, BookOpenCheck, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { BookOpen, Award, Users, BookOpenCheck, ArrowRight, ShieldCheck } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 
 const FEATURES = [
   {
     icon: BookOpen,
-    title: "Kurikulum Terintegrasi",
-    description:
-      "Pendidikan formal MTs/MA terintegrasi dengan kurikulum pesantren tahfidz dan kitab kuning",
-    color: "brown",
+    title: "Kurikulum Kaffah",
+    description: "Perpaduan harmonis kurikulum nasional, kepesantrenan, dan tahfidz.",
   },
   {
     icon: Award,
-    title: "Terakreditasi A",
-    description:
-      "Lembaga pendidikan formal MTs dan MA terakreditasi A oleh BAN-S/M dengan standar nasional",
-    color: "gold",
+    title: "Akreditasi A",
+    description: "Diakui secara nasional dengan standar mutu pendidikan yang tinggi.",
   },
   {
     icon: Users,
-    title: "Tenaga Pendidik Berpengalaman",
-    description:
-      "Dibimbing oleh 50+ ustadz dan ustadzah berpengalaman di bidang tahfidz dan ilmu syar'i",
-    color: "teal",
+    title: "Asatidzah Kompeten",
+    description: "Lulusan perguruan tinggi terbaik dalam & luar negeri.",
   },
   {
-    icon: BookOpenCheck,
-    title: "Program Tahfidz 30 Juz",
-    description:
-      "Program hafalan Al-Qur'an dengan metode mutqin, sanad jelas, dan bimbingan intensif harian",
-    color: "brown",
+    icon: ShieldCheck,
+    title: "Lingkungan Aman",
+    description: "Aman dari pengaruh negatif luar dengan pendampingan 24 jam.",
   },
 ] as const;
 
-function FeatureCard({
-  icon: Icon,
-  title,
-  description,
-  color,
-  index,
-}: {
-  icon: typeof BookOpen;
-  title: string;
-  description: string;
-  color: string;
-  index: number;
-  }) {
-  const colorClasses = {
-    brown: {
-      iconBg: "bg-[var(--color-brown-100)]",
-      iconColor: "text-[var(--color-brown-700)]",
-    },
-    gold: {
-      iconBg: "bg-[var(--color-gold-100)]",
-      iconColor: "text-[var(--color-gold-600)]",
-    },
-    teal: {
-      iconBg: "bg-[var(--color-teal-100)]",
-      iconColor: "text-[var(--color-teal-600)]",
-    },
-  };
-
-  const colors = colorClasses[color as keyof typeof colorClasses];
-
-  return (
-    <div
-      className="card-modern p-6 text-center hover:-translate-y-2 transition-all duration-300 animate-fadeInUp"
-      style={{ animationDelay: `${index * 100}ms` }}
-    >
-      <div
-        className={`w-14 h-14 mx-auto mb-4 rounded-2xl ${colors.iconBg} flex items-center justify-center`}
-      >
-        <Icon className={`w-7 h-7 ${colors.iconColor}`} />
-      </div>
-      <h3 className="text-lg font-bold text-[var(--color-text-900)] mb-2">
-        {title}
-      </h3>
-      <p className="text-sm text-[var(--color-text-600)] leading-relaxed">
-        {description}
-      </p>
-    </div>
-  );
-}
-
 export default function FeaturesSection() {
   return (
-    <section
-      id="keunggulan"
-      className="py-16 md:py-20 bg-gradient-to-b from-white to-[var(--color-cream-50)]"
-    >
+    <section id="keunggulan" className="py-12 md:py-16 bg-surface-50 border-t border-surface-100">
       <Container>
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="badge-outline inline-flex mb-4">
-            <Award className="w-4 h-4" />
-            <span>Keunggulan Kami</span>
-          </div>
-          <h2 className="section-title mb-3">
-            Mengapa Memilih{" "}
-            <span className="text-gradient-brown">Al-Imam?</span>
-          </h2>
-          <p className="section-subtitle mx-auto">
-            Program pendidikan berkualitas dengan kurikulum terintegrasi untuk
-            mencetak generasi Qur'ani yang berakhlak mulia
-          </p>
-        </div>
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {FEATURES.map((feature, idx) => (
-            <FeatureCard key={idx} {...feature} index={idx} />
-          ))}
-        </div>
+          {/* TEXT SIDE */}
+          <div className="lg:w-1/2 space-y-8">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-50 text-gold-700 text-xs font-bold uppercase tracking-widest mb-4">
+                <Award className="w-3.5 h-3.5" />
+                <span>Keunggulan Absolut</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold text-ink-900 mb-6 tracking-tight leading-tight">
+                Kenapa Harus Pondok Pesantren <br />
+                <span className="text-brown-700">Al-Imam Al-Islami?</span>
+              </h2>
+              <p className="text-lg text-ink-500 leading-relaxed">
+                Kami tidak hanya mengajarkan ilmu, tetapi juga mendidik karakter. Lingkungan yang kondusif untuk tumbuh kembang spiritual, intelektual, dan emosional santri.
+              </p>
+            </div>
 
-        {/* CTA Section */}
-        <div className="text-center">
-          <div className="bg-[var(--color-cream-100)] rounded-2xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-xl font-bold text-[var(--color-text-900)] mb-2">
-              Tertarik Bergabung?
-            </h3>
-            <p className="text-sm text-[var(--color-text-600)] mb-6">
-              Pelajari informasi pendaftaran santri baru tahun ajaran 2026/2027
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                className="bg-[var(--color-brown-700)] hover:bg-[var(--color-brown-800)] text-white"
-                asChild
-              >
-                <Link href="/ppdb" className="inline-flex items-center gap-2">
-                  <span>Info PPDB Lengkap</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-              <Button
-                variant="outline"
-                className="border-[var(--color-teal-600)] text-[var(--color-teal-700)] hover:bg-[var(--color-teal-50)]"
-                asChild
-              >
-                <Link href="#kontak" className="inline-flex items-center gap-2">
-                  <span>Hubungi Kami</span>
-                </Link>
-              </Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {FEATURES.map((feature, idx) => (
+                <div key={idx} className="flex gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm border border-surface-200 shrink-0">
+                    <feature.icon className="w-6 h-6 text-brown-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-ink-900 text-base mb-1">{feature.title}</h4>
+                    <p className="text-sm text-ink-500 leading-relaxed">{feature.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-4">
+              <Link href="/ppdb" className="btn-primary px-8">
+                Daftar Sekarang
+              </Link>
             </div>
           </div>
+
+          {/* IMAGE/CARD SIDE */}
+          <div className="lg:w-1/2 relative">
+            <div className="relative z-10 grid grid-cols-2 gap-4">
+              <div className="space-y-4 mt-8">
+                <div className="bg-white p-6 rounded-3xl shadow-clay-md h-48 flex flex-col justify-end items-start border-l-4 border-l-brown-500">
+                  <p className="text-4xl font-black text-ink-900 mb-1">29+</p>
+                  <p className="text-sm font-bold text-ink-500">Tahun Pengalaman</p>
+                </div>
+                <div className="bg-brown-800 p-6 rounded-3xl shadow-clay-lg h-64 flex flex-col justify-center items-center text-center relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-[url('/images/pattern.png')] opacity-10 mix-blend-overlay" />
+                  <BookOpenCheck className="w-12 h-12 mb-4 text-white group-hover:scale-110 transition-transform" />
+                  <p className="font-bold text-lg text-white drop-shadow-md">Tahfidz<br />Intensif</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="bg-white p-6 rounded-3xl shadow-clay-lg h-64 flex flex-col justify-center items-center text-center relative overflow-hidden">
+                  <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-4">
+                    <ShieldCheck className="w-10 h-10 text-green-600" />
+                  </div>
+                  <p className="font-bold text-ink-900">Lingkungan<br />Islami</p>
+                </div>
+                <div className="bg-gold-500 p-6 rounded-3xl shadow-clay-md h-48 flex flex-col justify-end items-start">
+                  <p className="text-4xl font-black mb-1 text-brown-900">A</p>
+                  <p className="text-sm font-bold text-brown-800">Terakreditasi BAN-SM</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Blur Effect */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brown-100/30 blur-[100px] -z-0 pointer-events-none rounded-full" />
+          </div>
+
         </div>
       </Container>
     </section>

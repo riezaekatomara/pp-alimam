@@ -7,99 +7,81 @@ import {
   Phone,
   Mail,
   MessageCircle,
+  Clock,
+  ArrowRight
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const CONTACT_INFO = [
   {
     icon: MapPin,
-    title: "Alamat",
-    content: "Jl. Pelabuhan Ratu II KM 18, Kp. Pupunjul, Desa Cikembar",
-    detail: "Kec. Cikembar, Kab. Sukabumi, Jawa Barat 43157",
+    title: "Lokasi Pesantren",
+    content: "Jl. Pelabuhan Ratu II KM 18",
+    detail: "Cikembar, Sukabumi",
     color: "brown",
   },
   {
     icon: Phone,
-    title: "Telepon",
+    title: "Layanan Telepon",
     content: "+62 857-2225-3236",
-    detail: "Senin - Sabtu, 08:00 - 16:00 WIB",
+    detail: "Senin-Sabtu (08.00 - 16.00)",
     color: "teal",
   },
   {
     icon: Mail,
-    title: "Email",
-    content: "alimamalislami@gmail.com",
-    detail: "Respons dalam 1x24 jam",
+    title: "Email Resmi",
+    content: "info@alimamalislami.sch.id",
+    detail: "Kirim pertanyaan kapan saja",
     color: "gold",
   },
 ] as const;
 
-function ContactCard({
-  icon: Icon,
-  title,
-  content,
-  detail,
-  color,
-}: (typeof CONTACT_INFO)[number]) {
-  const colorClasses = {
-    brown: "bg-[var(--color-brown-100)] text-[var(--color-brown-600)]",
-    teal: "bg-[var(--color-teal-100)] text-[var(--color-teal-600)]",
-    gold: "bg-[var(--color-gold-100)] text-[var(--color-gold-600)]",
-  };
-
-  return (
-    <div className="card-modern p-6 text-center h-full flex flex-col items-center">
-      <div
-        className={`w-14 h-14 ${colorClasses[color]} rounded-2xl flex items-center justify-center mb-4`}
-      >
-        <Icon className="w-7 h-7" />
-      </div>
-      <h3 className="font-bold text-[var(--color-text-900)] mb-2">{title}</h3>
-      <p className="text-sm font-semibold text-[var(--color-brown-700)] mb-1">
-        {content}
-      </p>
-      <p className="text-xs text-[var(--color-text-500)] mt-auto">{detail}</p>
-    </div>
-  );
-}
-
 export default function ContactSection() {
   return (
-    <section
-      id="kontak"
-      className="py-16 md:py-20 bg-[var(--color-cream-50)]"
-    >
+    <section id="kontak" className="py-12 md:py-16 bg-white border-t border-surface-100">
       <Container>
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="badge-outline inline-flex mb-4">
-            <MessageCircle className="w-4 h-4" />
-            <span>Hubungi Kami</span>
+        <div className="bg-surface-50 rounded-[3rem] p-8 md:p-12 border border-surface-100 relative overflow-hidden">
+          {/* Background Map Decoration (Abstract) */}
+          <div className="absolute inset-0 opacity-5 bg-[url('/images/pattern.png')] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
+
+            {/* Text Content */}
+            <div className="lg:w-1/2 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-surface-200 text-ink-600 text-xs font-bold uppercase tracking-widest mb-4">
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Pusat Bantuan</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold text-ink-900 mb-6 tracking-tight">
+                Ada Pertanyaan? <br />
+                <span className="text-gradient-brown">Kami Siap Membantu</span>
+              </h2>
+              <p className="text-ink-500 mb-8 max-w-lg mx-auto lg:mx-0">
+                Jangan ragu untuk menghubungi kami. Tim administrasi kami siap melayani pertanyaan seputar pendaftaran dan informasi pesantren.
+              </p>
+
+              <Link href="/kontak" className="btn-primary inline-flex">
+                Hubungi Kami Sekarang <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </div>
+
+            {/* Cards Grid */}
+            <div className="lg:w-1/2 grid sm:grid-cols-2 gap-4 w-full">
+              {CONTACT_INFO.map((item, idx) => (
+                <div key={idx} className={`bg-white p-6 rounded-3xl shadow-clay-sm hover:shadow-clay-md transition-shadow group ${idx === 0 ? 'sm:col-span-2' : ''}`}>
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 transition-colors ${item.color === 'brown' ? 'bg-brown-50 text-brown-600 group-hover:bg-brown-100' :
+                      item.color === 'teal' ? 'bg-teal-50 text-teal-600 group-hover:bg-teal-100' :
+                        'bg-gold-50 text-gold-600 group-hover:bg-gold-100'
+                    }`}>
+                    <item.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-ink-900 font-bold text-lg mb-1">{item.title}</h3>
+                  <p className="text-ink-600 font-medium text-sm">{item.content}</p>
+                  <p className="text-ink-400 text-xs mt-1">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+
           </div>
-          <h2 className="section-title mb-3">
-            Punya <span className="text-gradient-gold">Pertanyaan?</span>
-          </h2>
-          <p className="section-subtitle mx-auto mb-6">
-            Tim kami siap membantu menjawab semua pertanyaan seputar pendaftaran
-            dan program pesantren
-          </p>
-        </div>
-
-        {/* Contact Cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {CONTACT_INFO.map((item, idx) => (
-            <ContactCard key={idx} {...item} />
-          ))}
-        </div>
-
-        {/* Footer CTA */}
-        <div className="text-center">
-          <Button asChild size="lg" className="bg-[var(--color-brown-700)] hover:bg-[var(--color-brown-800)] text-white px-8">
-            <Link href="/kontak" className="flex items-center gap-2">
-              <span>Lihat Kontak Lengkap & Peta</span>
-              <MapPin className="w-4 h-4" />
-            </Link>
-          </Button>
         </div>
       </Container>
     </section>
